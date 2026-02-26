@@ -70,6 +70,17 @@ def save_cache(file_hash: str, filename: str, data: dict):
     con.close()
 
 
+def save_edits(file_hash: str, mode: str, words: list[dict]):
+    col = {"Hindi": "hindi", "Hinglish": "hinglish", "English": "english"}[mode]
+    con = sqlite3.connect(DB_PATH)
+    con.execute(
+        f"UPDATE transcriptions SET {col} = ? WHERE file_hash = ?",
+        (json.dumps(words, ensure_ascii=False), file_hash)
+    )
+    con.commit()
+    con.close()
+
+
 def hash_file(path: str) -> str:
     h = hashlib.sha256()
     with open(path, "rb") as f:
@@ -184,6 +195,11 @@ if "video_path" in st.session_state:
             use_container_width=True,
             num_rows="dynamic",
         )
+
+        if st.button("💾 Save Edits"):
+            save_edits(st.session_state["file_hash"], caption_mode, edited)
+            st.session_state["all_words"][caption_mode] = edited
+            st.success(f"{caption_mode} edits saved.")
 
         if st.button("Burn Captions into Video"):
             output_path = os.path.join(tmpdir, "captioned.mp4")
