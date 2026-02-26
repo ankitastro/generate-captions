@@ -6,7 +6,7 @@ import tempfile
 import streamlit as st
 from dotenv import load_dotenv
 from openai import AzureOpenAI
-from caption_video import extract_audio, transcribe, add_captions
+from caption_video import extract_audio, transcribe, add_captions, add_effects
 
 load_dotenv()
 
@@ -206,13 +206,33 @@ if "video_path" in st.session_state:
             st.success(f"{caption_mode} edits saved.")
 
         if st.button("Burn Captions into Video"):
-            output_path = os.path.join(tmpdir, "captioned.mp4")
+            captioned_path = os.path.join(tmpdir, "captioned.mp4")
             with st.spinner("Rendering video... this may take a minute"):
-                add_captions(st.session_state["video_path"], edited, output_path)
-            with open(output_path, "rb") as f:
+                add_captions(st.session_state["video_path"], edited, captioned_path)
+            st.session_state["captioned_path"] = captioned_path
+
+        if "captioned_path" in st.session_state and os.path.exists(st.session_state["captioned_path"]):
+            with open(st.session_state["captioned_path"], "rb") as f:
                 st.download_button(
                     label="⬇️ Download Captioned Video",
                     data=f,
                     file_name=f"{st.session_state['filename'].rsplit('.', 1)[0]}_captioned.mp4",
                     mime="video/mp4",
                 )
+
+            st.subheader("Step 3 — Add Effects")
+            st.caption("Applies Ken Burns zoom (alternating direction every 2 s) to keep viewers engaged.")
+            if st.button("✨ Add Effects"):
+                effects_path = os.path.join(tmpdir, "captioned_effects.mp4")
+                with st.spinner("Applying effects... this may take a minute"):
+                    add_effects(st.session_state["captioned_path"], effects_path)
+                st.session_state["effects_path"] = effects_path
+
+            if "effects_path" in st.session_state and os.path.exists(st.session_state["effects_path"]):
+                with open(st.session_state["effects_path"], "rb") as f:
+                    st.download_button(
+                        label="⬇️ Download Video with Effects",
+                        data=f,
+                        file_name=f"{st.session_state['filename'].rsplit('.', 1)[0]}_effects.mp4",
+                        mime="video/mp4",
+                    )

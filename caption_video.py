@@ -148,27 +148,13 @@ def draw_caption(frame: np.ndarray, text: str, size: tuple) -> np.ndarray:
     return np.array(img.convert("RGB"))
 
 
-def apply_ken_burns(frame: np.ndarray, t: float, duration: float, W: int, H: int) -> np.ndarray:
-    """Slowly zoom in over the video duration (Ken Burns effect)."""
-    progress = t / max(duration, 0.001)
-    scale = 1.0 + 0.08 * progress  # zoom in up to 8% by the end
-    crop_w = int(W / scale)
-    crop_h = int(H / scale)
-    left = (W - crop_w) // 2
-    top = (H - crop_h) // 2
-    img = Image.fromarray(frame)
-    cropped = img.crop((left, top, left + crop_w, top + crop_h))
-    return np.array(cropped.resize((W, H), Image.LANCZOS))
-
-
 def add_captions(video_file: str, words: list[dict], output_file: str):
-    """Overlay captions on the video with Ken Burns zoom effect."""
+    """Overlay captions on the video."""
     clip = VideoFileClip(video_file)
     W, H = int(clip.w), int(clip.h)
 
     def make_frame(t):
         frame = clip.get_frame(t)
-        frame = apply_ken_burns(frame, t, clip.duration, W, H)
         current = next((w for w in words if w["start"] <= t < w["end"]), None)
         if current:
             text = current["word"].strip(".,।").upper()
@@ -179,6 +165,34 @@ def add_captions(video_file: str, words: list[dict], output_file: str):
     captioned = captioned.with_audio(clip.audio)
     captioned.write_videofile(output_file, fps=clip.fps, codec="libx264", audio_codec="aac")
     print(f"\nCaptioned video saved → {output_file}")
+
+
+SEGMENT_DURATION = 2.0  # seconds per Ken Burns segment
+
+
+def add_effects(video_file: str, output_file: str):
+    """Apply Ken Burns zoom effect, alternating direction every 2 seconds."""
+    clip = VideoFileClip(video_file)
+    W, H = int(clip.w), int(clip.h)
+
+    def make_frame(t):
+        frame = clip.get_frame(t)
+        segment_idx = int(t / SEGMENT_DURATION)
+        t_in_seg = t % SEGMENT_DURATION
+        zoom_in = (segment_idx % 2 == 0)
+        progress = t_in_seg / SEGMENT_DURATION
+        scale = 1.0 + 0.08 * (progress if zoom_in else (1 - progress))
+        crop_w = int(W / scale)
+        crop_h = int(H / scale)
+        left = (W - crop_w) // 2
+        top = (H - crop_h) // 2
+        img = Image.fromarray(frame)
+        cropped = img.crop((left, top, left + crop_w, top + crop_h))
+        return np.array(cropped.resize((W, H), Image.LANCZOS))
+
+    effected = VideoClip(make_frame, duration=clip.duration).with_audio(clip.audio)
+    effected.write_videofile(output_file, fps=clip.fps, codec="libx264", audio_codec="aac")
+    print(f"\nEffects applied → {output_file}")
 
 
 if __name__ == "__main__":
