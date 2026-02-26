@@ -69,8 +69,7 @@ def to_hinglish(words: list[dict]) -> list[dict]:
                     "Convert each Hindi word from Devanagari to natural Roman script Hinglish "
                     "(the way people type Hindi casually on WhatsApp). "
                     "Keep English words as-is. "
-                    "Return only a JSON array of strings, one per input word, in the same order. "
-                    "No explanation, no extra text."
+                    'Return JSON as {"words": [...]} with one string per input word.'
                 ),
             },
             {
@@ -78,10 +77,11 @@ def to_hinglish(words: list[dict]) -> list[dict]:
                 "content": json.dumps(devanagari_words, ensure_ascii=False),
             },
         ],
+        response_format={"type": "json_object"},
         temperature=0,
     )
 
-    hinglish_words = json.loads(response.choices[0].message.content)
+    hinglish_words = json.loads(response.choices[0].message.content)["words"]
     return [
         {"word": hinglish_words[i], "start": w["start"], "end": w["end"]}
         for i, w in enumerate(words)

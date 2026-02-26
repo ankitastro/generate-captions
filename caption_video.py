@@ -92,12 +92,13 @@ def to_hinglish(words: list[dict], batch_size: int = 50) -> list[dict]:
         response = gpt_client.chat.completions.create(
             model=GPT_DEPLOYMENT,
             messages=[
-                {"role": "system", "content": system_prompt},
+                {"role": "system", "content": system_prompt + ' Return JSON as {"words": [...]}'},
                 {"role": "user", "content": json.dumps(devanagari_batch, ensure_ascii=False)},
             ],
+            response_format={"type": "json_object"},
             temperature=0,
         )
-        hinglish_all.extend(json.loads(response.choices[0].message.content))
+        hinglish_all.extend(json.loads(response.choices[0].message.content)["words"])
         print(f"  Converted words {i+1}–{min(i+batch_size, len(words))}")
 
     return [
