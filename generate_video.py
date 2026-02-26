@@ -139,6 +139,26 @@ def draw_caption(base_img: np.ndarray, text: str) -> np.ndarray:
     return np.array(img.convert("RGB"))
 
 
+TRANSITION = 0.3  # cross-fade duration in seconds
+
+
+def apply_ken_burns(base_img: np.ndarray, t: float, duration: float, zoom_in: bool) -> np.ndarray:
+    """Slowly zoom in or out on an image to add motion (Ken Burns effect)."""
+    W, H = 1024, 1792
+    max_zoom = 0.08  # 8% zoom over the scene duration
+    progress = t / max(duration, 0.001)
+    scale = 1.0 + max_zoom * (progress if zoom_in else (1 - progress))
+
+    crop_w = int(W / scale)
+    crop_h = int(H / scale)
+    left = (W - crop_w) // 2
+    top = (H - crop_h) // 2
+
+    img = Image.fromarray(base_img)
+    cropped = img.crop((left, top, left + crop_w, top + crop_h))
+    return np.array(cropped.resize((W, H), Image.LANCZOS))
+
+
 def build_video(scenes: list[dict], words: list[dict], audio_file: str, output_file: str, images_dir: str):
     """Stitch images + captions + audio into a video."""
     audio = AudioFileClip(audio_file)
@@ -155,7 +175,10 @@ def build_video(scenes: list[dict], words: list[dict], audio_file: str, output_f
             if w["start"] < scene["end"] and w["end"] > scene["start"]
         ]
 
-        def make_frame(t, base=base_img, sw=scene_words, s=scene):
+        zoom_in = (i % 2 == 0)  # alternate zoom direction per scene
+
+        def make_frame(t, base=base_img, sw=scene_words, s=scene, dur=duration, zi=zoom_in):
+            frame = apply_ken_burns(base, t, dur, zi)
             abs_t = s["start"] + t
             current = next(
                 (w for w in sw if w["start"] <= abs_t < w["end"]),
@@ -163,13 +186,15 @@ def build_video(scenes: list[dict], words: list[dict], audio_file: str, output_f
             )
             if current:
                 text = current["word"].strip(".,।").upper()
-                return draw_caption(base, text)
-            return base
+                return draw_caption(frame, text)
+            return frame
 
         clip = VideoClip(make_frame, duration=duration)
+        if i > 0:
+            clip = clip.crossfadein(TRANSITION)
         clips.append(clip)
 
-    final = concatenate_videoclips(clips).with_audio(audio)
+    final = concatenate_videoclips(clips, padding=-TRANSITION).with_audio(audio)
     final.write_videofile(output_file, fps=24, codec="libx264", audio_codec="aac")
     print(f"\nVideo saved to: {output_file}")
 
