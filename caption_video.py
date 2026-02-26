@@ -148,13 +148,18 @@ def draw_caption(frame: np.ndarray, text: str, size: tuple) -> np.ndarray:
     return np.array(img.convert("RGB"))
 
 
-def add_captions(video_file: str, words: list[dict], output_file: str):
+def add_captions(video_file: str, words: list[dict], output_file: str, progress_callback=None):
     """Overlay captions on the video."""
     clip = VideoFileClip(video_file)
     W, H = int(clip.w), int(clip.h)
+    total_frames = max(int(clip.fps * clip.duration), 1)
+    frame_count = [0]
 
     def make_frame(t):
         frame = clip.get_frame(t)
+        frame_count[0] += 1
+        if progress_callback:
+            progress_callback(min(frame_count[0] / total_frames, 1.0))
         current = next((w for w in words if w["start"] <= t < w["end"]), None)
         if current:
             text = current["word"].strip(".,।").upper()
@@ -163,20 +168,25 @@ def add_captions(video_file: str, words: list[dict], output_file: str):
 
     captioned = VideoClip(make_frame, duration=clip.duration)
     captioned = captioned.with_audio(clip.audio)
-    captioned.write_videofile(output_file, fps=clip.fps, codec="libx264", audio_codec="aac")
+    captioned.write_videofile(output_file, fps=clip.fps, codec="libx264", audio_codec="aac", logger=None)
     print(f"\nCaptioned video saved → {output_file}")
 
 
 SEGMENT_DURATION = 2.0  # seconds per Ken Burns segment
 
 
-def add_effects(video_file: str, output_file: str):
+def add_effects(video_file: str, output_file: str, progress_callback=None):
     """Apply Ken Burns zoom effect, alternating direction every 2 seconds."""
     clip = VideoFileClip(video_file)
     W, H = int(clip.w), int(clip.h)
+    total_frames = max(int(clip.fps * clip.duration), 1)
+    frame_count = [0]
 
     def make_frame(t):
         frame = clip.get_frame(t)
+        frame_count[0] += 1
+        if progress_callback:
+            progress_callback(min(frame_count[0] / total_frames, 1.0))
         segment_idx = int(t / SEGMENT_DURATION)
         t_in_seg = t % SEGMENT_DURATION
         zoom_in = (segment_idx % 2 == 0)
@@ -191,7 +201,7 @@ def add_effects(video_file: str, output_file: str):
         return np.array(cropped.resize((W, H), Image.LANCZOS))
 
     effected = VideoClip(make_frame, duration=clip.duration).with_audio(clip.audio)
-    effected.write_videofile(output_file, fps=clip.fps, codec="libx264", audio_codec="aac")
+    effected.write_videofile(output_file, fps=clip.fps, codec="libx264", audio_codec="aac", logger=None)
     print(f"\nEffects applied → {output_file}")
 
 

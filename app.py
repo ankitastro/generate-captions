@@ -211,8 +211,10 @@ with tab_pipeline:
 
             if st.button("Burn Captions into Video"):
                 captioned_path = os.path.join(tmpdir, "captioned.mp4")
-                with st.spinner("Rendering video... this may take a minute"):
-                    add_captions(st.session_state["video_path"], edited, captioned_path)
+                bar = st.progress(0, text="Burning captions…")
+                add_captions(st.session_state["video_path"], edited, captioned_path,
+                             progress_callback=lambda v: bar.progress(v, text=f"Burning captions… {int(v*100)}%"))
+                bar.progress(1.0, text="Done!")
                 st.session_state["captioned_path"] = captioned_path
 
             if "captioned_path" in st.session_state and os.path.exists(st.session_state["captioned_path"]):
@@ -229,8 +231,10 @@ with tab_pipeline:
                 st.caption("Ken Burns zoom, alternating direction every 2 s.")
                 if st.button("✨ Add Effects", key="fx_pipeline"):
                     effects_path = os.path.join(tmpdir, "captioned_effects.mp4")
-                    with st.spinner("Applying effects... this may take a minute"):
-                        add_effects(st.session_state["captioned_path"], effects_path)
+                    bar = st.progress(0, text="Applying effects…")
+                    add_effects(st.session_state["captioned_path"], effects_path,
+                                progress_callback=lambda v: bar.progress(v, text=f"Applying effects… {int(v*100)}%"))
+                    bar.progress(1.0, text="Done!")
                     st.session_state["effects_path"] = effects_path
 
                 if "effects_path" in st.session_state and os.path.exists(st.session_state["effects_path"]):
@@ -260,8 +264,10 @@ with tab_effects:
 
         if st.button("✨ Add Effects", key="fx_standalone"):
             fx_output_path = os.path.join(tmpdir, "fx_output.mp4")
-            with st.spinner("Applying effects... this may take a minute"):
-                add_effects(st.session_state["fx_input_path"], fx_output_path)
+            bar = st.progress(0, text="Applying effects…")
+            add_effects(st.session_state["fx_input_path"], fx_output_path,
+                        progress_callback=lambda v: bar.progress(v, text=f"Applying effects… {int(v*100)}%"))
+            bar.progress(1.0, text="Done!")
             st.session_state["fx_output_path"] = fx_output_path
 
         if "fx_output_path" in st.session_state and os.path.exists(st.session_state["fx_output_path"]):
