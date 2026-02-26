@@ -148,13 +148,27 @@ def draw_caption(frame: np.ndarray, text: str, size: tuple) -> np.ndarray:
     return np.array(img.convert("RGB"))
 
 
+def apply_ken_burns(frame: np.ndarray, t: float, duration: float, W: int, H: int) -> np.ndarray:
+    """Slowly zoom in over the video duration (Ken Burns effect)."""
+    progress = t / max(duration, 0.001)
+    scale = 1.0 + 0.08 * progress  # zoom in up to 8% by the end
+    crop_w = int(W / scale)
+    crop_h = int(H / scale)
+    left = (W - crop_w) // 2
+    top = (H - crop_h) // 2
+    img = Image.fromarray(frame)
+    cropped = img.crop((left, top, left + crop_w, top + crop_h))
+    return np.array(cropped.resize((W, H), Image.LANCZOS))
+
+
 def add_captions(video_file: str, words: list[dict], output_file: str):
-    """Overlay captions on the video."""
+    """Overlay captions on the video with Ken Burns zoom effect."""
     clip = VideoFileClip(video_file)
     W, H = int(clip.w), int(clip.h)
 
     def make_frame(t):
         frame = clip.get_frame(t)
+        frame = apply_ken_burns(frame, t, clip.duration, W, H)
         current = next((w for w in words if w["start"] <= t < w["end"]), None)
         if current:
             text = current["word"].strip(".,।").upper()
