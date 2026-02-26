@@ -143,96 +143,133 @@ if "tmpdir" not in st.session_state or not os.path.exists(st.session_state["tmpd
 
 tmpdir = st.session_state["tmpdir"]
 
-uploaded = st.file_uploader("Upload a video", type=["mp4", "mov", "avi", "mkv"])
+tab_pipeline, tab_effects = st.tabs(["Caption Pipeline", "Add Effects Only"])
 
-if uploaded:
-    video_path = os.path.join(tmpdir, uploaded.name)
-    with open(video_path, "wb") as f:
-        f.write(uploaded.read())
-    st.session_state["video_path"] = video_path
-    st.session_state["filename"] = uploaded.name
+# ── Tab 1: full pipeline ────────────────────────────────────────────────────────
+with tab_pipeline:
+    uploaded = st.file_uploader("Upload a video", type=["mp4", "mov", "avi", "mkv"], key="upload_pipeline")
 
-if "video_path" in st.session_state:
-    st.video(st.session_state["video_path"])
+    if uploaded:
+        video_path = os.path.join(tmpdir, uploaded.name)
+        with open(video_path, "wb") as f:
+            f.write(uploaded.read())
+        st.session_state["video_path"] = video_path
+        st.session_state["filename"] = uploaded.name
 
-    caption_mode = st.radio("Caption language", ["Hinglish", "Hindi", "English"], horizontal=True)
+    if "video_path" in st.session_state:
+        st.video(st.session_state["video_path"])
 
-    if st.button("Transcribe & Generate Captions"):
-        file_hash = hash_file(st.session_state["video_path"])
-        cached = get_cached(file_hash)
+        caption_mode = st.radio("Caption language", ["Hinglish", "Hindi", "English"], horizontal=True)
 
-        if cached:
-            st.success("Loaded from cache — no API calls made.")
-            st.session_state["all_words"] = cached
-            st.session_state["file_hash"] = file_hash
-        else:
-            with st.spinner("Extracting audio..."):
-                wav_path = extract_audio(st.session_state["video_path"])
-            with st.spinner("Transcribing..."):
-                hindi_words = transcribe(wav_path)
-            with st.spinner("Converting to Hinglish..."):
-                hinglish_words = convert_words(hindi_words, "Hinglish")
-            with st.spinner("Converting to English..."):
-                english_words = convert_words(hindi_words, "English")
+        if st.button("Transcribe & Generate Captions"):
+            file_hash = hash_file(st.session_state["video_path"])
+            cached = get_cached(file_hash)
 
-            all_words = {
-                "Hindi": hindi_words,
-                "Hinglish": hinglish_words,
-                "English": english_words,
-            }
-            save_cache(file_hash, st.session_state["filename"], all_words)
-            st.session_state["all_words"] = all_words
-            st.session_state["file_hash"] = file_hash
-            st.success("Transcription complete and saved to cache.")
+            if cached:
+                st.success("Loaded from cache — no API calls made.")
+                st.session_state["all_words"] = cached
+                st.session_state["file_hash"] = file_hash
+            else:
+                with st.spinner("Extracting audio..."):
+                    wav_path = extract_audio(st.session_state["video_path"])
+                with st.spinner("Transcribing..."):
+                    hindi_words = transcribe(wav_path)
+                with st.spinner("Converting to Hinglish..."):
+                    hinglish_words = convert_words(hindi_words, "Hinglish")
+                with st.spinner("Converting to English..."):
+                    english_words = convert_words(hindi_words, "English")
 
-    if "all_words" in st.session_state:
-        words = st.session_state["all_words"][caption_mode]
+                all_words = {
+                    "Hindi": hindi_words,
+                    "Hinglish": hinglish_words,
+                    "English": english_words,
+                }
+                save_cache(file_hash, st.session_state["filename"], all_words)
+                st.session_state["all_words"] = all_words
+                st.session_state["file_hash"] = file_hash
+                st.success("Transcription complete and saved to cache.")
 
-        st.subheader("Transcription — edit if needed")
-        edited = st.data_editor(
-            words,
-            column_config={
-                "word": st.column_config.TextColumn("Word"),
-                "start": st.column_config.NumberColumn("Start (s)", format="%.3f"),
-                "end": st.column_config.NumberColumn("End (s)", format="%.3f"),
-            },
-            use_container_width=True,
-            num_rows="dynamic",
-        )
+        if "all_words" in st.session_state:
+            words = st.session_state["all_words"][caption_mode]
 
-        if st.button("💾 Save Edits"):
-            save_edits(st.session_state["file_hash"], caption_mode, edited)
-            st.session_state["all_words"][caption_mode] = edited
-            st.success(f"{caption_mode} edits saved.")
+            st.subheader("Transcription — edit if needed")
+            edited = st.data_editor(
+                words,
+                column_config={
+                    "word": st.column_config.TextColumn("Word"),
+                    "start": st.column_config.NumberColumn("Start (s)", format="%.3f"),
+                    "end": st.column_config.NumberColumn("End (s)", format="%.3f"),
+                },
+                use_container_width=True,
+                num_rows="dynamic",
+            )
 
-        if st.button("Burn Captions into Video"):
-            captioned_path = os.path.join(tmpdir, "captioned.mp4")
-            with st.spinner("Rendering video... this may take a minute"):
-                add_captions(st.session_state["video_path"], edited, captioned_path)
-            st.session_state["captioned_path"] = captioned_path
+            if st.button("💾 Save Edits"):
+                save_edits(st.session_state["file_hash"], caption_mode, edited)
+                st.session_state["all_words"][caption_mode] = edited
+                st.success(f"{caption_mode} edits saved.")
 
-        if "captioned_path" in st.session_state and os.path.exists(st.session_state["captioned_path"]):
-            with open(st.session_state["captioned_path"], "rb") as f:
-                st.download_button(
-                    label="⬇️ Download Captioned Video",
-                    data=f,
-                    file_name=f"{st.session_state['filename'].rsplit('.', 1)[0]}_captioned.mp4",
-                    mime="video/mp4",
-                )
+            if st.button("Burn Captions into Video"):
+                captioned_path = os.path.join(tmpdir, "captioned.mp4")
+                with st.spinner("Rendering video... this may take a minute"):
+                    add_captions(st.session_state["video_path"], edited, captioned_path)
+                st.session_state["captioned_path"] = captioned_path
 
-            st.subheader("Step 3 — Add Effects")
-            st.caption("Applies Ken Burns zoom (alternating direction every 2 s) to keep viewers engaged.")
-            if st.button("✨ Add Effects"):
-                effects_path = os.path.join(tmpdir, "captioned_effects.mp4")
-                with st.spinner("Applying effects... this may take a minute"):
-                    add_effects(st.session_state["captioned_path"], effects_path)
-                st.session_state["effects_path"] = effects_path
-
-            if "effects_path" in st.session_state and os.path.exists(st.session_state["effects_path"]):
-                with open(st.session_state["effects_path"], "rb") as f:
+            if "captioned_path" in st.session_state and os.path.exists(st.session_state["captioned_path"]):
+                with open(st.session_state["captioned_path"], "rb") as f:
                     st.download_button(
-                        label="⬇️ Download Video with Effects",
+                        label="⬇️ Download Captioned Video",
                         data=f,
-                        file_name=f"{st.session_state['filename'].rsplit('.', 1)[0]}_effects.mp4",
+                        file_name=f"{st.session_state['filename'].rsplit('.', 1)[0]}_captioned.mp4",
                         mime="video/mp4",
+                        key="dl_captioned_pipeline",
                     )
+
+                st.subheader("Step 3 — Add Effects")
+                st.caption("Ken Burns zoom, alternating direction every 2 s.")
+                if st.button("✨ Add Effects", key="fx_pipeline"):
+                    effects_path = os.path.join(tmpdir, "captioned_effects.mp4")
+                    with st.spinner("Applying effects... this may take a minute"):
+                        add_effects(st.session_state["captioned_path"], effects_path)
+                    st.session_state["effects_path"] = effects_path
+
+                if "effects_path" in st.session_state and os.path.exists(st.session_state["effects_path"]):
+                    with open(st.session_state["effects_path"], "rb") as f:
+                        st.download_button(
+                            label="⬇️ Download Video with Effects",
+                            data=f,
+                            file_name=f"{st.session_state['filename'].rsplit('.', 1)[0]}_effects.mp4",
+                            mime="video/mp4",
+                            key="dl_effects_pipeline",
+                        )
+
+# ── Tab 2: effects only ─────────────────────────────────────────────────────────
+with tab_effects:
+    st.write("Upload an already-captioned video to apply Ken Burns zoom effects.")
+    fx_uploaded = st.file_uploader("Upload a video", type=["mp4", "mov", "avi", "mkv"], key="upload_effects")
+
+    if fx_uploaded:
+        fx_input_path = os.path.join(tmpdir, "fx_input_" + fx_uploaded.name)
+        with open(fx_input_path, "wb") as f:
+            f.write(fx_uploaded.read())
+        st.session_state["fx_input_path"] = fx_input_path
+        st.session_state["fx_filename"] = fx_uploaded.name
+
+    if "fx_input_path" in st.session_state and os.path.exists(st.session_state["fx_input_path"]):
+        st.video(st.session_state["fx_input_path"])
+
+        if st.button("✨ Add Effects", key="fx_standalone"):
+            fx_output_path = os.path.join(tmpdir, "fx_output.mp4")
+            with st.spinner("Applying effects... this may take a minute"):
+                add_effects(st.session_state["fx_input_path"], fx_output_path)
+            st.session_state["fx_output_path"] = fx_output_path
+
+        if "fx_output_path" in st.session_state and os.path.exists(st.session_state["fx_output_path"]):
+            with open(st.session_state["fx_output_path"], "rb") as f:
+                st.download_button(
+                    label="⬇️ Download Video with Effects",
+                    data=f,
+                    file_name=f"{st.session_state['fx_filename'].rsplit('.', 1)[0]}_effects.mp4",
+                    mime="video/mp4",
+                    key="dl_effects_standalone",
+                )
