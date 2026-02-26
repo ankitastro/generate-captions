@@ -95,13 +95,21 @@ def generate_image(prompt: str, output_path: str):
 
 GPT_DEPLOYMENT = os.getenv("AZURE_OPENAI_GPT_DEPLOYMENT")
 DALLE_DEPLOYMENT = os.getenv("AZURE_DALLE_DEPLOYMENT")
-FONT = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial Bold.ttf", 90)
+
+FONT_LATIN = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
+FONT_DEVANAGARI = "/System/Library/Fonts/Supplemental/ITFDevanagari.ttc"
+
+
+def get_font(text: str, size: int = 90) -> ImageFont.FreeTypeFont:
+    is_devanagari = any('\u0900' <= ch <= '\u097F' for ch in text)
+    return ImageFont.truetype(FONT_DEVANAGARI if is_devanagari else FONT_LATIN, size)
 
 
 def draw_caption(base_img: np.ndarray, text: str) -> np.ndarray:
     """Draw a caption with semi-transparent background on the image using PIL."""
     W, H = 1024, 1792
     img = Image.fromarray(base_img).convert("RGBA")
+    FONT = get_font(text)
 
     # Measure text size
     dummy = ImageDraw.Draw(img)

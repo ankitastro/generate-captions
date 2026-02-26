@@ -21,7 +21,15 @@ gpt_client = AzureOpenAI(
     azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
 )
 
-FONT = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial Bold.ttf", 90)
+FONT_LATIN = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
+FONT_DEVANAGARI = "/System/Library/Fonts/Supplemental/ITFDevanagari.ttc"
+
+
+def get_font(text: str, size: int) -> ImageFont.FreeTypeFont:
+    """Pick Devanagari font if text contains Devanagari characters, else Latin."""
+    is_devanagari = any('\u0900' <= ch <= '\u097F' for ch in text)
+    path = FONT_DEVANAGARI if is_devanagari else FONT_LATIN
+    return ImageFont.truetype(path, size)
 
 
 def extract_audio(video_file: str) -> str:
@@ -111,7 +119,7 @@ def draw_caption(frame: np.ndarray, text: str, size: tuple) -> np.ndarray:
     """Burn caption onto a video frame using PIL."""
     W, H = size
     font_size = max(40, W // 12)
-    font = ImageFont.truetype("/System/Library/Fonts/Supplemental/Arial Bold.ttf", font_size)
+    font = get_font(text, font_size)
 
     img = Image.fromarray(frame).convert("RGBA")
     dummy = ImageDraw.Draw(img)

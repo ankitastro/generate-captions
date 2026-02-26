@@ -1,5 +1,7 @@
+import hashlib
 import json
 import os
+import sqlite3
 import tempfile
 import streamlit as st
 from dotenv import load_dotenv
@@ -16,9 +18,69 @@ gpt_client = AzureOpenAI(
     azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
 )
 
+DB_PATH = os.path.join(os.path.dirname(__file__), "captions.db")
+
+
+# ── Database ───────────────────────────────────────────────────────────────────
+
+def init_db():
+    con = sqlite3.connect(DB_PATH)
+    con.execute("""
+        CREATE TABLE IF NOT EXISTS transcriptions (
+            file_hash   TEXT PRIMARY KEY,
+            filename    TEXT,
+            hindi       TEXT,
+            hinglish    TEXT,
+            english     TEXT,
+            created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """)
+    con.commit()
+    con.close()
+
+
+def get_cached(file_hash: str) -> dict | None:
+    con = sqlite3.connect(DB_PATH)
+    row = con.execute(
+        "SELECT hindi, hinglish, english FROM transcriptions WHERE file_hash = ?",
+        (file_hash,)
+    ).fetchone()
+    con.close()
+    if row:
+        return {
+            "Hindi": json.loads(row[0]),
+            "Hinglish": json.loads(row[1]),
+            "English": json.loads(row[2]),
+        }
+    return None
+
+
+def save_cache(file_hash: str, filename: str, data: dict):
+    con = sqlite3.connect(DB_PATH)
+    con.execute("""
+        INSERT OR REPLACE INTO transcriptions (file_hash, filename, hindi, hinglish, english)
+        VALUES (?, ?, ?, ?, ?)
+    """, (
+        file_hash, filename,
+        json.dumps(data["Hindi"], ensure_ascii=False),
+        json.dumps(data["Hinglish"], ensure_ascii=False),
+        json.dumps(data["English"], ensure_ascii=False),
+    ))
+    con.commit()
+    con.close()
+
+
+def hash_file(path: str) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+# ── Conversion ─────────────────────────────────────────────────────────────────
 
 def convert_words(words: list[dict], mode: str) -> list[dict]:
-    """Convert Devanagari words to Hinglish or English using GPT-4o (batched)."""
     if mode == "Hindi":
         return words
 
@@ -53,14 +115,16 @@ def convert_words(words: list[dict], mode: str) -> list[dict]:
 
 # ── Streamlit UI ───────────────────────────────────────────────────────────────
 
+init_db()
+
 st.set_page_config(page_title="Video Caption Dashboard", layout="wide")
 st.title("Video Caption Dashboard")
 
-# Persistent temp dir across reruns — recreate if OS cleaned it up
+# Persistent temp dir
 if "tmpdir" not in st.session_state or not os.path.exists(st.session_state["tmpdir"]):
     st.session_state["tmpdir"] = tempfile.mkdtemp()
     st.session_state.pop("video_path", None)
-    st.session_state.pop("words", None)
+    st.session_state.pop("all_words", None)
 
 tmpdir = st.session_state["tmpdir"]
 
@@ -71,29 +135,47 @@ if uploaded:
     with open(video_path, "wb") as f:
         f.write(uploaded.read())
     st.session_state["video_path"] = video_path
+    st.session_state["filename"] = uploaded.name
 
 if "video_path" in st.session_state:
     st.video(st.session_state["video_path"])
 
-    caption_mode = st.radio(
-        "Caption language",
-        ["Hinglish", "Hindi", "English"],
-        horizontal=True,
-    )
+    caption_mode = st.radio("Caption language", ["Hinglish", "Hindi", "English"], horizontal=True)
 
     if st.button("Transcribe & Generate Captions"):
-        with st.spinner("Extracting audio..."):
-            wav_path = extract_audio(st.session_state["video_path"])
-        with st.spinner("Transcribing..."):
-            hindi_words = transcribe(wav_path)
-        with st.spinner(f"Converting to {caption_mode}..."):
-            words = convert_words(hindi_words, caption_mode)
-        st.session_state["words"] = words
+        file_hash = hash_file(st.session_state["video_path"])
+        cached = get_cached(file_hash)
 
-    if "words" in st.session_state:
+        if cached:
+            st.success("Loaded from cache — no API calls made.")
+            st.session_state["all_words"] = cached
+            st.session_state["file_hash"] = file_hash
+        else:
+            with st.spinner("Extracting audio..."):
+                wav_path = extract_audio(st.session_state["video_path"])
+            with st.spinner("Transcribing..."):
+                hindi_words = transcribe(wav_path)
+            with st.spinner("Converting to Hinglish..."):
+                hinglish_words = convert_words(hindi_words, "Hinglish")
+            with st.spinner("Converting to English..."):
+                english_words = convert_words(hindi_words, "English")
+
+            all_words = {
+                "Hindi": hindi_words,
+                "Hinglish": hinglish_words,
+                "English": english_words,
+            }
+            save_cache(file_hash, st.session_state["filename"], all_words)
+            st.session_state["all_words"] = all_words
+            st.session_state["file_hash"] = file_hash
+            st.success("Transcription complete and saved to cache.")
+
+    if "all_words" in st.session_state:
+        words = st.session_state["all_words"][caption_mode]
+
         st.subheader("Transcription — edit if needed")
         edited = st.data_editor(
-            st.session_state["words"],
+            words,
             column_config={
                 "word": st.column_config.TextColumn("Word"),
                 "start": st.column_config.NumberColumn("Start (s)", format="%.3f"),
@@ -111,6 +193,6 @@ if "video_path" in st.session_state:
                 st.download_button(
                     label="⬇️ Download Captioned Video",
                     data=f,
-                    file_name=f"{uploaded.name.rsplit('.', 1)[0]}_captioned.mp4",
+                    file_name=f"{st.session_state['filename'].rsplit('.', 1)[0]}_captioned.mp4",
                     mime="video/mp4",
                 )
