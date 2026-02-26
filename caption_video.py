@@ -21,7 +21,11 @@ gpt_client = AzureOpenAI(
     azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
 )
 
+_FONTS_DIR = os.path.join(os.path.dirname(__file__), "fonts")
+
 _LATIN_FONTS = [
+    # bundled
+    os.path.join(_FONTS_DIR, "Arial-Bold.ttf"),
     # macOS
     "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
     # Windows
@@ -33,6 +37,8 @@ _LATIN_FONTS = [
 ]
 
 _DEVANAGARI_FONTS = [
+    # bundled
+    os.path.join(_FONTS_DIR, "ITFDevanagari.ttc"),
     # macOS
     "/System/Library/Fonts/Supplemental/ITFDevanagari.ttc",
     # Windows
@@ -46,7 +52,7 @@ _DEVANAGARI_FONTS = [
 
 
 def get_font(text: str, size: int) -> ImageFont.FreeTypeFont:
-    """Pick a Devanagari or Latin font from available system fonts."""
+    """Pick a Devanagari or Latin font — bundled fonts take priority."""
     is_devanagari = any('\u0900' <= ch <= '\u097F' for ch in text)
     candidates = _DEVANAGARI_FONTS if is_devanagari else _LATIN_FONTS
     for path in candidates:
