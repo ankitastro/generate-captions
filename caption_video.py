@@ -21,15 +21,38 @@ gpt_client = AzureOpenAI(
     azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
 )
 
-FONT_LATIN = "/System/Library/Fonts/Supplemental/Arial Bold.ttf"
-FONT_DEVANAGARI = "/System/Library/Fonts/Supplemental/ITFDevanagari.ttc"
+_LATIN_FONTS = [
+    # macOS
+    "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
+    # Windows
+    "C:\\Windows\\Fonts\\arialbd.ttf",
+    # Linux
+    "/usr/share/fonts/truetype/msttcorefonts/Arial_Bold.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+    "/usr/share/fonts/TTF/DejaVuSans-Bold.ttf",
+]
+
+_DEVANAGARI_FONTS = [
+    # macOS
+    "/System/Library/Fonts/Supplemental/ITFDevanagari.ttc",
+    # Windows
+    "C:\\Windows\\Fonts\\mangal.ttf",
+    "C:\\Windows\\Fonts\\aparaj.ttf",
+    "C:\\Windows\\Fonts\\utsaah.ttf",
+    # Linux
+    "/usr/share/fonts/truetype/lohit-devanagari/Lohit-Devanagari.ttf",
+    "/usr/share/fonts/truetype/noto/NotoSansDevanagari-Regular.ttf",
+]
 
 
 def get_font(text: str, size: int) -> ImageFont.FreeTypeFont:
-    """Pick Devanagari font if text contains Devanagari characters, else Latin."""
+    """Pick a Devanagari or Latin font from available system fonts."""
     is_devanagari = any('\u0900' <= ch <= '\u097F' for ch in text)
-    path = FONT_DEVANAGARI if is_devanagari else FONT_LATIN
-    return ImageFont.truetype(path, size)
+    candidates = _DEVANAGARI_FONTS if is_devanagari else _LATIN_FONTS
+    for path in candidates:
+        if os.path.exists(path):
+            return ImageFont.truetype(path, size)
+    return ImageFont.load_default()
 
 
 def extract_audio(video_file: str) -> str:
