@@ -248,13 +248,9 @@ else:
 if "fx_input_path" in st.session_state and os.path.exists(st.session_state["fx_input_path"]):
     if st.button("✨ Add Effects"):
         fx_output_path = os.path.join(tmpdir, "fx_output.mp4")
-        bar = st.progress(0, text="Scanning for faces…")
-        def _fx_cb(v):
-            if v < 0.4:
-                bar.progress(v, text=f"Scanning for faces… {int(v / 0.4 * 100)}%")
-            else:
-                bar.progress(v, text=f"Rendering… {int((v - 0.4) / 0.6 * 100)}%")
-        add_effects(st.session_state["fx_input_path"], fx_output_path, progress_callback=_fx_cb)
+        bar = st.progress(0, text="Applying effects…")
+        add_effects(st.session_state["fx_input_path"], fx_output_path,
+                    progress_callback=lambda v: bar.progress(v, text=f"Applying effects… {int(v*100)}%"))
         bar.progress(1.0, text="Done!")
         st.session_state["fx_output_path"] = fx_output_path
 
