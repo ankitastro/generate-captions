@@ -3,6 +3,7 @@ import os
 import sys
 import subprocess
 import numpy as np
+import cv2
 from PIL import Image, ImageDraw, ImageFont
 import azure.cognitiveservices.speech as speechsdk
 from dotenv import load_dotenv
@@ -172,13 +173,76 @@ def add_captions(video_file: str, words: list[dict], output_file: str, progress_
     print(f"\nCaptioned video saved → {output_file}")
 
 
-SEGMENT_DURATION = 2.0  # seconds per Ken Burns segment
+_FACE_CASCADE = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+_FACE_SAMPLE_INTERVAL = 0.5   # detect face every 0.5 s
+_FACE_ZOOM = 1.25             # zoom in 25% toward face
+_PUNCH_INTERVAL = 2.0         # zoom punch every 2 s
+_PUNCH_SCALE = 0.08           # 8% extra zoom on punch
+_PUNCH_DURATION = 0.2         # punch lasts 0.2 s
+
+
+def _detect_face_center(frame, W, H):
+    gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
+    faces = _FACE_CASCADE.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+    if len(faces) > 0:
+        x, y, w, h = max(faces, key=lambda f: f[2] * f[3])
+        return float(x + w / 2), float(y + h / 2)
+    return None
+
+
+def _smooth(values, window=5):
+    out = []
+    for i in range(len(values)):
+        s = max(0, i - window // 2)
+        e = min(len(values), i + window // 2 + 1)
+        out.append(sum(values[s:e]) / (e - s))
+    return out
+
+
+def _lerp(a, b, t):
+    return a + (b - a) * t
 
 
 def add_effects(video_file: str, output_file: str, progress_callback=None):
-    """Apply Ken Burns zoom effect, alternating direction every 2 seconds."""
+    """Face-tracking zoom + periodic zoom punch every 2 seconds."""
     clip = VideoFileClip(video_file)
     W, H = int(clip.w), int(clip.h)
+
+    # Phase 1 (0–40%): scan for faces at sampled intervals
+    sample_times = []
+    t = 0.0
+    while t < clip.duration:
+        sample_times.append(t)
+        t += _FACE_SAMPLE_INTERVAL
+    sample_times.append(clip.duration)
+
+    face_xs, face_ys = [], []
+    last_x, last_y = W / 2.0, H / 2.0
+    for i, st in enumerate(sample_times):
+        frame = clip.get_frame(st)
+        result = _detect_face_center(frame, W, H)
+        if result:
+            last_x, last_y = result
+        face_xs.append(last_x)
+        face_ys.append(last_y)
+        if progress_callback:
+            progress_callback(0.4 * (i + 1) / len(sample_times))
+
+    face_xs = _smooth(face_xs)
+    face_ys = _smooth(face_ys)
+
+    def get_face_pos(t):
+        if t <= sample_times[0]:
+            return face_xs[0], face_ys[0]
+        if t >= sample_times[-1]:
+            return face_xs[-1], face_ys[-1]
+        for i in range(len(sample_times) - 1):
+            if sample_times[i] <= t <= sample_times[i + 1]:
+                frac = (t - sample_times[i]) / (sample_times[i + 1] - sample_times[i])
+                return _lerp(face_xs[i], face_xs[i + 1], frac), _lerp(face_ys[i], face_ys[i + 1], frac)
+        return face_xs[-1], face_ys[-1]
+
+    # Phase 2 (40–100%): render with face-tracking zoom + punch
     total_frames = max(int(clip.fps * clip.duration), 1)
     frame_count = [0]
 
@@ -186,16 +250,24 @@ def add_effects(video_file: str, output_file: str, progress_callback=None):
         frame = clip.get_frame(t)
         frame_count[0] += 1
         if progress_callback:
-            progress_callback(min(frame_count[0] / total_frames, 1.0))
-        segment_idx = int(t / SEGMENT_DURATION)
-        t_in_seg = t % SEGMENT_DURATION
-        zoom_in = (segment_idx % 2 == 0)
-        progress = t_in_seg / SEGMENT_DURATION
-        scale = 1.0 + 0.08 * (progress if zoom_in else (1 - progress))
+            progress_callback(0.4 + 0.6 * min(frame_count[0] / total_frames, 1.0))
+
+        cx, cy = get_face_pos(t)
+
+        # Zoom punch at each interval boundary
+        t_in_seg = t % _PUNCH_INTERVAL
+        if t_in_seg < _PUNCH_DURATION:
+            punch = 1.0 + _PUNCH_SCALE * (t_in_seg / _PUNCH_DURATION)
+        elif t_in_seg < _PUNCH_DURATION * 2:
+            punch = 1.0 + _PUNCH_SCALE * (1.0 - (t_in_seg - _PUNCH_DURATION) / _PUNCH_DURATION)
+        else:
+            punch = 1.0
+
+        scale = _FACE_ZOOM * punch
         crop_w = int(W / scale)
         crop_h = int(H / scale)
-        left = (W - crop_w) // 2
-        top = (H - crop_h) // 2
+        left = int(max(0, min(W - crop_w, cx - crop_w / 2)))
+        top = int(max(0, min(H - crop_h, cy - crop_h / 2)))
         img = Image.fromarray(frame)
         cropped = img.crop((left, top, left + crop_w, top + crop_h))
         return np.array(cropped.resize((W, H), Image.LANCZOS))

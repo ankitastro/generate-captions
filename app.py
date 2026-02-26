@@ -228,12 +228,16 @@ with tab_pipeline:
                     )
 
                 st.subheader("Step 3 — Add Effects")
-                st.caption("Ken Burns zoom, alternating direction every 2 s.")
+                st.caption("Face-tracking zoom + zoom punch every 2 s.")
                 if st.button("✨ Add Effects", key="fx_pipeline"):
                     effects_path = os.path.join(tmpdir, "captioned_effects.mp4")
-                    bar = st.progress(0, text="Applying effects…")
-                    add_effects(st.session_state["captioned_path"], effects_path,
-                                progress_callback=lambda v: bar.progress(v, text=f"Applying effects… {int(v*100)}%"))
+                    bar = st.progress(0, text="Scanning for faces…")
+                    def _fx_cb_pipeline(v):
+                        if v < 0.4:
+                            bar.progress(v, text=f"Scanning for faces… {int(v / 0.4 * 100)}%")
+                        else:
+                            bar.progress(v, text=f"Rendering… {int((v - 0.4) / 0.6 * 100)}%")
+                    add_effects(st.session_state["captioned_path"], effects_path, progress_callback=_fx_cb_pipeline)
                     bar.progress(1.0, text="Done!")
                     st.session_state["effects_path"] = effects_path
 
@@ -264,9 +268,13 @@ with tab_effects:
 
         if st.button("✨ Add Effects", key="fx_standalone"):
             fx_output_path = os.path.join(tmpdir, "fx_output.mp4")
-            bar = st.progress(0, text="Applying effects…")
-            add_effects(st.session_state["fx_input_path"], fx_output_path,
-                        progress_callback=lambda v: bar.progress(v, text=f"Applying effects… {int(v*100)}%"))
+            bar = st.progress(0, text="Scanning for faces…")
+            def _fx_cb_standalone(v):
+                if v < 0.4:
+                    bar.progress(v, text=f"Scanning for faces… {int(v / 0.4 * 100)}%")
+                else:
+                    bar.progress(v, text=f"Rendering… {int((v - 0.4) / 0.6 * 100)}%")
+            add_effects(st.session_state["fx_input_path"], fx_output_path, progress_callback=_fx_cb_standalone)
             bar.progress(1.0, text="Done!")
             st.session_state["fx_output_path"] = fx_output_path
 
