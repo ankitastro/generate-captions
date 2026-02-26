@@ -1,0 +1,8 @@
+azure-cognitiveservices-speech
+openai
+python-dotenv
+moviepy
+Pillow
+numpy
+streamlit
+anthropic
