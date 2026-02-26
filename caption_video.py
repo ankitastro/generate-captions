@@ -106,7 +106,10 @@ def to_hinglish(words: list[dict], batch_size: int = 50) -> list[dict]:
             response_format={"type": "json_object"},
             temperature=0,
         )
-        hinglish_all.extend(json.loads(response.choices[0].message.content)["words"])
+        result = json.loads(response.choices[0].message.content)["words"]
+        if len(result) < len(devanagari_batch):
+            result += devanagari_batch[len(result):]
+        hinglish_all.extend(result[:len(devanagari_batch)])
         print(f"  Converted words {i+1}–{min(i+batch_size, len(words))}")
 
     return [

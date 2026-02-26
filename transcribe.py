@@ -81,7 +81,10 @@ def to_hinglish(words: list[dict]) -> list[dict]:
         temperature=0,
     )
 
-    hinglish_words = json.loads(response.choices[0].message.content)["words"]
+    result = json.loads(response.choices[0].message.content)["words"]
+    if len(result) < len(devanagari_words):
+        result += devanagari_words[len(result):]
+    hinglish_words = result[:len(devanagari_words)]
     return [
         {"word": hinglish_words[i], "start": w["start"], "end": w["end"]}
         for i, w in enumerate(words)

@@ -39,7 +39,7 @@ def init_db():
     con.close()
 
 
-def get_cached(file_hash: str) -> dict | None:
+def get_cached(file_hash: str):
     con = sqlite3.connect(DB_PATH)
     row = con.execute(
         "SELECT hindi, hinglish, english FROM transcriptions WHERE file_hash = ?",
@@ -116,7 +116,11 @@ def convert_words(words: list[dict], mode: str) -> list[dict]:
             response_format={"type": "json_object"},
             temperature=0,
         )
-        converted.extend(json.loads(response.choices[0].message.content)["words"])
+        result = json.loads(response.choices[0].message.content)["words"]
+        # If GPT returns fewer words than input, pad with originals
+        if len(result) < len(batch):
+            result += batch[len(result):]
+        converted.extend(result[:len(batch)])
 
     return [
         {"word": converted[i], "start": w["start"], "end": w["end"]}
