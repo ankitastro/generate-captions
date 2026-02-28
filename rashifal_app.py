@@ -24,6 +24,23 @@ HOUSE_MEANING = {1:"स्वयं",2:"धन",3:"संचार",4:"घर",5
                  6:"स्वास्थ्य/शत्रु",7:"जीवनसाथी",8:"रहस्य",9:"भाग्य/यात्रा",
                  10:"करियर",11:"लाभ/मित्र",12:"हानि/नींद"}
 
+NAKSHATRAS = [
+    "अश्विनी","भरणी","कृत्तिका","रोहिणी","मृगशिरा","आर्द्रा",
+    "पुनर्वसु","पुष्य","आश्लेषा","मघा","पूर्व फाल्गुनी","उत्तर फाल्गुनी",
+    "हस्त","चित्रा","स्वाति","विशाखा","अनुराधा","ज्येष्ठा",
+    "मूल","पूर्व आषाढ़","उत्तर आषाढ़","श्रवण","धनिष्ठा","शतभिषा",
+    "पूर्व भाद्रपद","उत्तर भाद्रपद","रेवती",
+]
+WEEKDAYS_HI = ["सोमवार","मंगलवार","बुधवार","गुरुवार","शुक्रवार","शनिवार","रविवार"]
+
+def moon_nakshatra(longitude):
+    return NAKSHATRAS[int(longitude / (360 / 27))]
+
+def day_of_week_hi(date_str):
+    from datetime import datetime
+    d = datetime.strptime(date_str, "%Y-%m-%d")
+    return WEEKDAYS_HI[d.weekday()]
+
 # ── Database ──────────────────────────────────────────────────────────────────
 def get_db():
     return sqlite3.connect(DB_PATH)
@@ -114,7 +131,7 @@ def fetch_transits(date_str):
     resp.raise_for_status()
     return resp.json()
 
-def build_sign_context(planets, aspects):
+def build_sign_context(planets, aspects, date_str):
     sign_data = {}
     for sign in SIGNS_ORDER:
         si = SIGNS_ORDER.index(sign)
@@ -126,9 +143,18 @@ def build_sign_context(planets, aspects):
             [f"भाव{h}({HOUSE_MEANING[h]}): {', '.join(v)}"
              for h, v in sorted(houses.items()) if v][:5]
         )
-    moon_sign  = planets["Moon"]["rashi"]
-    aspect_str = ", ".join([f"{a['planet1']} {a['aspect']} {a['planet2']}" for a in aspects])
-    return sign_data, moon_sign, aspect_str
+    moon_sign   = planets["Moon"]["rashi"]
+    nakshatra   = moon_nakshatra(planets["Moon"]["longitude"])
+    weekday     = day_of_week_hi(date_str)
+    # top 3 aspects only
+    aspect_str  = ", ".join([f"{a['planet1']} {a['aspect']} {a['planet2']}" for a in aspects[:3]])
+    # planet positions summary (Sun, Moon, Mars, Jupiter, Saturn)
+    key_planets = ["Sun","Moon","Mars","Jupiter","Saturn"]
+    planet_str  = ", ".join(
+        [f"{p} {planets[p]['rashi']} {planets[p]['degrees']:.1f}°"
+         for p in key_planets if p in planets]
+    )
+    return sign_data, moon_sign, nakshatra, weekday, aspect_str, planet_str
 
 SYSTEM_PROMPT = """तुम एक नाटकीय और पंच भरा राशिफल लिखने वाले ज्योतिषी हो।
 नियम:
@@ -136,6 +162,7 @@ SYSTEM_PROMPT = """तुम एक नाटकीय और पंच भर�
 - सिर्फ hook English में (जैसे "Expense Alert:", "Danger Zone:", "Health Alert:", "Love Trap:", "Warning:", "Ego Clash:")
 - सिर्फ 2 वाक्य — ज़्यादा नहीं। हर वाक्य छोटा और तीखा हो।
 - बोलचाल की भाषा, नाटकीय, असली जिंदगी की बातें
+- दिए गए नक्षत्र, वार, और ग्रह स्थिति के आधार पर लिखो — हर दिन का राशिफल अलग होना चाहिए
 - Leo राशि का नाम "Leo" ही रखो, बाकी देवनागरी में
 - कोई bold/asterisk नहीं, सिर्फ plain text
 
@@ -146,16 +173,20 @@ SYSTEM_PROMPT = """तुम एक नाटकीय और पंच भर�
 
 FORMAT: [राशि नाम]  [hook (optional)]: देवनागरी में सिर्फ 2 वाक्य"""
 
-def generate_text(date_str, names, sign_list, sign_data, moon_sign, aspect_str):
+def generate_text(date_str, names, sign_list, sign_data, moon_sign, nakshatra, weekday, aspect_str, planet_str):
     genai, types, *_ = _load_libs()
     client = _gemini_client()
-    msg  = f"तारीख: {date_str}\nचंद्रमा: {moon_sign}. ग्रह: {aspect_str}\n\n"
+    msg  = f"📅 तारीख: {date_str} ({weekday})\n"
+    msg += f"🌙 चंद्रमा: {moon_sign} राशि, {nakshatra} नक्षत्र\n"
+    msg += f"🪐 ग्रह स्थिति: {planet_str}\n"
+    msg += f"⚡ मुख्य योग: {aspect_str}\n\n"
+    msg += "हर राशि के लिए भाव स्थिति:\n"
     msg += "\n".join([f"{names[i]} ({sign_list[i]}): {sign_data[sign_list[i]]}"
                       for i in range(len(names))])
-    msg += f"\n\nराशिफल लिखो: {', '.join(names)}"
+    msg += f"\n\nऊपर दी गई {date_str} ({weekday}) की ग्रह स्थिति और {nakshatra} नक्षत्र के आधार पर इन राशियों का राशिफल लिखो: {', '.join(names)}"
     resp = client.models.generate_content(
         model="gemini-2.5-flash", contents=msg,
-        config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT, temperature=0.85),
+        config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT, temperature=0.9),
     )
     return resp.text
 
@@ -246,11 +277,11 @@ if gen_text_btn:
     try:
         with st.spinner("Fetching planetary transits..."):
             t = fetch_transits(date_str)
-        sign_data, moon_sign, aspect_str = build_sign_context(t["planets"], t["aspects"])
+        sign_data, moon_sign, nakshatra, weekday, aspect_str, planet_str = build_sign_context(t["planets"], t["aspects"], date_str)
         with st.spinner("Generating Part 1 rashifal (मेष → कन्या)..."):
-            p1 = generate_text(date_str, PART1_NAMES, SIGNS_ORDER[:6], sign_data, moon_sign, aspect_str)
+            p1 = generate_text(date_str, PART1_NAMES, SIGNS_ORDER[:6], sign_data, moon_sign, nakshatra, weekday, aspect_str, planet_str)
         with st.spinner("Generating Part 2 rashifal (तुला → मीन)..."):
-            p2 = generate_text(date_str, PART2_NAMES, SIGNS_ORDER[6:], sign_data, moon_sign, aspect_str)
+            p2 = generate_text(date_str, PART2_NAMES, SIGNS_ORDER[6:], sign_data, moon_sign, nakshatra, weekday, aspect_str, planet_str)
         st.session_state.text_p1 = p1
         st.session_state.text_p2 = p2
         st.session_state.dur1    = None
