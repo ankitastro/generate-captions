@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 sys.path.insert(0, os.path.dirname(__file__))
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
-GEMINI_KEY       = "AIzaSyDn74Pp5vtA_MDP1Myo5kZzm7GQw-dtFSQ"
+GEMINI_KEY       = os.getenv("GEMINI_API_KEY")
 AZURE_SPEECH_KEY = os.getenv("AZURE_SPEECH_KEY")
 AZURE_REGION     = os.getenv("AZURE_REGION")
 KUNDALI_URL      = "http://localhost:9090/api/v1/kundali"

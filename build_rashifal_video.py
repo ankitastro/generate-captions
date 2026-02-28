@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from moviepy import VideoFileClip, VideoClip, AudioFileClip, concatenate_videoclips
 
 load_dotenv("/Users/ankitgupta/generate_captions/.env")
+GEMINI_KEY       = os.getenv("GEMINI_API_KEY")
 AZURE_SPEECH_KEY = os.getenv("AZURE_SPEECH_KEY")
 AZURE_REGION     = os.getenv("AZURE_REGION")
 
