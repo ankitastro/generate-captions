@@ -139,8 +139,9 @@ for key in ["text_p1", "text_p2", "dur1", "dur2", "words1", "words2", "date_used
     if key not in st.session_state:
         st.session_state[key] = None
 
-text_ready  = bool(st.session_state.text_p1 and st.session_state.text_p2)
-audio_ready = bool(st.session_state.words1 and st.session_state.words2)
+text_ready       = bool(st.session_state.text_p1 and st.session_state.text_p2)
+audio_ready      = bool(st.session_state.dur1 and st.session_state.dur2)
+timestamps_ready = bool(st.session_state.words1 and st.session_state.words2)
 
 # ── STEP 1: Generate Text ──────────────────────────────────────────────────────
 st.subheader("Step 1 — Generate Text")
@@ -192,8 +193,8 @@ if text_ready:
 
 st.divider()
 
-# ── STEP 2: Generate Audio + Timestamps ───────────────────────────────────────
-st.subheader("Step 2 — Generate Audio & Timestamps")
+# ── STEP 2: Generate Audio ─────────────────────────────────────────────────────
+st.subheader("Step 2 — Generate Audio")
 
 col_btn2, _ = st.columns([1, 4])
 with col_btn2:
@@ -208,22 +209,16 @@ if not text_ready:
 
 if gen_audio_btn and text_ready:
     try:
-        _, _, _, _, get_timestamps_fn, *_ = _load_libs()
-
         with st.spinner("Generating TTS for Part 1 (~30s)..."):
             dur1 = generate_tts(st.session_state.text_p1, WAV1)
         with st.spinner("Generating TTS for Part 2 (~30s)..."):
             dur2 = generate_tts(st.session_state.text_p2, WAV2)
 
-        with st.spinner("Getting word timestamps for Part 1 (Azure hi-IN)..."):
-            words1 = get_timestamps_fn(WAV1)
-        with st.spinner("Getting word timestamps for Part 2 (Azure hi-IN)..."):
-            words2 = get_timestamps_fn(WAV2)
-
         st.session_state.dur1   = dur1
         st.session_state.dur2   = dur2
-        st.session_state.words1 = words1
-        st.session_state.words2 = words2
+        # Reset downstream state when audio is regenerated
+        st.session_state.words1 = None
+        st.session_state.words2 = None
         st.rerun()
     except Exception as e:
         st.error(f"Audio generation failed: {e}")
@@ -231,26 +226,23 @@ if gen_audio_btn and text_ready:
 if audio_ready:
     c1, c2 = st.columns(2)
     with c1:
-        st.caption(f"Part 1 — {st.session_state.dur1:.1f}s · {len(st.session_state.words1)} words")
+        st.caption(f"Part 1 — {st.session_state.dur1:.1f}s")
         if os.path.exists(WAV1):
             st.audio(WAV1)
     with c2:
-        st.caption(f"Part 2 — {st.session_state.dur2:.1f}s · {len(st.session_state.words2)} words")
+        st.caption(f"Part 2 — {st.session_state.dur2:.1f}s")
         if os.path.exists(WAV2):
             st.audio(WAV2)
 
 st.divider()
 
-# ── STEP 3: Build Videos ───────────────────────────────────────────────────────
-st.subheader("Step 3 — Build Videos")
-
-OUT1 = f"/tmp/rashifal_{date_str}_part1.mp4"
-OUT2 = f"/tmp/rashifal_{date_str}_part2.mp4"
+# ── STEP 3: Generate Timestamps ───────────────────────────────────────────────
+st.subheader("Step 3 — Generate Timestamps")
 
 col_btn3, _ = st.columns([1, 4])
 with col_btn3:
-    build_btn = st.button(
-        "Build Videos", type="primary",
+    gen_ts_btn = st.button(
+        "Generate Timestamps", type="primary",
         disabled=not audio_ready,
         use_container_width=True,
     )
@@ -258,7 +250,50 @@ with col_btn3:
 if not audio_ready:
     st.caption("Complete Step 2 first.")
 
-if build_btn and audio_ready:
+if gen_ts_btn and audio_ready:
+    try:
+        _, _, _, _, get_timestamps_fn, *_ = _load_libs()
+
+        with st.spinner("Getting word timestamps for Part 1 (Azure hi-IN)..."):
+            words1 = get_timestamps_fn(WAV1)
+        with st.spinner("Getting word timestamps for Part 2 (Azure hi-IN)..."):
+            words2 = get_timestamps_fn(WAV2)
+
+        st.session_state.words1 = words1
+        st.session_state.words2 = words2
+        st.rerun()
+    except Exception as e:
+        st.error(f"Timestamp generation failed: {e}")
+
+if timestamps_ready:
+    c1, c2 = st.columns(2)
+    with c1:
+        st.caption(f"Part 1 — {len(st.session_state.words1)} words recognized")
+        st.caption(" · ".join(w["word"] for w in st.session_state.words1[:8]) + " …")
+    with c2:
+        st.caption(f"Part 2 — {len(st.session_state.words2)} words recognized")
+        st.caption(" · ".join(w["word"] for w in st.session_state.words2[:8]) + " …")
+
+st.divider()
+
+# ── STEP 4: Build Videos ───────────────────────────────────────────────────────
+st.subheader("Step 4 — Build Videos")
+
+OUT1 = f"/tmp/rashifal_{date_str}_part1.mp4"
+OUT2 = f"/tmp/rashifal_{date_str}_part2.mp4"
+
+col_btn4, _ = st.columns([1, 4])
+with col_btn4:
+    build_btn = st.button(
+        "Build Videos", type="primary",
+        disabled=not timestamps_ready,
+        use_container_width=True,
+    )
+
+if not timestamps_ready:
+    st.caption("Complete Step 3 first.")
+
+if build_btn and timestamps_ready:
     _, _, _, _, _, _, build_video_fn, *_ = _load_libs()
     try:
         with st.spinner("Building Part 1 video (may take 1-2 min)..."):
