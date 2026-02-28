@@ -196,21 +196,21 @@ def build_video(names, words, wav_path, total_dur, out_path):
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
-print("Step 4: Getting timestamps...")
-dur1 = wav_duration(WAV1)
-dur2 = wav_duration(WAV2)
-print(f"  WAV durations — Part1: {dur1:.1f}s | Part2: {dur2:.1f}s")
+if __name__ == "__main__":
+    print("Step 4: Getting timestamps...")
+    dur1 = wav_duration(WAV1)
+    dur2 = wav_duration(WAV2)
+    print(f"  WAV durations — Part1: {dur1:.1f}s | Part2: {dur2:.1f}s")
 
-words1 = get_timestamps(WAV1)
-print(f"  Part 1: {len(words1)} words recognized")
-words2 = get_timestamps(WAV2)
-print(f"  Part 2: {len(words2)} words recognized")
+    words1 = get_timestamps(WAV1)
+    print(f"  Part 1: {len(words1)} words recognized")
+    words2 = get_timestamps(WAV2)
+    print(f"  Part 2: {len(words2)} words recognized")
 
-# Print first few words to verify Devanagari
-print(f"  First 5 words P1: {[w['word'] for w in words1[:5]]}")
-print(f"  First 5 words P2: {[w['word'] for w in words2[:5]]}")
+    print(f"  First 5 words P1: {[w['word'] for w in words1[:5]]}")
+    print(f"  First 5 words P2: {[w['word'] for w in words2[:5]]}")
 
-print("\nStep 5: Building videos...")
-build_video(PART1_NAMES, words1, WAV1, dur1, f"/tmp/rashifal_{DATE}_part1.mp4")
-build_video(PART2_NAMES, words2, WAV2, dur2, f"/tmp/rashifal_{DATE}_part2.mp4")
-print(f"\nDone!\n  /tmp/rashifal_{DATE}_part1.mp4\n  /tmp/rashifal_{DATE}_part2.mp4")
+    print("\nStep 5: Building videos...")
+    build_video(PART1_NAMES, words1, WAV1, dur1, f"/tmp/rashifal_{DATE}_part1.mp4")
+    build_video(PART2_NAMES, words2, WAV2, dur2, f"/tmp/rashifal_{DATE}_part2.mp4")
+    print(f"\nDone!\n  /tmp/rashifal_{DATE}_part1.mp4\n  /tmp/rashifal_{DATE}_part2.mp4")
