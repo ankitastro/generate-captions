@@ -147,7 +147,7 @@ def generate_text(date_str, names, sign_list, sign_data, moon_sign, aspect_str):
                       for i in range(len(names))])
     msg += f"\n\nराशिफल लिखो: {', '.join(names)}"
     resp = client.models.generate_content(
-        model="gemini-2.0-flash", contents=msg,
+        model="gemini-2.5-flash", contents=msg,
         config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT, temperature=0.85),
     )
     return resp.text
