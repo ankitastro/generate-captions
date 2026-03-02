@@ -554,19 +554,20 @@ if prepend_btn and rashi_built:
             if not os.path.exists(intro_path):
                 st.error(f"Intro not found: {intro_path}")
                 break
-            list_file = f"/tmp/concat_p{part}.txt"
-            with open(list_file, "w") as f:
-                f.write(f"file '{intro_path}'\n")
-                f.write(f"file '{rashi_path}'\n")
-            with st.spinner(f"Prepending intro to Part {part}..."):
+            with st.spinner(f"Prepending intro to Part {part} (re-encoding for clean join)..."):
                 result = subprocess.run(
-                    ["ffmpeg", "-y", "-f", "concat", "-safe", "0",
-                     "-i", list_file, "-c", "copy", final_path],
+                    ["ffmpeg", "-y",
+                     "-i", intro_path, "-i", rashi_path,
+                     "-filter_complex",
+                     "[0:v][0:a][1:v][1:a]concat=n=2:v=1:a=1[v][a]",
+                     "-map", "[v]", "-map", "[a]",
+                     "-c:v", "libx264", "-c:a", "aac",
+                     "-r", "30", final_path],
                     capture_output=True, text=True
                 )
-            os.remove(list_file)
             if result.returncode != 0:
-                st.error(f"Part {part} ffmpeg failed:\n{result.stderr}")
+                st.error(f"Part {part} ffmpeg failed:")
+                st.code(result.stderr, language=None)
                 break
             st.success(f"Part {part} done → {final_path}")
         else:
