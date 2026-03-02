@@ -14,6 +14,7 @@ AZURE_REGION     = os.getenv("AZURE_REGION")
 KUNDALI_URL      = "http://localhost:9090/api/v1/kundali"
 FONTS_DIR        = os.path.join(os.path.dirname(__file__), "fonts")
 WAV1, WAV2       = "/tmp/rashi_p1.wav", "/tmp/rashi_p2.wav"
+BUILD_LOG        = "/tmp/rashifal_build.log"
 DB_PATH          = os.path.join(os.path.dirname(__file__), "rashifal.db")
 
 PART1_NAMES  = ["मेष", "वृषभ", "मिथुन", "कर्क", "Leo", "कन्या"]
@@ -445,21 +446,65 @@ if (build_btn or rebuild_btn) and timestamps_ready:
     if not wavs_exist:
         st.error("Cannot build: WAV files missing. Re-run Step 2 first.")
     else:
+        import threading, traceback as _tb
         _, _, _, _, _, _, build_video_fn, *_rest = _load_libs()
+
+        for f in [OUT1, OUT2]:
+            if os.path.exists(f):
+                os.remove(f)
+
+        # Capture session state in main thread
+        words1 = list(st.session_state.words1)
+        words2 = list(st.session_state.words2)
+        dur1   = float(st.session_state.dur1)
+        dur2   = float(st.session_state.dur2)
+
+        # Clear log file and write header
+        with open(BUILD_LOG, "w") as _f:
+            _f.write(f"Build started: {date_str}\n")
+
+        def _log(msg):
+            with open(BUILD_LOG, "a") as _f:
+                _f.write(str(msg) + "\n")
+
+        build_err  = [None]
+        build_done = [False]
+
+        def _run():
+            try:
+                _log("=== Part 1 (मेष → कन्या) ===")
+                build_video_fn(PART1_NAMES, words1, WAV1, dur1, OUT1, log_fn=_log)
+                _log("=== Part 2 (तुला → मीन) ===")
+                build_video_fn(PART2_NAMES, words2, WAV2, dur2, OUT2, log_fn=_log)
+                _log("Done!")
+            except Exception as e:
+                _log(f"ERROR: {e}")
+                _log("".join(_tb.format_exception(type(e), e, e.__traceback__)))
+                build_err[0] = e
+            finally:
+                build_done[0] = True
+
+        threading.Thread(target=_run, daemon=True).start()
+
+        log_box = st.empty()
+        while not build_done[0]:
+            try:
+                log_box.code(open(BUILD_LOG).read(), language=None)
+            except Exception:
+                pass
+            time.sleep(1)
+
+        # Final read after done
         try:
-            for f in [OUT1, OUT2]:
-                if os.path.exists(f):
-                    os.remove(f)
-            with st.spinner("Building Part 1 video (may take 1-2 min)..."):
-                build_video_fn(PART1_NAMES, st.session_state.words1, WAV1,
-                               st.session_state.dur1, OUT1)
-            with st.spinner("Building Part 2 video (may take 1-2 min)..."):
-                build_video_fn(PART2_NAMES, st.session_state.words2, WAV2,
-                               st.session_state.dur2, OUT2)
+            log_box.code(open(BUILD_LOG).read(), language=None)
+        except Exception:
+            pass
+
+        if build_err[0]:
+            st.error(f"Video build failed: {build_err[0]}")
+        else:
             st.success("Videos built!")
             st.rerun()
-        except Exception as e:
-            st.error(f"Video build failed: {e}")
 
 if os.path.exists(OUT1) and os.path.exists(OUT2):
     c1, c2 = st.columns(2)
