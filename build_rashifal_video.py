@@ -35,11 +35,12 @@ RASHI_VIDEO = {
     "मीन":   f"{ASSETS}/part2/pieces.mp4",
 }
 
-# Map Azure Devanagari output → canonical rashi name
+# Map word → canonical rashi name (Devanagari AND Hinglish, case-insensitive via .lower())
 BOUNDARY_MAP = {
+    # Devanagari (from Azure hi-IN)
     "मेष":     "मेष",
     "वृषभ":    "वृषभ",
-    "वृषक":    "वृषभ",   # Azure mis-transcription of वृषभ
+    "वृषक":    "वृषभ",   # Azure mis-transcription
     "मिथुन":   "मिथुन",
     "कर्क":    "कर्क",
     "कन्या":   "कन्या",
@@ -49,12 +50,20 @@ BOUNDARY_MAP = {
     "मकर":     "मकर",
     "कुंभ":    "कुंभ",
     "मीन":     "मीन",
-    # Leo variants Azure might return
-    "लियो":  "Leo",
-    "लिओ":   "Leo",
-    "lio":   "Leo",
-    "leo":   "Leo",
-    "Leo":   "Leo",
+    # Leo variants
+    "लियो": "Leo", "लिओ": "Leo", "lio": "Leo", "leo": "Leo", "Leo": "Leo",
+    # Hinglish (after GPT-4o transliteration — all lowercase for case-insensitive match)
+    "mesh":      "मेष",
+    "vrishabh":  "वृषभ",  "vrishbh": "वृषभ", "vrushabh": "वृषभ",
+    "mithun":    "मिथुन", "mithoon": "मिथुन",
+    "kark":      "कर्क",  "karka": "कर्क",
+    "kanya":     "कन्या", "kanya": "कन्या",
+    "tula":      "तुला",  "tulaa": "तुला",
+    "vrishchik": "वृश्चिक", "vrischik": "वृश्चिक", "vrishchick": "वृश्चिक",
+    "dhanu":     "धनु",   "dhan": "धनु",
+    "makar":     "मकर",   "makara": "मकर",
+    "kumbh":     "कुंभ",  "kumbha": "कुंभ",
+    "meen":      "मीन",   "min": "मीन",
 }
 
 WAV1, WAV2 = "/tmp/rashi_p1.wav", "/tmp/rashi_p2.wav"
@@ -106,8 +115,10 @@ def get_timestamps(wav_path):
 def detect_boundaries(names, words, total_dur):
     boundaries = {}
     for w in words:
-        key = BOUNDARY_MAP.get(w["word"], w["word"])
-        if key in names and key not in boundaries:
+        raw = w["word"]
+        # try exact match first, then lowercase for Hinglish
+        key = BOUNDARY_MAP.get(raw) or BOUNDARY_MAP.get(raw.lower())
+        if key and key in names and key not in boundaries:
             boundaries[key] = w["start"]
     boundaries["_end"] = total_dur - 0.1
     return boundaries
