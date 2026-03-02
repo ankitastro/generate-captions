@@ -719,7 +719,7 @@ if bg_btn and complete_exist:
                      f"[1:a]volume={BG_VOLUME},aloop=loop=-1:size=2000000000[bg];"
                      "[0:a][bg]amix=inputs=2:duration=first:dropout_transition=2[a];"
                      "[2:v]scale=120:-1[logo];"
-                     "[0:v][logo]overlay=W-w-20:20[v]",
+                     "[0:v][logo]overlay=W-w-20:H-h-20[v]",
                      "-map", "[v]", "-map", "[a]",
                      "-c:v", "libx264", "-c:a", "aac", withbg_path],
                     stderr=subprocess.PIPE, stdout=subprocess.DEVNULL, text=True
