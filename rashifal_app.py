@@ -187,7 +187,11 @@ def generate_text(date_str, names, sign_list, sign_data, moon_sign, nakshatra, w
     msg += f"\n\nऊपर दी गई {date_str} ({weekday}) की ग्रह स्थिति और {nakshatra} नक्षत्र के आधार पर इन राशियों का राशिफल लिखो: {', '.join(names)}"
     resp = client.models.generate_content(
         model="gemini-2.5-flash", contents=msg,
-        config=types.GenerateContentConfig(system_instruction=SYSTEM_PROMPT, temperature=0.9),
+        config=types.GenerateContentConfig(
+            system_instruction=SYSTEM_PROMPT,
+            temperature=0.9,
+            thinking_config=types.ThinkingConfig(thinking_budget=0),  # disable thinking for speed
+        ),
     )
     return resp.text
 
@@ -279,10 +283,13 @@ if gen_text_btn:
         with st.spinner("Fetching planetary transits..."):
             t = fetch_transits(date_str)
         sign_data, moon_sign, nakshatra, weekday, aspect_str, planet_str = build_sign_context(t["planets"], t["aspects"], date_str)
-        with st.spinner("Generating Part 1 rashifal (मेष → कन्या)..."):
-            p1 = generate_text(date_str, PART1_NAMES, SIGNS_ORDER[:6], sign_data, moon_sign, nakshatra, weekday, aspect_str, planet_str)
-        with st.spinner("Generating Part 2 rashifal (तुला → मीन)..."):
-            p2 = generate_text(date_str, PART2_NAMES, SIGNS_ORDER[6:], sign_data, moon_sign, nakshatra, weekday, aspect_str, planet_str)
+        with st.spinner("Generating rashifal for all 12 rashis in parallel..."):
+            from concurrent.futures import ThreadPoolExecutor
+            args = (date_str, sign_data, moon_sign, nakshatra, weekday, aspect_str, planet_str)
+            with ThreadPoolExecutor(max_workers=2) as ex:
+                f1 = ex.submit(generate_text, *args[:1], PART1_NAMES, SIGNS_ORDER[:6], *args[1:])
+                f2 = ex.submit(generate_text, *args[:1], PART2_NAMES, SIGNS_ORDER[6:], *args[1:])
+                p1, p2 = f1.result(), f2.result()
         st.session_state.text_p1 = p1
         st.session_state.text_p2 = p2
         st.session_state.dur1    = None
