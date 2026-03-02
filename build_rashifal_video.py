@@ -48,9 +48,12 @@ BOUNDARY_MAP = {
     "मिथुन": "मिथुन", "कर्क": "कर्क", "कन्या": "कन्या",
     "तुला": "तुला", "वृश्चिक": "वृश्चिक", "धनु": "धनु",
     "मकर": "मकर", "कुंभ": "कुंभ", "मीन": "मीन",
-    # Leo — TTS often says "singh" / "lio" instead of "leo"
-    "लियो": "Leo", "लिओ": "Leo", "leo": "Leo", "lio": "Leo",
+    # Leo — TTS often says "singh" / "lio" / "sighn" instead of "leo"
+    "लियो": "Leo", "लिओ": "Leo", "सिंह": "Leo",
+    "leo": "Leo", "lio": "Leo",
     "singh": "Leo", "Singh": "Leo",
+    "sighn": "Leo", "Sighn": "Leo",
+    "sign": "Leo",  "Sign": "Leo",
     # Short Hinglish names (≤4 chars) — explicit only, no fuzzy
     "mesh": "मेष",
     "kark": "कर्क", "khark": "कर्क",
