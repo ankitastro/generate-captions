@@ -831,3 +831,82 @@ if withbg_exist:
             st.download_button("Download Part 2 (Final)", f.read(),
                                file_name=f"rashifal_{date_str}_part2_withbg.mp4",
                                mime="video/mp4", use_container_width=True)
+
+st.divider()
+
+# ── STEP 8: Split Screen (Rashifal top / Gameplay bottom) ─────────────────────
+st.subheader("Step 8 — Split Screen")
+
+GAMEPLAY_VIDEO = os.path.join(os.path.dirname(__file__), "assets", "gameplay.mp4")
+SPLIT1 = os.path.join(_TMP, f"rashifal_{date_str}_part1_split.mp4")
+SPLIT2 = os.path.join(_TMP, f"rashifal_{date_str}_part2_split.mp4")
+
+split_exist = os.path.exists(SPLIT1) and os.path.exists(SPLIT2)
+
+col_sp_left, col_sp_right = st.columns([1, 2])
+with col_sp_left:
+    gameplay_path = st.text_input("Gameplay video path", value=GAMEPLAY_VIDEO)
+    split_btn = st.button("Generate Split Screen", type="primary",
+                          disabled=not withbg_exist,
+                          use_container_width=True)
+    if not withbg_exist:
+        st.caption("Complete Step 7 first.")
+
+log_box_split = col_sp_right.empty()
+
+if split_btn and withbg_exist:
+    import subprocess, traceback as _tb5
+    if not os.path.exists(gameplay_path):
+        col_sp_left.error(f"Gameplay video not found: {gameplay_path}")
+    else:
+        log_lines_split = []
+        try:
+            failed = False
+            for part, withbg_path, split_path in [
+                (1, WITH_BG1, SPLIT1),
+                (2, WITH_BG2, SPLIT2),
+            ]:
+                log_lines_split.append(f"=== Part {part} ===")
+                log_box_split.code("\n".join(log_lines_split), language=None)
+                proc = subprocess.Popen(
+                    ["ffmpeg", "-y",
+                     "-i", withbg_path,
+                     "-stream_loop", "-1", "-i", gameplay_path,
+                     "-filter_complex",
+                     "[0:v]scale=720:640,setsar=1[top];"
+                     "[1:v]scale=720:640:force_original_aspect_ratio=increase,"
+                     "crop=720:640,setsar=1[bot];"
+                     "[top][bot]vstack=inputs=2[v]",
+                     "-map", "[v]", "-map", "0:a",
+                     "-c:v", "libx264", "-c:a", "aac",
+                     "-shortest", split_path],
+                    stderr=subprocess.PIPE, stdout=subprocess.DEVNULL, text=True
+                )
+                for line in proc.stderr:
+                    log_lines_split.append(line.rstrip())
+                    log_box_split.code("\n".join(log_lines_split[-40:]), language=None)
+                proc.wait()
+                if proc.returncode != 0:
+                    col_sp_left.error(f"Part {part} failed (see log)")
+                    failed = True
+                    break
+                log_lines_split.append(f"✓ Saved → {split_path}")
+                log_box_split.code("\n".join(log_lines_split), language=None)
+            if not failed:
+                st.rerun()
+        except Exception as e:
+            col_sp_left.error(f"Split screen failed: {e}")
+            log_box_split.code("".join(_tb5.format_exception(type(e), e, e.__traceback__)), language=None)
+
+if split_exist:
+    c1, c2 = st.columns(2)
+    with c1:
+        with open(SPLIT1, "rb") as f:
+            st.download_button("Download Part 1 (Split Screen)", f.read(),
+                               file_name=f"rashifal_{date_str}_part1_split.mp4",
+                               mime="video/mp4", use_container_width=True)
+    with c2:
+        with open(SPLIT2, "rb") as f:
+            st.download_button("Download Part 2 (Split Screen)", f.read(),
+                               file_name=f"rashifal_{date_str}_part2_split.mp4",
+                               mime="video/mp4", use_container_width=True)
