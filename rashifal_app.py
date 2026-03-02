@@ -727,9 +727,9 @@ if bg_btn and complete_exist:
                      "[2:v]scale=120:-1[logo];"
                      "[0:v][logo]overlay=W-w-20:H-h-20[ov];"
                      f"[ov]drawtext=text={date_esc}{font_opt}"
-                     ":fontsize=44:fontcolor=white"
-                     ":x=20:y=20"
-                     ":box=1:boxcolor=black@0.55:boxborderw=10[v]",
+                     ":fontsize=36:fontcolor=white"
+                     ":x=(w-tw)/2:y=h/2+115"
+                     ":box=1:boxcolor=black@0.55:boxborderw=8[v]",
                      "-map", "[v]", "-map", "[a]",
                      "-c:v", "libx264", "-c:a", "aac", withbg_path],
                     stderr=subprocess.PIPE, stdout=subprocess.DEVNULL, text=True
