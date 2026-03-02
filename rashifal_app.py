@@ -472,9 +472,10 @@ if (build_btn or rebuild_btn) and timestamps_ready:
         def _run():
             try:
                 _log("=== Part 1 (मेष → कन्या) ===")
-                build_video_fn(PART1_NAMES, words1, WAV1, dur1, OUT1, log_fn=_log)
+                from build_rashifal_video import INTRO_VIDEO_P1, INTRO_VIDEO_P2
+                build_video_fn(PART1_NAMES, words1, WAV1, dur1, OUT1, log_fn=_log, intro_path=INTRO_VIDEO_P1)
                 _log("=== Part 2 (तुला → मीन) ===")
-                build_video_fn(PART2_NAMES, words2, WAV2, dur2, OUT2, log_fn=_log)
+                build_video_fn(PART2_NAMES, words2, WAV2, dur2, OUT2, log_fn=_log, intro_path=INTRO_VIDEO_P2)
                 _log("Done!")
             except Exception as e:
                 _log(f"ERROR: {e}")

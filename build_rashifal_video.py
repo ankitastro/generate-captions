@@ -15,8 +15,9 @@ AZURE_REGION     = os.getenv("AZURE_REGION")
 from caption_video import to_hinglish
 
 DATE   = "2026-03-01"
-ASSETS      = "/Users/ankitgupta/rashifal_creator/Rashifal_assets"
-INTRO_VIDEO = f"{ASSETS}/part_1/The_lady_in_202601151151_hdnib.mp4"
+ASSETS        = "/Users/ankitgupta/rashifal_creator/Rashifal_assets"
+INTRO_VIDEO_P1 = f"{ASSETS}/part_1/The_lady_in_202601151151_hdnib.mp4"
+INTRO_VIDEO_P2 = f"{ASSETS}/part2/The_lady_in_202601151147_u7x9c.mp4"
 FONTS_DIR = "/Users/ankitgupta/generate_captions/fonts"
 
 PART1_NAMES = ["मेष", "वृषभ", "मिथुन", "कर्क", "Leo", "कन्या"]
@@ -175,7 +176,7 @@ def draw_caption(frame, text, W, H):
 
 
 # ── 7. Build video ────────────────────────────────────────────────────────────
-def build_video(names, words, wav_path, total_dur, out_path, log_fn=None):
+def build_video(names, words, wav_path, total_dur, out_path, log_fn=None, intro_path=None):
     if log_fn is None:
         log_fn = print
     boundaries = detect_boundaries(names, words, total_dur, log_fn=log_fn)
@@ -222,14 +223,16 @@ def build_video(names, words, wav_path, total_dur, out_path, log_fn=None):
     audio_clip = AudioFileClip(wav_path).subclipped(boundaries[first_name], boundaries["_end"])
     rashi_part = concatenate_videoclips(segments).with_audio(audio_clip)
 
-    if os.path.exists(INTRO_VIDEO):
-        intro = VideoFileClip(INTRO_VIDEO)
+    if intro_path and os.path.exists(intro_path):
+        intro = VideoFileClip(intro_path)
         open_clips.append(intro)
         final = concatenate_videoclips([intro, rashi_part])
-        log_fn(f"  Prepending intro ({intro.duration:.1f}s)")
+        log_fn(f"  Prepending intro ({intro.duration:.1f}s): {os.path.basename(intro_path)}")
+    elif intro_path:
+        final = rashi_part
+        log_fn(f"  WARNING: intro not found at {intro_path}")
     else:
         final = rashi_part
-        log_fn(f"  WARNING: intro not found at {INTRO_VIDEO}")
 
     log_fn(f"  Encoding → {os.path.basename(out_path)} (this may take 1-2 min)...")
     final.write_videofile(out_path, fps=30, codec="libx264", audio_codec="aac", logger=None)
