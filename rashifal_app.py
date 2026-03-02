@@ -246,7 +246,7 @@ with st.sidebar:
         st.caption("No saved sessions yet.")
 
 # ── Session state init ────────────────────────────────────────────────────────
-for key in ["text_p1", "text_p2", "dur1", "dur2", "words1", "words2", "loaded_date"]:
+for key in ["text_p1", "text_p2", "dur1", "dur2", "words1", "words2", "loaded_date", "videos_built"]:
     if key not in st.session_state:
         st.session_state[key] = None
 
@@ -434,18 +434,24 @@ if not timestamps_ready:
 if build_btn and timestamps_ready:
     _, _, _, _, _, _, build_video_fn, *_rest = _load_libs()
     try:
+        # Remove stale files so a fresh build always replaces them
+        for f in [OUT1, OUT2]:
+            if os.path.exists(f):
+                os.remove(f)
+        st.session_state.videos_built = False
         with st.spinner("Building Part 1 video (may take 1-2 min)..."):
             build_video_fn(PART1_NAMES, st.session_state.words1, WAV1,
                            st.session_state.dur1, OUT1)
         with st.spinner("Building Part 2 video (may take 1-2 min)..."):
             build_video_fn(PART2_NAMES, st.session_state.words2, WAV2,
                            st.session_state.dur2, OUT2)
+        st.session_state.videos_built = date_str
         st.success("Videos built!")
         st.rerun()
     except Exception as e:
         st.error(f"Video build failed: {e}")
 
-if os.path.exists(OUT1) and os.path.exists(OUT2):
+if st.session_state.videos_built == date_str and os.path.exists(OUT1) and os.path.exists(OUT2):
     c1, c2 = st.columns(2)
     with c1:
         st.caption("Part 1 — मेष → कन्या")
