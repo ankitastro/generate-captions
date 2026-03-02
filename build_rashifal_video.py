@@ -1,4 +1,4 @@
-import json, os, sys, wave as wav_mod, time
+import json, os, sys, wave as wav_mod, time, tempfile
 from difflib import SequenceMatcher
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
@@ -83,7 +83,8 @@ def _fuzzy_rashi(word):
             best_score, best_rashi = score, rashi
     return best_rashi if best_score >= FUZZY_THRESHOLD else None
 
-WAV1, WAV2 = "/tmp/rashi_p1.wav", "/tmp/rashi_p2.wav"
+_TMP = tempfile.gettempdir()
+WAV1, WAV2 = os.path.join(_TMP, "rashi_p1.wav"), os.path.join(_TMP, "rashi_p2.wav")
 
 
 def wav_duration(path):
@@ -256,6 +257,6 @@ if __name__ == "__main__":
     print(f"  First 5 words P2: {[w['word'] for w in words2[:5]]}")
 
     print("\nStep 5: Building videos...")
-    build_video(PART1_NAMES, words1, WAV1, dur1, f"/tmp/rashifal_{DATE}_part1.mp4")
-    build_video(PART2_NAMES, words2, WAV2, dur2, f"/tmp/rashifal_{DATE}_part2.mp4")
-    print(f"\nDone!\n  /tmp/rashifal_{DATE}_part1.mp4\n  /tmp/rashifal_{DATE}_part2.mp4")
+    build_video(PART1_NAMES, words1, WAV1, dur1, os.path.join(_TMP, f"rashifal_{DATE}_part1.mp4"))
+    build_video(PART2_NAMES, words2, WAV2, dur2, os.path.join(_TMP, f"rashifal_{DATE}_part2.mp4"))
+    print(f"\nDone!\n  {os.path.join(_TMP, f'rashifal_{DATE}_part1.mp4')}\n  {os.path.join(_TMP, f'rashifal_{DATE}_part2.mp4')}")

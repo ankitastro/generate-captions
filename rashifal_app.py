@@ -1,4 +1,4 @@
-import os, sys, wave as wav_mod, time, json, sqlite3
+import os, sys, wave as wav_mod, time, json, sqlite3, tempfile
 import pandas as pd
 import streamlit as st
 from datetime import date, timedelta
@@ -13,8 +13,9 @@ AZURE_SPEECH_KEY = os.getenv("AZURE_SPEECH_KEY")
 AZURE_REGION     = os.getenv("AZURE_REGION")
 KUNDALI_URL      = "http://localhost:9090/api/v1/kundali"
 FONTS_DIR        = os.path.join(os.path.dirname(__file__), "fonts")
-WAV1, WAV2       = "/tmp/rashi_p1.wav", "/tmp/rashi_p2.wav"
-BUILD_LOG        = "/tmp/rashifal_build.log"
+_TMP             = tempfile.gettempdir()
+WAV1, WAV2       = os.path.join(_TMP, "rashi_p1.wav"), os.path.join(_TMP, "rashi_p2.wav")
+BUILD_LOG        = os.path.join(_TMP, "rashifal_build.log")
 DB_PATH          = os.path.join(os.path.dirname(__file__), "rashifal.db")
 
 PART1_NAMES  = ["मेष", "वृषभ", "मिथुन", "कर्क", "Leo", "कन्या"]
@@ -425,8 +426,8 @@ st.divider()
 # ── STEP 4: Build Videos ──────────────────────────────────────────────────────
 st.subheader("Step 4 — Build Videos")
 
-OUT1 = f"/tmp/rashifal_{date_str}_part1.mp4"
-OUT2 = f"/tmp/rashifal_{date_str}_part2.mp4"
+OUT1 = os.path.join(_TMP, f"rashifal_{date_str}_part1.mp4")
+OUT2 = os.path.join(_TMP, f"rashifal_{date_str}_part2.mp4")
 
 videos_exist = os.path.exists(OUT1) and os.path.exists(OUT2)
 wavs_exist   = os.path.exists(WAV1) and os.path.exists(WAV2)
@@ -536,8 +537,8 @@ st.subheader("Step 5 — Prepend Intro")
 
 from build_rashifal_video import INTRO_VIDEO_P1, INTRO_VIDEO_P2, OUTRO_VIDEO
 
-FINAL1 = f"/tmp/rashifal_{date_str}_part1_final.mp4"
-FINAL2 = f"/tmp/rashifal_{date_str}_part2_final.mp4"
+FINAL1 = os.path.join(_TMP, f"rashifal_{date_str}_part1_final.mp4")
+FINAL2 = os.path.join(_TMP, f"rashifal_{date_str}_part2_final.mp4")
 
 finals_exist  = os.path.exists(FINAL1) and os.path.exists(FINAL2)
 rashi_built   = os.path.exists(OUT1) and os.path.exists(OUT2)
@@ -604,8 +605,8 @@ st.divider()
 # ── STEP 6: Append Outro ──────────────────────────────────────────────────────
 st.subheader("Step 6 — Append Outro")
 
-COMPLETE1 = f"/tmp/rashifal_{date_str}_part1_complete.mp4"
-COMPLETE2 = f"/tmp/rashifal_{date_str}_part2_complete.mp4"
+COMPLETE1 = os.path.join(_TMP, f"rashifal_{date_str}_part1_complete.mp4")
+COMPLETE2 = os.path.join(_TMP, f"rashifal_{date_str}_part2_complete.mp4")
 
 complete_exist = os.path.exists(COMPLETE1) and os.path.exists(COMPLETE2)
 
@@ -675,8 +676,8 @@ BG_MUSIC  = os.path.join(os.path.dirname(__file__), "assets", "bg_music.mp3")
 BG_VOLUME = 0.12
 LOGO_PATH = os.path.join(os.path.dirname(__file__), "assets", "astrokiran_logo.png")
 
-WITH_BG1 = f"/tmp/rashifal_{date_str}_part1_withbg.mp4"
-WITH_BG2 = f"/tmp/rashifal_{date_str}_part2_withbg.mp4"
+WITH_BG1 = os.path.join(_TMP, f"rashifal_{date_str}_part1_withbg.mp4")
+WITH_BG2 = os.path.join(_TMP, f"rashifal_{date_str}_part2_withbg.mp4")
 
 withbg_exist = os.path.exists(WITH_BG1) and os.path.exists(WITH_BG2)
 
