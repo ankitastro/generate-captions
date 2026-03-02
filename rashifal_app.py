@@ -685,46 +685,55 @@ WITH_BG2 = f"/tmp/rashifal_{date_str}_part2_withbg.mp4"
 
 withbg_exist = os.path.exists(WITH_BG1) and os.path.exists(WITH_BG2)
 
-col_bg, _ = st.columns([1, 4])
-with col_bg:
+col_bg_left, col_bg_right = st.columns([1, 2])
+with col_bg_left:
     bg_btn = st.button("Add Background Music", type="primary",
                        disabled=not complete_exist,
                        use_container_width=True)
+    if not complete_exist:
+        st.caption("Complete Step 6 first.")
 
-if not complete_exist:
-    st.caption("Complete Step 6 first.")
+log_box_bg = col_bg_right.empty()
 
 if bg_btn and complete_exist:
     import subprocess, traceback as _tb4
     if not os.path.exists(BG_MUSIC):
-        st.error(f"Background music not found: {BG_MUSIC}")
+        col_bg_left.error(f"Background music not found: {BG_MUSIC}")
     else:
+        log_lines_bg = []
         try:
+            failed = False
             for part, complete_path, withbg_path in [
                 (1, COMPLETE1, WITH_BG1),
                 (2, COMPLETE2, WITH_BG2),
             ]:
-                with st.spinner(f"Mixing background music into Part {part}..."):
-                    result = subprocess.run(
-                        ["ffmpeg", "-y",
-                         "-i", complete_path, "-i", BG_MUSIC,
-                         "-filter_complex",
-                         f"[1:a]volume={BG_VOLUME},aloop=loop=-1:size=2000000000[bg];"
-                         "[0:a][bg]amix=inputs=2:duration=first:dropout_transition=2[a]",
-                         "-map", "0:v", "-map", "[a]",
-                         "-c:v", "copy", "-c:a", "aac", withbg_path],
-                        capture_output=True, text=True
-                    )
-                if result.returncode != 0:
-                    st.error(f"Part {part} ffmpeg failed:")
-                    st.code(result.stderr, language=None)
+                log_lines_bg.append(f"=== Part {part} ===")
+                log_box_bg.code("\n".join(log_lines_bg), language=None)
+                proc = subprocess.Popen(
+                    ["ffmpeg", "-y",
+                     "-i", complete_path, "-i", BG_MUSIC,
+                     "-filter_complex",
+                     f"[1:a]volume={BG_VOLUME},aloop=loop=-1:size=2000000000[bg];"
+                     "[0:a][bg]amix=inputs=2:duration=first:dropout_transition=2[a]",
+                     "-map", "0:v", "-map", "[a]",
+                     "-c:v", "copy", "-c:a", "aac", withbg_path],
+                    stderr=subprocess.PIPE, stdout=subprocess.DEVNULL, text=True
+                )
+                for line in proc.stderr:
+                    log_lines_bg.append(line.rstrip())
+                    log_box_bg.code("\n".join(log_lines_bg[-40:]), language=None)
+                proc.wait()
+                if proc.returncode != 0:
+                    col_bg_left.error(f"Part {part} ffmpeg failed (see log)")
+                    failed = True
                     break
-                st.success(f"Part {part} done → {withbg_path}")
-            else:
+                log_lines_bg.append(f"✓ Saved → {withbg_path}")
+                log_box_bg.code("\n".join(log_lines_bg), language=None)
+            if not failed:
                 st.rerun()
         except Exception as e:
-            st.error(f"Background music failed: {e}")
-            st.code("".join(_tb4.format_exception(type(e), e, e.__traceback__)), language=None)
+            col_bg_left.error(f"Background music failed: {e}")
+            log_box_bg.code("".join(_tb4.format_exception(type(e), e, e.__traceback__)), language=None)
 
 if withbg_exist:
     c1, c2 = st.columns(2)
