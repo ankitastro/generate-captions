@@ -559,10 +559,13 @@ if prepend_btn and rashi_built:
                     ["ffmpeg", "-y",
                      "-i", intro_path, "-i", rashi_path,
                      "-filter_complex",
-                     "[0:v][0:a][1:v][1:a]concat=n=2:v=1:a=1[v][a]",
+                     "[0:v]scale=720:1280,setsar=1,fps=30[v0];"
+                     "[0:a]aresample=44100[a0];"
+                     "[1:v]scale=720:1280,setsar=1,fps=30[v1];"
+                     "[1:a]aresample=44100[a1];"
+                     "[v0][a0][v1][a1]concat=n=2:v=1:a=1[v][a]",
                      "-map", "[v]", "-map", "[a]",
-                     "-c:v", "libx264", "-c:a", "aac",
-                     "-r", "30", final_path],
+                     "-c:v", "libx264", "-c:a", "aac", final_path],
                     capture_output=True, text=True
                 )
             if result.returncode != 0:
