@@ -1,8 +1,9 @@
-azure-cognitiveservices-speech
-openai
-python-dotenv
-moviepy
-Pillow
-numpy
-streamlit
-anthropic
+azure-cognitiveservices-speech==1.48.2
+google-genai==1.47.0
+moviepy==2.2.1
+numpy==2.0.2
+opencv-python-headless==4.13.0.92
+pandas==2.3.3
+pillow==11.3.0
+python-dotenv==1.2.1
+streamlit==1.50.0
