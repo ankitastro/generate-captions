@@ -676,6 +676,8 @@ withbg_exist = os.path.exists(WITH_BG1) and os.path.exists(WITH_BG2)
 
 col_bg_left, col_bg_right = st.columns([1, 2])
 with col_bg_left:
+    bg_volume = st.slider("Background music volume", min_value=0.0, max_value=1.0,
+                          value=BG_VOLUME, step=0.01, format="%.2f")
     bg_btn = st.button("Add Background Music", type="primary",
                        disabled=not complete_exist,
                        use_container_width=True)
@@ -710,7 +712,7 @@ if bg_btn and complete_exist:
                     ["ffmpeg", "-y",
                      "-i", complete_path, "-i", BG_MUSIC, "-i", LOGO_PATH,
                      "-filter_complex",
-                     f"[1:a]volume={BG_VOLUME},aloop=loop=-1:size=2000000000[bg];"
+                     f"[1:a]volume={bg_volume},aloop=loop=-1:size=2000000000[bg];"
                      "[0:a][bg]amix=inputs=2:duration=first:dropout_transition=2[a];"
                      "[2:v]scale=120:-1[logo];"
                      "[0:v][logo]overlay=W-w-20:H-h-20[ov];"
