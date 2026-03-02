@@ -48,12 +48,10 @@ BOUNDARY_MAP = {
     "मिथुन": "मिथुन", "कर्क": "कर्क", "कन्या": "कन्या",
     "तुला": "तुला", "वृश्चिक": "वृश्चिक", "धनु": "धनु",
     "मकर": "मकर", "कुंभ": "कुंभ", "मीन": "मीन",
-    # Leo — TTS often says "singh" / "lio" / "sighn" instead of "leo"
+    # Leo — TTS/STT variants (lookup is case-insensitive, so lowercase only needed)
     "लियो": "Leo", "लिओ": "Leo", "सिंह": "Leo",
     "leo": "Leo", "lio": "Leo",
-    "singh": "Leo", "Singh": "Leo",
-    "sighn": "Leo", "Sighn": "Leo",
-    "sign": "Leo",  "Sign": "Leo",
+    "singh": "Leo", "sighn": "Leo", "sign": "Leo",
     # Short Hinglish names (≤4 chars) — explicit only, no fuzzy
     "mesh": "मेष",
     "kark": "कर्क", "khark": "कर्क",
@@ -72,6 +70,9 @@ FUZZY_RASHI = {
     "kumbh":     "कुंभ",    # 5 chars
 }
 FUZZY_THRESHOLD = 0.82
+
+# Case-insensitive lookup table built once at import time
+_BOUNDARY_LOWER = {k.lower(): v for k, v in BOUNDARY_MAP.items()}
 
 def _fuzzy_rashi(word):
     w = word.lower()
@@ -134,8 +135,8 @@ def detect_boundaries(names, words, total_dur, log_fn=None):
     boundaries = {}
     for w in words:
         raw = w["word"]
-        # 1. exact / semantic match
-        key = BOUNDARY_MAP.get(raw) or BOUNDARY_MAP.get(raw.lower())
+        # 1. case-insensitive exact / semantic match
+        key = _BOUNDARY_LOWER.get(raw.lower())
         # 2. fuzzy match against canonical Hinglish names
         if not key:
             key = _fuzzy_rashi(raw)
