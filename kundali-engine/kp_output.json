@@ -1,0 +1,349 @@
+{
+  "planets_table": [
+    {
+      "Planet": "Sun",
+      "Cusp": 6,
+      "Sign": "Leo",
+      "Sign_Lord": "Su",
+      "Star_Lord": "Su",
+      "Sub_Lord": "Su"
+    },
+    {
+      "Planet": "Moon",
+      "Cusp": 7,
+      "Sign": "Sagittarius",
+      "Sign_Lord": "Ju",
+      "Star_Lord": "Su",
+      "Sub_Lord": "Su"
+    },
+    {
+      "Planet": "Mercury",
+      "Cusp": 8,
+      "Sign": "Leo",
+      "Sign_Lord": "Su",
+      "Star_Lord": "Ke",
+      "Sub_Lord": "Me"
+    },
+    {
+      "Planet": "Venus",
+      "Cusp": 11,
+      "Sign": "Virgo",
+      "Sign_Lord": "Me",
+      "Star_Lord": "Ma",
+      "Sub_Lord": "Ra"
+    },
+    {
+      "Planet": "Mars",
+      "Cusp": 11,
+      "Sign": "Gemini",
+      "Sign_Lord": "Me",
+      "Star_Lord": "Ra",
+      "Sub_Lord": "Sa"
+    },
+    {
+      "Planet": "Jupiter",
+      "Cusp": 11,
+      "Sign": "Taurus",
+      "Sign_Lord": "Ve",
+      "Star_Lord": "Ma",
+      "Sub_Lord": "Ju"
+    },
+    {
+      "Planet": "Saturn",
+      "Cusp": 8,
+      "Sign": "Aquarius",
+      "Sign_Lord": "Sa",
+      "Star_Lord": "Ju",
+      "Sub_Lord": "Ju"
+    },
+    {
+      "Planet": "Rahu",
+      "Cusp": 12,
+      "Sign": "Pisces",
+      "Sign_Lord": "Ju",
+      "Star_Lord": "Sa",
+      "Sub_Lord": "Ma"
+    },
+    {
+      "Planet": "Ketu",
+      "Cusp": 2,
+      "Sign": "Virgo",
+      "Sign_Lord": "Me",
+      "Star_Lord": "Mo",
+      "Sub_Lord": "Ra"
+    }
+  ],
+  "cusps_table": [
+    {
+      "Cusp": 1,
+      "Degree": 33.35,
+      "Sign": "Taurus",
+      "Sign_Lord": "Ve",
+      "Star_Lord": "Su",
+      "Sub_Lord": "Sa"
+    },
+    {
+      "Cusp": 2,
+      "Degree": 59.34,
+      "Sign": "Taurus",
+      "Sign_Lord": "Ve",
+      "Star_Lord": "Ma",
+      "Sub_Lord": "Sa"
+    },
+    {
+      "Cusp": 3,
+      "Degree": 82.6,
+      "Sign": "Gemini",
+      "Sign_Lord": "Me",
+      "Star_Lord": "Ju",
+      "Sub_Lord": "Sa"
+    },
+    {
+      "Cusp": 4,
+      "Degree": 107.31,
+      "Sign": "Cancer",
+      "Sign_Lord": "Mo",
+      "Star_Lord": "Me",
+      "Sub_Lord": "Me"
+    },
+    {
+      "Cusp": 5,
+      "Degree": 137.11,
+      "Sign": "Leo",
+      "Sign_Lord": "Su",
+      "Star_Lord": "Ve",
+      "Sub_Lord": "Mo"
+    },
+    {
+      "Cusp": 6,
+      "Degree": 173.98,
+      "Sign": "Virgo",
+      "Sign_Lord": "Me",
+      "Star_Lord": "Ma",
+      "Sub_Lord": "Ma"
+    },
+    {
+      "Cusp": 7,
+      "Degree": 213.35,
+      "Sign": "Scorpio",
+      "Sign_Lord": "Ma",
+      "Star_Lord": "Sa",
+      "Sub_Lord": "Sa"
+    },
+    {
+      "Cusp": 8,
+      "Degree": 239.34,
+      "Sign": "Scorpio",
+      "Sign_Lord": "Ma",
+      "Star_Lord": "Me",
+      "Sub_Lord": "Sa"
+    },
+    {
+      "Cusp": 9,
+      "Degree": 262.6,
+      "Sign": "Sagittarius",
+      "Sign_Lord": "Ju",
+      "Star_Lord": "Ve",
+      "Sub_Lord": "Sa"
+    },
+    {
+      "Cusp": 10,
+      "Degree": 287.31,
+      "Sign": "Capricorn",
+      "Sign_Lord": "Sa",
+      "Star_Lord": "Mo",
+      "Sub_Lord": "Sa"
+    },
+    {
+      "Cusp": 11,
+      "Degree": 317.11,
+      "Sign": "Aquarius",
+      "Sign_Lord": "Sa",
+      "Star_Lord": "Ra",
+      "Sub_Lord": "Ve"
+    },
+    {
+      "Cusp": 12,
+      "Degree": 353.98,
+      "Sign": "Pisces",
+      "Sign_Lord": "Ju",
+      "Star_Lord": "Me",
+      "Sub_Lord": "Ma"
+    }
+  ],
+  "ruling_planets": {
+    "Mo": {
+      "sign_lord": "Ju",
+      "star_lord": "Su",
+      "sub_lord": "Su"
+    },
+    "Asc": {
+      "sign_lord": "Ve",
+      "star_lord": "Su",
+      "sub_lord": "Sa"
+    },
+    "Day Lord": {
+      "planet": "Ve"
+    }
+  },
+  "house_significators": {
+    "1": {
+      "strong": [
+        "House 1 Cusp Sub-Lord: Saturn",
+        "Jupiter (in house)"
+      ],
+      "medium": [
+        "Mars (star lord of Jupiter)"
+      ],
+      "weak": []
+    },
+    "2": {
+      "strong": [
+        "House 2 Cusp Sub-Lord: Saturn",
+        "Mars (in house)"
+      ],
+      "medium": [
+        "Rahu (star lord of Mars)"
+      ],
+      "weak": [
+        "Saturn (sub-lord of Mars)"
+      ]
+    },
+    "3": {
+      "strong": [
+        "House 3 Cusp Sub-Lord: Saturn"
+      ],
+      "medium": [],
+      "weak": []
+    },
+    "4": {
+      "strong": [
+        "House 4 Cusp Sub-Lord: Mercury",
+        "Mercury (in house)"
+      ],
+      "medium": [
+        "Ketu (star lord of Mercury)"
+      ],
+      "weak": []
+    },
+    "5": {
+      "strong": [
+        "House 5 Cusp Sub-Lord: Moon",
+        "Sun (in house)",
+        "Ketu (in house)"
+      ],
+      "medium": [
+        "Moon (star lord of Ketu)"
+      ],
+      "weak": [
+        "Rahu (sub-lord of Ketu)"
+      ]
+    },
+    "6": {
+      "strong": [
+        "House 6 Cusp Sub-Lord: Mars",
+        "Venus (in house)"
+      ],
+      "medium": [
+        "Mars (star lord of Venus)"
+      ],
+      "weak": [
+        "Rahu (sub-lord of Venus)"
+      ]
+    },
+    "7": {
+      "strong": [
+        "House 7 Cusp Sub-Lord: Saturn"
+      ],
+      "medium": [],
+      "weak": []
+    },
+    "8": {
+      "strong": [
+        "House 8 Cusp Sub-Lord: Saturn"
+      ],
+      "medium": [],
+      "weak": []
+    },
+    "9": {
+      "strong": [
+        "House 9 Cusp Sub-Lord: Saturn",
+        "Moon (in house)"
+      ],
+      "medium": [
+        "Sun (star lord of Moon)"
+      ],
+      "weak": []
+    },
+    "10": {
+      "strong": [
+        "House 10 Cusp Sub-Lord: Saturn"
+      ],
+      "medium": [],
+      "weak": []
+    },
+    "11": {
+      "strong": [
+        "House 11 Cusp Sub-Lord: Venus",
+        "Saturn (in house)",
+        "Rahu (in house)"
+      ],
+      "medium": [
+        "Jupiter (star lord of Saturn)"
+      ],
+      "weak": [
+        "Mars (sub-lord of Rahu)"
+      ]
+    },
+    "12": {
+      "strong": [
+        "House 12 Cusp Sub-Lord: Mars"
+      ],
+      "medium": [],
+      "weak": []
+    }
+  },
+  "kp_chart": {
+    "1": [
+      "Lagna"
+    ],
+    "2": [
+      "Ketu"
+    ],
+    "3": [],
+    "4": [],
+    "5": [],
+    "6": [
+      "Sun"
+    ],
+    "7": [
+      "Moon"
+    ],
+    "8": [
+      "Mercury",
+      "Saturn"
+    ],
+    "9": [],
+    "10": [],
+    "11": [
+      "Venus",
+      "Mars",
+      "Jupiter"
+    ],
+    "12": [
+      "Rahu"
+    ]
+  },
+  "chart_layout": {
+    "Sun": 6,
+    "Moon": 7,
+    "Mars": 11,
+    "Mercury": 8,
+    "Jupiter": 11,
+    "Venus": 11,
+    "Saturn": 8,
+    "Rahu": 12,
+    "Ketu": 2
+  },
+  "system": "Krishnamurti Paddhati (KP) - Clean Swiss Ephemeris"
+}

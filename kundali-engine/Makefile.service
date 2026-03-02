@@ -1,0 +1,156 @@
+# Makefile for kundali-engine service deployment
+# Usage: make -f Makefile.service <target>
+
+# AWS Configuration
+AWS_REGION ?= ap-south-1
+AWS_ACCOUNT_ID ?= 135808951138
+ECR_REPO = $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/astrokiran/kundali-engine
+IMAGE_TAG ?= latest
+
+# ECS Configuration
+ECS_CLUSTER = astrokiran-fargate-spot-cluster
+SERVICE_NAME = kundali-engine
+TASK_FAMILY = kundali-engine
+
+# Terraform Configuration
+TF_DIR = terraform
+
+.PHONY: help build push ecr-login terraform-init terraform-plan terraform-apply deploy logs status restart scale destroy clean all
+
+help:
+	@echo "Available targets:"
+	@echo "  build            - Build the kundali-engine Docker image"
+	@echo "  ecr-login        - Login to AWS ECR"
+	@echo "  push             - Push the image to ECR"
+	@echo "  terraform-init   - Initialize Terraform"
+	@echo "  terraform-plan   - Plan Terraform changes"
+	@echo "  terraform-apply  - Apply Terraform (deploy/update service)"
+	@echo "  deploy           - Full deployment (build → push → terraform apply)"
+	@echo "  logs             - View service logs"
+	@echo "  status           - Check service status"
+	@echo "  restart          - Force new deployment (restart service)"
+	@echo "  scale            - Scale service (use DESIRED_COUNT=N)"
+	@echo "  destroy          - Destroy Terraform resources"
+	@echo "  clean            - Clean up local Docker images"
+	@echo "  all              - Complete workflow (build → push → deploy)"
+
+# Build the kundali-engine Docker image
+build:
+	@echo "Building kundali-engine Docker image..."
+	cd .. && docker build -f kundali-engine/Dockerfile -t $(ECR_REPO):$(IMAGE_TAG) kundali-engine/
+
+# Login to AWS ECR
+ecr-login:
+	@echo "Logging in to AWS ECR..."
+	aws ecr get-login-password --region $(AWS_REGION) | \
+		docker login --username AWS --password-stdin $(ECR_REPO)
+
+# Push the image to ECR
+push: ecr-login
+	@echo "Pushing image to ECR..."
+	docker push $(ECR_REPO):$(IMAGE_TAG)
+
+# Initialize Terraform
+terraform-init:
+	@echo "Initializing Terraform..."
+	cd $(TF_DIR) && terraform init
+
+# Plan Terraform changes
+terraform-plan:
+	@echo "Planning Terraform changes..."
+	cd $(TF_DIR) && terraform plan
+
+# Apply Terraform to deploy/update service
+terraform-apply:
+	@echo "Applying Terraform to deploy/update service..."
+	cd $(TF_DIR) && terraform apply -auto-approve
+
+# Full deployment workflow
+deploy: push terraform-apply
+	@echo "Deployment completed!"
+	@$(MAKE) -f Makefile.service status
+
+# View service logs
+logs:
+	@echo "Fetching service logs (last 50 lines)..."
+	@aws logs tail /ecs/kundali-engine \
+		--follow \
+		--since 5m \
+		--region $(AWS_REGION) \
+		--format short 2>/dev/null || echo "No logs available yet"
+
+# Check service status
+status:
+	@echo "Checking service status..."
+	@aws ecs describe-services \
+		--cluster $(ECS_CLUSTER) \
+		--services $(SERVICE_NAME) \
+		--region $(AWS_REGION) \
+		--query 'services[0].[serviceName,status,desiredCount,runningCount,pendingCount]' \
+		--output table
+	@echo ""
+	@echo "Task health:"
+	@aws ecs list-tasks \
+		--cluster $(ECS_CLUSTER) \
+		--service-name $(SERVICE_NAME) \
+		--region $(AWS_REGION) \
+		--query 'taskArns[0]' \
+		--output text | xargs -I {} aws ecs describe-tasks \
+			--cluster $(ECS_CLUSTER) \
+			--tasks {} \
+			--region $(AWS_REGION) \
+			--query 'tasks[0].[lastStatus,healthStatus,containers[0].lastStatus]' \
+			--output table 2>/dev/null || echo "No tasks running"
+
+# Force new deployment (restart service)
+restart:
+	@echo "Forcing new deployment..."
+	@aws ecs update-service \
+		--cluster $(ECS_CLUSTER) \
+		--service $(SERVICE_NAME) \
+		--force-new-deployment \
+		--region $(AWS_REGION) \
+		--query 'service.[serviceName,status,deployments[0].status]' \
+		--output table
+	@echo "New deployment initiated. Use 'make -f Makefile.service status' to check progress."
+
+# Scale service
+scale:
+	@if [ -z "$(DESIRED_COUNT)" ]; then \
+		echo "Error: DESIRED_COUNT not specified. Usage: make -f Makefile.service scale DESIRED_COUNT=3"; \
+		exit 1; \
+	fi
+	@echo "Scaling service to $(DESIRED_COUNT) tasks..."
+	@aws ecs update-service \
+		--cluster $(ECS_CLUSTER) \
+		--service $(SERVICE_NAME) \
+		--desired-count $(DESIRED_COUNT) \
+		--region $(AWS_REGION) \
+		--query 'service.[serviceName,desiredCount,runningCount]' \
+		--output table
+
+# Destroy Terraform resources
+destroy:
+	@echo "WARNING: This will destroy the kundali-engine service!"
+	@read -p "Are you sure? (yes/no): " confirm && [ "$$confirm" = "yes" ] || exit 1
+	@echo "Destroying Terraform resources..."
+	cd $(TF_DIR) && terraform destroy -auto-approve
+
+# Clean up local Docker images
+clean:
+	@echo "Cleaning up local Docker images..."
+	docker rmi $(ECR_REPO):$(IMAGE_TAG) || true
+
+# Full workflow: build, push, and deploy
+all: build push terraform-apply
+	@echo "Complete workflow finished!"
+	@$(MAKE) -f Makefile.service status
+
+# Quick deployment (assumes image is built)
+quick-deploy: push terraform-apply
+	@echo "Quick deployment completed!"
+	@$(MAKE) -f Makefile.service status
+
+# Update image only (rebuild and push)
+update-image: build push
+	@echo "Image updated in ECR. Run 'make -f Makefile.service restart' to deploy."

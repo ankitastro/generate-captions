@@ -1,0 +1,629 @@
+{
+  "zodiac_signs": {
+    "Aries": "Aries",
+    "Taurus": "Taurus",
+    "Gemini": "Gemini",
+    "Cancer": "Cancer",
+    "Leo": "Leo",
+    "Virgo": "Virgo",
+    "Libra": "Libra",
+    "Scorpio": "Scorpio",
+    "Sagittarius": "Sagittarius",
+    "Capricorn": "Capricorn",
+    "Aquarius": "Aquarius",
+    "Pisces": "Pisces"
+  },
+  "zodiac_signs_sanskrit": {
+    "Aries": "Mesha",
+    "Taurus": "Vrishabha",
+    "Gemini": "Mithuna",
+    "Cancer": "Karka",
+    "Leo": "Simha",
+    "Virgo": "Kanya",
+    "Libra": "Tula",
+    "Scorpio": "Vrishchika",
+    "Sagittarius": "Dhanu",
+    "Capricorn": "Makara",
+    "Aquarius": "Kumbha",
+    "Pisces": "Meena"
+  },
+  "planets": {
+    "Sun": "Sun",
+    "Moon": "Moon",
+    "Mars": "Mars",
+    "Mercury": "Mercury",
+    "Jupiter": "Jupiter",
+    "Venus": "Venus",
+    "Saturn": "Saturn",
+    "Rahu": "Rahu",
+    "Ketu": "Ketu",
+    "Lagna": "Ascendant",
+    "Su": "Sun",
+    "Mo": "Moon",
+    "Ma": "Mars",
+    "Me": "Mercury",
+    "Ju": "Jupiter",
+    "Ve": "Venus",
+    "Sa": "Saturn",
+    "Ra": "Rahu",
+    "Ke": "Ketu"
+  },
+  "planets_sanskrit": {
+    "Sun": "Surya",
+    "Moon": "Chandra",
+    "Mars": "Mangal",
+    "Mercury": "Budh",
+    "Jupiter": "Guru",
+    "Venus": "Shukra",
+    "Saturn": "Shani",
+    "Rahu": "Rahu",
+    "Ketu": "Ketu",
+    "Lagna": "Lagna"
+  },
+  "nakshatras": {
+    "Ashwini": "Ashwini",
+    "Bharani": "Bharani",
+    "Krittika": "Krittika",
+    "Rohini": "Rohini",
+    "Mrigashira": "Mrigashira",
+    "Ardra": "Ardra",
+    "Punarvasu": "Punarvasu",
+    "Pushya": "Pushya",
+    "Ashlesha": "Ashlesha",
+    "Magha": "Magha",
+    "Purva Phalguni": "Purva Phalguni",
+    "Uttara Phalguni": "Uttara Phalguni",
+    "Hasta": "Hasta",
+    "Chitra": "Chitra",
+    "Swati": "Swati",
+    "Vishakha": "Vishakha",
+    "Anuradha": "Anuradha",
+    "Jyeshtha": "Jyeshtha",
+    "Mula": "Mula",
+    "Purva Ashadha": "Purva Ashadha",
+    "Uttara Ashadha": "Uttara Ashadha",
+    "Shravana": "Shravana",
+    "Dhanishta": "Dhanishta",
+    "Shatabhisha": "Shatabhisha",
+    "Purva Bhadrapada": "Purva Bhadrapada",
+    "Uttara Bhadrapada": "Uttara Bhadrapada",
+    "Revati": "Revati"
+  },
+  "houses": {
+    "house": "House",
+    "1": "First House",
+    "2": "Second House",
+    "3": "Third House",
+    "4": "Fourth House",
+    "5": "Fifth House",
+    "6": "Sixth House",
+    "7": "Seventh House",
+    "8": "Eighth House",
+    "9": "Ninth House",
+    "10": "Tenth House",
+    "11": "Eleventh House",
+    "12": "Twelfth House"
+  },
+  "common": {
+    "name": "Name",
+    "birth_info": "Birth Information",
+    "date_of_birth": "Date of Birth",
+    "time_of_birth": "Time of Birth",
+    "place_of_birth": "Place of Birth",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+    "timezone": "Timezone",
+    "lagna": "Ascendant",
+    "degree": "Degree",
+    "sign": "Sign",
+    "planet": "Planet",
+    "retrograde": "Retrograde",
+    "direct": "Direct",
+    "house": "House",
+    "nakshatra": "Nakshatra",
+    "pada": "Pada",
+    "lord": "Lord",
+    "rashi": "Rashi",
+    "moon_sign": "Moon Sign",
+    "sun_sign": "Sun Sign"
+  },
+  "panchanga": {
+    "tithi": "Tithi",
+    "nakshatra": "Nakshatra",
+    "yoga": "Yoga",
+    "karana": "Karana",
+    "vaara": "Weekday",
+    "masa": "Month",
+    "ritu": "Season",
+    "samvatsara": "Year",
+    "sunrise": "Sunrise",
+    "sunset": "Sunset",
+    "paksha": "Paksha",
+    "shukla": "Shukla (Bright Fortnight)",
+    "krishna": "Krishna (Dark Fortnight)"
+  },
+  "dasha": {
+    "vimshottari_dasha": "Vimshottari Dasha",
+    "maha_dasha": "Maha Dasha",
+    "antar_dasha": "Antar Dasha",
+    "current_dasha": "Current Dasha",
+    "start_date": "Start Date",
+    "end_date": "End Date",
+    "duration_years": "Duration (Years)"
+  },
+  "charts": {
+    "rasi_chart": "Birth Chart (Rasi)",
+    "navamsa_chart": "Navamsa Chart (D9)",
+    "divisional_charts": "Divisional Charts",
+    "varga_charts": "Varga Charts"
+  },
+  "yogas": {
+    "detected_yogas": "Detected Yogas",
+    "yoga_summary": "Yoga Summary",
+    "total_yogas": "Total Yogas",
+    "strong_yogas": "Strong Yogas",
+    "moderate_yogas": "Moderate Yogas",
+    "weak_yogas": "Weak Yogas",
+    "planets_involved": "Planets Involved",
+    "houses_involved": "Houses Involved",
+    "strength": "Strength",
+    "significance": "Significance",
+    "effects": "Effects"
+  },
+  "doshas": {
+    "mangal_dosha": "Mangal Dosha",
+    "kalasarpa_dosha": "Kalasarpa Dosha",
+    "is_present": "Is Present",
+    "is_cancelled": "Is Cancelled",
+    "report": "Report",
+    "status": "Status",
+    "present": "Present",
+    "not_present": "Not Present",
+    "cancelled": "Cancelled",
+    "percentage": "Percentage"
+  },
+  "matching": {
+    "kundli_matching": "Kundli Matching",
+    "compatibility": "Compatibility",
+    "groom": "Groom",
+    "bride": "Bride",
+    "total_points": "Total Points",
+    "maximum_points": "Maximum Points",
+    "conclusion": "Conclusion",
+    "koota_details": "Koota Details"
+  },
+  "elements": {
+    "fire": "Fire",
+    "earth": "Earth",
+    "air": "Air",
+    "water": "Water",
+    "ether": "Ether"
+  },
+  "qualities": {
+    "cardinal": "Cardinal",
+    "fixed": "Fixed",
+    "mutable": "Mutable",
+    "movable": "Movable",
+    "dual": "Dual"
+  },
+  "planet_states": {
+    "exalted": "Exalted",
+    "debilitated": "Debilitated",
+    "own_sign": "Own Sign",
+    "neutral": "Neutral",
+    "friend": "Friend",
+    "enemy": "Enemy",
+    "best_friend": "Best Friend",
+    "bitter_enemy": "Bitter Enemy"
+  },
+  "avastha": {
+    "bala": "Bala (Infant)",
+    "yuva": "Yuva (Youth)",
+    "vriddha": "Vriddha (Old)",
+    "mrita": "Mrita (Dead)"
+  },
+  "gana": {
+    "deva": "Deva (Divine)",
+    "manushya": "Manushya (Human)",
+    "rakshasa": "Rakshasa (Demon)"
+  },
+  "gochar": {
+    "title": "Gochar - Transit Analysis",
+    "current_transits": "Current Planetary Transits",
+    "from_moon": "from Moon",
+    "from_lagna": "from Lagna",
+    "excellent": "Excellent",
+    "good": "Good",
+    "neutral": "Neutral",
+    "challenging": "Challenging",
+    "bad": "Bad",
+    "overall_score": "Overall Gochar Score",
+    "favorable_planets": "Favorable Planets",
+    "neutral_planets": "Neutral Planets",
+    "challenging_planets": "Challenging Planets",
+    "life_aspects": "Life Aspects Analysis",
+    "special_transits": "Special Transits",
+    "upcoming_transits": "Upcoming Transits",
+    "recommendations": "Recommendations",
+    "astrologer_notes": "Astrologer Notes",
+    "do_this_month": "Do This Month",
+    "avoid_this_month": "Avoid This Month",
+    "general_advice": "General Advice",
+    "remedies": "Remedies",
+    "nature": "Nature of Transit"
+  },
+  "gochar_overall": {
+    "excellent_period": "This is an excellent period with multiple favorable planetary transits supporting your goals and aspirations. You are likely to experience significant progress, success, and fulfillment of desires. This is an ideal time to start new ventures, make important decisions, and pursue ambitious goals. The planetary alignments are working in your favor, so make the most of this auspicious period.",
+    "favorable_period": "This is a favorable period with more beneficial transits than challenging ones. You can expect positive developments in various areas of life. While there may be some minor obstacles, the overall planetary support is strong. This is a good time to advance your plans, strengthen relationships, and work towards your goals with confidence.",
+    "moderate_period": "This is a moderate period with mixed influences from planetary transits. You will experience both opportunities and challenges. The key during this period is to maintain a balanced approach, exercise patience, and avoid extremes. Focus on steady progress and avoid making impulsive decisions. With careful planning and consistent effort, you can navigate through this period successfully.",
+    "challenging_period": "This is a challenging period requiring caution, patience, and remedial measures to navigate obstacles. You may face setbacks, delays, or difficulties in various areas of life. This is a time for introspection, planning, and building resilience. Avoid taking major risks, practice remedies regularly, and maintain faith. Remember that this period will pass, and proper precautions will help minimize negative effects."
+  },
+  "gochar_sun_1": {
+    "summary": "Sun in 1st house from Moon brings focus on self, health, and personal initiatives.",
+    "detailed": "Sun transiting the 1st house from your Moon sign puts a spotlight on your personality, physical body, and overall approach to life. This period emphasizes your identity, self-expression, and how others perceive you. You may feel a strong urge to assert yourself and take charge of situations. Physical health requires attention as energy levels may fluctuate. This is a time to focus on personal goals, self-improvement, and building confidence. Leadership opportunities may arise, but be mindful of ego conflicts. The Sun's influence here can bring recognition but also creates pressure. Maintain a balance between confidence and humility. Take care of your health, especially heart, eyes, and blood pressure. This transit favors starting new personal initiatives but requires careful handling of relationships with authority figures."
+  },
+  "gochar_sun_2": {
+    "summary": "Sun in 2nd house brings focus on finances, family, and speech matters.",
+    "detailed": "Sun transiting the 2nd house from your Moon sign activates matters related to finances, accumulated wealth, family life, and communication. Financial matters come into focus - you may experience changes in income, expenses, or investment opportunities. This is a crucial period for financial planning and management. Family relationships, especially with elders, require diplomatic handling. Your speech and communication style will be noticed - be mindful of how you express yourself. Some financial pressure or unexpected expenses may arise. Property matters, land-related decisions, and family assets need careful consideration. Avoid arrogance in speech and maintain harmony at home. This period tests your financial management skills and family dynamics. Focus on building wealth steadily and avoiding impulsive expenditures."
+  },
+  "gochar_sun_3": {
+    "summary": "Sun in 3rd house favors communication, courage, and new initiatives.",
+    "detailed": "Sun transiting the 3rd house from your Moon sign is generally favorable for communication, initiatives, and self-expression. This period boosts your courage, confidence, and willingness to take calculated risks. You'll find opportunities to express your ideas, start new projects, or take on leadership roles in team settings. Relationships with siblings and neighbors improve. Short journeys, both for work and pleasure, bring beneficial results. Your communication skills are enhanced, making it a good time for negotiations, presentations, and public speaking. Creative self-expression brings recognition. However, avoid being overly aggressive or dominating in interactions. This transit favors independent initiatives and entrepreneurial ventures. Use this period to build your network and showcase your talents."
+  },
+  "gochar_sun_4": {
+    "summary": "Sun in 4th house affects domestic peace, property, and emotional security.",
+    "detailed": "Sun transiting the 4th house from your Moon sign brings attention to domestic matters, property, emotional security, and relationship with mother. You may experience challenges in your home environment - domestic harmony may be disturbed, and conflicts with family members are possible. Property matters face obstacles or delays. Vehicle-related issues may arise. Your emotional peace may be tested, requiring inner strength and patience. Relationship with mother needs care and attention. This is not an ideal period for property transactions or major changes in residence. Heart and chest health require attention. On the positive side, this period can bring clarity about domestic matters and help you address long-standing issues at home. Focus on maintaining peace and avoiding confrontations with family members."
+  },
+  "gochar_sun_5": {
+    "summary": "Sun in 5th house favors creativity, education, and romance.",
+    "detailed": "Sun transiting the 5th house from your Moon sign activates creativity, romance, children, education, and speculative matters. This is a favorable period for creative pursuits, artistic expression, and entertainment. Your creative energy is high, making it an excellent time for artistic projects, hobbies, and self-expression. Students may face challenges requiring extra effort - focus and consistency are key. Romance and love life get a boost - favorable for romantic pursuits and expressing affection. Matters related to children come into focus - their progress, education, or well-being. Speculation and investments require caution - avoid risky financial decisions. This period favors recognition in creative fields and competitive activities. Maintain a balanced approach in romance and avoid ego conflicts in relationships."
+  },
+  "gochar_sun_6": {
+    "summary": "Sun in 6th house brings challenges with enemies, diseases, and debts.",
+    "detailed": "Sun transiting the 6th house from your Moon sign brings focus on enemies, diseases, debts, service, and competition. You may face obstacles, opposition from others, or health challenges during this period. Work environment may be stressful, requiring diplomacy and patience. Chronic health issues may flare up - preventive care and rest are essential. Financial debts or loans may cause concern. Enemies or opponents may become active, but you have the strength to overcome them. This period requires discipline, strategy, and careful handling of conflicts. Service-oriented work brings recognition. Avoid confrontations and focus on diplomatic resolution of issues. Health matters require attention - digestive issues, stomach problems, or eye-related concerns may surface. This is a testing period that ultimately strengthens your resilience."
+  },
+  "gochar_sun_7": {
+    "summary": "Sun in 7th house affects partnerships, marriage, and business relationships.",
+    "detailed": "Sun transiting the 7th house from your Moon sign puts spotlight on partnerships, marriage, business relationships, and public image. Married life may face challenges - ego conflicts, differences with spouse, or stress in relationships require patience and understanding. Business partnerships need careful handling - avoid major conflicts and maintain open communication. This is not an ideal period for starting new partnerships. Your public image and reputation come into focus - how you present yourself to the world matters. In business, deals may face delays or require multiple rounds of negotiation. Single people may find romantic opportunities but should be cautious. The key during this period is to maintain humility, practice compromise in relationships, and avoid ego battles. Focus on strengthening existing partnerships rather than starting new ones."
+  },
+  "gochar_sun_8": {
+    "summary": "Sun in 8th house brings obstacles, health issues, and transformation.",
+    "detailed": "Sun transiting the 8th house from your Moon sign is a challenging period affecting longevity, health, inheritance, sudden events, and occult matters. You may face unexpected obstacles, health challenges, or transformative experiences. This period requires extra caution in all matters. Health needs serious attention - regular checkups and preventive care are essential. Financial matters related to loans, insurance, or inheritance may cause concern. Psychological stress or anxiety may be experienced. Avoid risky activities, speculative investments, and confrontations. This is a period for introspection, spiritual practices, and addressing deep-seated issues. Some secrets or hidden matters may come to light. The positive aspect is that this period can bring deep transformation and help you eliminate what no longer serves you. Practice patience, maintain a low profile, and focus on spiritual growth."
+  },
+  "gochar_sun_9": {
+    "summary": "Sun in 9th house affects luck, spirituality, higher education, and fortune.",
+    "detailed": "Sun transiting the 9th house from your Moon sign influences luck, higher education, spirituality, teachers, long journeys, and fortune. You may experience fluctuations in fortune - some opportunities arise but also obstacles in achieving goals. Spiritual and philosophical pursuits come into focus. This is a favorable period for higher education, research, and academic pursuits. Long journeys, especially for pilgrimage or educational purposes, are indicated. Relationship with father or father figures may require attention. Religious or spiritual practices bring peace and clarity. Your fortune may feel tested - some efforts may not bring expected results immediately. Maintain faith and continue your dharma. This period favors spiritual growth, learning, and expansion of consciousness. Avoid arrogance in religious or philosophical matters."
+  },
+  "gochar_sun_10": {
+    "summary": "Sun in 10th house favors career, authority, and professional success.",
+    "detailed": "Sun transiting the 10th house from your Moon sign is highly favorable for career, professional success, authority, and public recognition. This is one of the best periods for career advancement - promotions, new job opportunities, or professional recognition are indicated. Your hard work gets noticed, and authority figures view you favorably. This is an excellent time to pursue career goals, take on leadership roles, or start new professional ventures. Government-related matters may proceed favorably. Public status and reputation improve. However, be mindful of work-life balance - excessive focus on career may affect personal life. Relationship with father or authority figures generally improves. This period favors ambitious career moves, professional networking, and showcasing your capabilities to the world."
+  },
+  "gochar_sun_11": {
+    "summary": "Sun in 11th house brings excellent gains, fulfillment of desires, and social success.",
+    "detailed": "Sun transiting the 11th house from your Moon sign is an excellent period for gains, fulfillment of desires, social networks, and achievements. This is one of the most favorable transits of Sun, bringing success in multiple areas of life. Financial gains are indicated - income increases, profitable investments, or financial benefits from various sources. Your social circle expands, and beneficial connections are formed. Long-held desires may be fulfilled. Professional success brings recognition and rewards. Friendship network strengthens, and social activities bring joy. Elder siblings may be supportive. This is an ideal time to pursue ambitious goals, start new ventures, or expand existing ones. The planetary energies support your growth and success. Make the most of this auspicious period by taking initiative and pursuing your dreams."
+  },
+  "gochar_sun_12": {
+    "summary": "Sun in 12th house brings expenses, isolation, and spiritual focus.",
+    "detailed": "Sun transiting the 12th house from your Moon sign indicates expenses, losses, foreign lands, isolation, and spiritual liberation. You may experience financial outflows, unexpected expenses, or losses if not careful. This is a period for spiritual practices, introspection, and addressing karmic matters. Foreign connections or travel may be indicated. You may feel isolated or prefer solitude - use this time for inner growth rather than feeling lonely. Health requires attention, especially chronic issues. Sleep disturbances or psychological stress may be experienced. This is not an ideal period for speculative activities or risky investments. Focus on spiritual development, charitable activities, and letting go of what no longer serves you. The positive aspect is that this period can bring spiritual insights and liberation from past patterns. Practice patience and avoid major expenses or confrontations."
+  },
+  "gochar_moon_1": {
+    "summary": "Moon in 1st house brings emotional focus, mental peace, and personal comfort.",
+    "detailed": "Moon transiting the 1st house from your natal Moon sign emphasizes emotional well-being, mental peace, and personal comfort. This period enhances your emotional sensitivity, intuition, and connection with your inner self. You may feel more nurturing, compassionate, and emotionally expressive. Mental peace and contentment are possible during this favorable transit. Personal appearance and charm are enhanced, making you more appealing to others. This is a good period for self-care, emotional healing, and addressing psychological patterns. Relationships with women, especially mother, improve. Domestic harmony prevails. However, emotional sensitivity may also make you vulnerable to mood swings or hurt feelings. Practice emotional balance and avoid impulsive reactions based on temporary feelings. This transit favors activities related to home, family, water-based businesses, and hospitality sectors."
+  },
+  "gochar_moon_2": {
+    "summary": "Moon in 2nd house affects finances, family life, and emotional security.",
+    "detailed": "Moon transiting the 2nd house from your natal Moon sign brings focus on finances, family life, accumulated wealth, and emotional security. Financial matters become emotionally charged - you may worry about money or experience fluctuations in income. Family relationships, especially with mother and close relatives, come into focus. Some emotional issues within the family may surface requiring attention. This is a moderate period for financial gains - avoid impulsive financial decisions based on emotions. Speech and communication require careful handling - emotional words can cause conflicts. Property matters may proceed but require patience. Your attachment to material possessions and family traditions may increase. This period tests your emotional maturity in handling financial and domestic matters. Focus on building emotional security rather than just financial security. Avoid lending or borrowing money if possible."
+  },
+  "gochar_moon_3": {
+    "summary": "Moon in 3rd house favors communication, courage, and social connections.",
+    "detailed": "Moon transiting the 3rd house from your natal Moon sign is favorable for communication, courage, social connections, and creative initiatives. Your emotional intelligence and communication skills are enhanced, making it easier to express feelings and connect with others. This is a good period for writers, artists, and communicators. Relationships with siblings and neighbors improve - there may be emotional bonding and supportive interactions. Short journeys bring pleasure and beneficial results. You may feel more courageous and willing to take initiatives, especially in creative or communication-related fields. Mental agility and quick thinking are indicated. However, avoid being overly emotional in communication or making impulsive decisions based on temporary feelings. This transit favors learning new skills, networking, and social activities. Use your enhanced emotional intelligence to build harmonious relationships."
+  },
+  "gochar_moon_4": {
+    "summary": "Moon in 4th house brings domestic harmony, peace of mind, and comfort.",
+    "detailed": "Moon transiting the 4th house from your natal Moon sign is excellent for domestic harmony, peace of mind, emotional security, and comfort. This is one of the most favorable transits of Moon, bringing happiness in home and family life. You will experience contentment, emotional support from family, and a general sense of well-being. Relationship with mother strengthens and brings joy. Property matters, vehicles, and domestic decisions proceed smoothly. This is a favorable period for buying or selling property, home renovations, or resolving domestic issues. Mental peace prevails, reducing stress and anxiety. Psychic abilities and intuition may be heightened. This is an ideal time for home-based activities, family gatherings, and focusing on emotional well-being. Enjoy this period of domestic bliss and make the most of the favorable emotional climate."
+  },
+  "gochar_moon_5": {
+    "summary": "Moon in 5th house favors creativity, romance, emotional expression, and children.",
+    "detailed": "Moon transiting the 5th house from your natal Moon sign activates creativity, romance, emotional expression, children, and speculative matters. This is a wonderful period for emotional fulfillment through creative pursuits and romantic relationships. Your creative and artistic abilities are enhanced - favoring artistic expression, entertainment, and cultural activities. Romantic relationships flourish - emotional bonds strengthen, and favorable for love and affection. Matters related to children bring joy - their progress, happiness, or emotional connection with them. Students may perform well if they maintain emotional balance. Speculation and investments require caution despite favorable emotional climate - don't let emotions cloud financial judgment. This period favors entertainment, leisure activities, and pursuing hobbies. Enjoy emotional fulfillment but avoid impulsive romantic decisions or excessive risk-taking."
+  },
+  "gochar_moon_6": {
+    "summary": "Moon in 6th house brings health challenges, enemies, and service-related stress.",
+    "detailed": "Moon transiting the 6th house from your natal Moon sign indicates health challenges, enemies, debts, and service-related stress. This is a challenging period requiring attention to physical and mental health. Digestive issues, emotional stress, or psychosomatic ailments may surface. Enemies or opponents may become active, causing worry and anxiety. Work environment may be stressful with emotional conflicts. Financial debts may cause concern. This period requires caution, patience, and focus on health and well-being. Avoid confrontations and practice diplomatic conflict resolution. Service-oriented work may bring recognition despite challenges. Female relatives or colleagues may be significant during this period. The positive aspect is that this period can help you identify health issues early and address them. Focus on preventive healthcare, stress management, and avoiding toxic situations."
+  },
+  "gochar_moon_7": {
+    "summary": "Moon in 7th house favors relationships, partnerships, and emotional harmony.",
+    "detailed": "Moon transiting the 7th house from your natal Moon sign is favorable for relationships, partnerships, marriage, and emotional harmony. This period brings emotional fulfillment through close relationships. Married life experiences harmony, understanding, and emotional bonding. Business partnerships proceed smoothly with mutual support. New romantic relationships may form for eligible individuals. Public relations and social connections are favorably influenced - people are drawn to your nurturing energy. This is a good period for collaboration, joint ventures, and diplomatic initiatives. Emotional intelligence in relationships helps resolve past conflicts. However, avoid being overly dependent on partners for emotional security. This transit favors activities related to hospitality, counseling, and people-oriented professions. Enjoy the harmonious relationship energy and strengthen your bonds."
+  },
+  "gochar_moon_8": {
+    "summary": "Moon in 8th house brings emotional turmoil, health issues, and transformation.",
+    "detailed": "Moon transiting the 8th house from your natal Moon sign is a challenging period affecting emotional stability, health, longevity, and transformation. You may experience emotional upheaval, psychological stress, or anxiety during this transit. Health requires serious attention, especially mental health and chronic conditions. Unexpected events or sudden changes may create emotional instability. This period tests your emotional resilience and ability to handle transformative experiences. Financial matters related to loans, insurance, or inheritance may cause worry. Occult interests, spiritual practices, or psychological exploration may be compelling. Avoid risky activities and maintain a low profile. The positive aspect is that this period can bring deep emotional healing and transformation if approached with awareness. Focus on spiritual practices, therapy, or counseling if needed."
+  },
+  "gochar_moon_9": {
+    "summary": "Moon in 9th house favors spiritual growth, fortune, and emotional fulfillment.",
+    "detailed": "Moon transiting the 9th house from your natal Moon sign favors spiritual growth, fortune, higher education, and emotional fulfillment. This is a wonderful period for inner exploration, spiritual practices, and expanding your consciousness. You may feel drawn to religious or philosophical pursuits, finding comfort and meaning in spiritual traditions. Fortune smiles upon you - unexpected benefits, fortunate coincidences, or lucky breaks are possible. Higher education, research, and academic pursuits proceed smoothly. Long journeys, especially for pilgrimage or educational purposes, are favored and bring emotional satisfaction. Relationship with father or spiritual teachers may be nurturing. Intuitive abilities are heightened. This period favors learning, teaching, and sharing wisdom. Use this favorable time for spiritual development, educational pursuits, and exploring life's deeper meanings."
+  },
+  "gochar_moon_10": {
+    "summary": "Moon in 10th house favors career, public recognition, and professional success.",
+    "detailed": "Moon transiting the 10th house from your natal Moon sign brings favorable developments in career, public recognition, and professional matters. Your professional life receives emotional support and favorable public perception. This is a good period for career advancement, promotions, or recognition for your work. Authority figures may view you favorably. Public relations, marketing, and people-oriented careers flourish. Work environment becomes more harmonious and emotionally supportive. This is a favorable time for women in professions or for businesses catering to women's needs. However, avoid letting emotions cloud professional judgment. Career changes or new job opportunities are favorably influenced. This transit favors hospitality, healthcare, education, and service-oriented professions. Enjoy the professional benefits and maintain work-life balance."
+  },
+  "gochar_moon_11": {
+    "summary": "Moon in 11th house brings excellent gains, emotional fulfillment, and social success.",
+    "detailed": "Moon transiting the 11th house from your natal Moon sign is one of the most favorable positions, bringing excellent gains, emotional fulfillment, and social success. Financial benefits are strongly indicated - income increases, profitable investments, or fulfillment of financial desires. Your social circle expands, bringing supportive and beneficial friendships. Emotional needs are fulfilled through social connections and group activities. Elder siblings may be supportive and bring opportunities. Long-held desires may be realized during this auspicious period. Professional success brings both financial and emotional rewards. This is an excellent time for networking, collaborations, and group endeavors. The energy is favorable for starting new ventures or expanding existing ones. Make the most of this wonderful period by pursuing your goals and enjoying social and emotional fulfillment."
+  },
+  "gochar_moon_12": {
+    "summary": "Moon in 12th house brings emotional challenges, expenses, and isolation.",
+    "detailed": "Moon transiting the 12th house from your natal Moon sign indicates emotional challenges, expenses, isolation, and foreign connections. You may experience emotional distress, loneliness, or psychological stress during this period. Mental peace may be elusive, and anxiety or worry may affect well-being. Financial outflows and unexpected expenses are possible. Sleep disturbances, dreams, or subconscious issues may surface. Foreign connections or travel may be indicated but may bring stress. This period requires emotional resilience, spiritual practices, and self-care. Avoid major decisions, confrontations, or risky activities. The positive aspect is that this period can facilitate spiritual growth, emotional healing, and letting go of past patterns. Focus on meditation, charity, and connecting with your inner self. This too shall pass - maintain faith and practice self-compassion."
+  },
+  "gochar_mars_1": {
+    "summary": "Mars in 1st house brings energy, courage, but also conflicts and health issues.",
+    "detailed": "Mars transiting the 1st house from your Moon sign brings high energy, courage, initiative, but also potential for conflicts and health issues. You will feel assertive, confident, and ready to take action. This is a powerful period for starting new ventures, physical activities, and pursuing ambitious goals. Athletic abilities and physical performance are enhanced. However, this aggressive energy can also lead to conflicts, accidents, or injuries if not channeled properly. Headaches, fever, or inflammatory conditions may affect health. Ego conflicts and arguments are possible - practice patience and avoid aggressive behavior. This is a favorable time for initiatives requiring courage and determination but unfavorable for maintaining harmonious relationships. Channel your energy constructively through exercise, competition, or goal-oriented activities. Take precautions against accidents and injuries."
+  },
+  "gochar_mars_2": {
+    "summary": "Mars in 2nd house affects finances, speech, and family harmony.",
+    "detailed": "Mars transiting the 2nd house from your Moon sign influences finances, speech, family life, and accumulated wealth. Financial matters may become stressful - unexpected expenses, impulsive spending, or financial losses are possible. Be cautious with money and avoid risky investments. Speech requires careful control - harsh words can cause conflicts and damage relationships. Family harmony may be disturbed due to impulsive behavior or arguments. Property matters face obstacles. Health issues related to face, mouth, or throat may surface. This period requires financial discipline, diplomatic communication, and patience in family matters. Avoid lending or borrowing money, and control temper in domestic situations. On the positive side, this energy can be used for financial planning and taking decisive action on money matters. Focus on building savings rather than spending."
+  },
+  "gochar_mars_3": {
+    "summary": "Mars in 3rd house favors courage, communication, and new initiatives.",
+    "detailed": "Mars transiting the 3rd house from your Moon sign is highly favorable for courage, initiative, communication, and new ventures. Your confidence and energy levels are high, making this an excellent time for starting new projects, pursuing ambitious goals, and taking calculated risks. Communication becomes bold and assertive - favorable for negotiations, debates, and presenting your ideas forcefully. Relationships with siblings may be competitive but also supportive for growth. Short journeys bring beneficial results. You'll find opportunities to showcase your leadership abilities and competitive spirit. This is an excellent period for entrepreneurs, athletes, and those in competitive fields. However, avoid being overly aggressive or dominating in interactions. Channel this energy constructively into goal-oriented activities and avoid unnecessary conflicts."
+  },
+  "gochar_mars_4": {
+    "summary": "Mars in 4th house brings domestic conflicts, property issues, and emotional stress.",
+    "detailed": "Mars transiting the 4th house from your Moon sign creates domestic challenges, property issues, and emotional stress. Home environment may become conflict-ridden with arguments and disharmony. Relationship with mother may be strained. Property matters face obstacles or delays - avoid property transactions if possible. Vehicle-related issues or accidents are possible - drive cautiously. Emotional peace may be disturbed by aggressive energy at home. This period requires patience, diplomatic handling of domestic matters, and avoiding confrontations. Health issues related to chest, lungs, or heart may surface. On the positive side, this energy can be used for home renovations, repairs, or taking decisive action on property matters. Focus on maintaining domestic peace and avoiding impulsive reactions in family situations."
+  },
+  "gochar_mars_5": {
+    "summary": "Mars in 5th house affects children, romance, and speculative matters.",
+    "detailed": "Mars transiting the 5th house from your Moon sign influences children, romance, creativity, and speculative matters. Children may face health issues or behavioral problems - their well-being requires attention. Romantic relationships may experience conflicts, passion, or passionate attraction. Creative energy is high but may be expressed aggressively. Speculation and investments are unfavorable - avoid risky financial decisions as losses are likely. Students may face challenges with focus and discipline. This period requires patience in romantic relationships, careful attention to children's needs, and avoidance of gambling or speculative activities. However, this energy can be channeled into competitive sports, athletic pursuits, or goal-oriented creative projects. Focus on constructive expressions of this energy and avoid impulsive romantic or financial decisions."
+  },
+  "gochar_mars_6": {
+    "summary": "Mars in 6th house brings victory over enemies, good health, but also conflicts.",
+    "detailed": "Mars transiting the 6th house from your Moon sign is favorable for overcoming enemies, improving health, and winning competitions. You have the energy and determination to defeat opponents and overcome obstacles. Health generally improves as vitality increases. This is an excellent period for athletes, competitors, and those facing challenging situations. Work success is indicated through hard work and determination. Financial debts can be cleared with focused effort. However, conflicts and arguments are still possible - maintain diplomatic approach. Service-oriented work brings recognition. This transit favors physical activities, competition, and confronting challenges head-on. Use this energy to overcome obstacles and achieve victory in your endeavors. Avoid aggressive behavior but don't back down from necessary confrontations."
+  },
+  "gochar_mars_7": {
+    "summary": "Mars in 7th house affects partnerships, marriage, and business relationships.",
+    "detailed": "Mars transiting the 7th house from your Moon sign creates challenges in partnerships, marriage, and business relationships. Married life may experience conflicts, arguments, or aggressive behavior from spouse. Business partnerships face disputes and disagreements. This is not an ideal period for starting new partnerships. Legal matters may cause stress. However, this energy can also indicate passionate connections in romantic relationships. New romantic relationships may be intense but potentially volatile. In business, aggressive negotiation style may be necessary but should be used carefully. This period requires patience in relationships, compromise, and avoiding ego conflicts. Singles may find passionate romantic opportunities. Focus on diplomacy and channel aggressive energy into competitive business activities rather than personal conflicts."
+  },
+  "gochar_mars_8": {
+    "summary": "Mars in 8th house brings health issues, accidents, and transformative challenges.",
+    "detailed": "Mars transiting the 8th house from your Moon sign is a dangerous period requiring extreme caution. Health risks increase - accidents, injuries, surgeries, or acute health issues are possible. Financial losses through risky ventures or bad debts are indicated. Longevity concerns may arise. This is a highly unfavorable period for starting new ventures, taking risks, or confrontations. Avoid dangerous activities, speculative investments, and aggressive behavior. Drive very cautiously and avoid situations that could lead to accidents. Health requires maximum attention - avoid risky physical activities. The positive aspect is that this period can bring transformative experiences that eliminate weaknesses. However, the challenges are significant and require careful avoidance of risk. Practice safety precautions, maintain a low profile, and focus on self-preservation."
+  },
+  "gochar_mars_9": {
+    "summary": "Mars in 9th house affects fortune, spirituality, and long journeys.",
+    "detailed": "Mars transiting the 9th house from your Moon sign influences fortune, spirituality, higher education, and long journeys. Your fortune may feel tested - obstacles and delays in achieving goals are possible. Spiritual pursuits may feel frustrating or require more effort. Long journeys may be undertaken but could be stressful. Relationship with father or spiritual teachers may involve conflicts. Higher education and academic pursuits require extra effort and discipline. This is not an ideal period for risky ventures or relying on luck. However, this energy can be used for determined pursuit of philosophical or educational goals. Athletics, physical training, or competitive academic pursuits are favored. Focus on disciplined effort rather than relying on fortune. Avoid impulsive actions related to religious or philosophical matters."
+  },
+  "gochar_mars_10": {
+    "summary": "Mars in 10th house brings career success, recognition, but also work stress.",
+    "detailed": "Mars transiting the 10th house from your Moon sign is favorable for career success, professional advancement, and recognition. Your hard work, determination, and competitive spirit bring professional achievements. This is an excellent period for career advancement, promotions, or taking on leadership roles. Authority figures recognize your capabilities. However, work stress and pressure may be high. Conflicts with colleagues or superiors are possible. Physical health may suffer due to work pressure - maintain work-life balance. This transit favors ambitious career moves, entrepreneurial ventures, and professional competition. Use this energy to achieve career goals but avoid aggressive behavior that could damage professional relationships. Focus on results and channel competitive energy constructively."
+  },
+  "gochar_mars_11": {
+    "summary": "Mars in 11th house brings excellent gains, victory, and fulfillment of desires.",
+    "detailed": "Mars transiting the 11th house from your Moon sign is one of the most favorable positions, bringing gains, victory, and fulfillment of desires. Financial success is strongly indicated - profits, promotions, or achievement of financial goals. Your efforts bring rewards and recognition. Social network expands to include influential and supportive connections. Elder siblings may be helpful. Competitive endeavors bring victory. This is an excellent period for starting new ventures, pursuing ambitious goals, and achieving success. Long-held desires may be fulfilled. Professional success brings both financial and social benefits. Make the most of this powerful energy by taking decisive action, pursuing your goals aggressively, and capitalizing on favorable circumstances. This is a time of victory and achievement."
+  },
+  "gochar_mars_12": {
+    "summary": "Mars in 12th house brings expenses, losses, and hidden enemies.",
+    "detailed": "Mars transiting the 12th house from your Moon sign indicates expenses, losses, hidden enemies, and foreign connections. Financial outflows and unexpected expenses are likely - losses are possible if not careful. Hidden enemies may work against you. Health requires attention - chronic issues may flare up. Foreign connections or travel may bring stress. This period requires financial caution, avoidance of risky activities, and vigilance against hidden opposition. Sleep disturbances and psychological stress may affect well-being. Avoid speculative investments, lending money, or risky ventures. On the positive side, this period can favor spiritual disciplines, yoga, and martial arts. Channel the energy into solitary physical activities or spiritual practices. Focus on self-preservation and avoid confrontations or risky situations."
+  },
+  "gochar_mercury_1": {
+    "summary": "Mercury in 1st house favors communication, learning, and intellectual pursuits.",
+    "detailed": "Mercury transiting the 1st house from your Moon sign enhances communication skills, intelligence, and learning abilities. Your mind is sharp, curious, and ready for new knowledge. This is an excellent period for education, intellectual pursuits, and acquiring new skills. Communication brings success - favorable for writers, speakers, teachers, and communicators. Business acumen improves - favorable for negotiations, deals, and commercial activities. Your wit and humor make you socially popular. However, avoid overthinking and mental restlessness. Short journeys bring benefits. This transit favors all forms of communication, learning, and intellectual development. Make the most of this period by pursuing educational goals, expressing your ideas, and engaging in intellectual conversations."
+  },
+  "gochar_mercury_2": {
+    "summary": "Mercury in 2nd house favors finances, family business, and communication.",
+    "detailed": "Mercury transiting the 2nd house from your Moon sign favors finances, family business, and communication matters. Financial acumen is enhanced - good for business, investments, and financial planning. Family business or commercial activities prosper. Communication within family improves, resolving past misunderstandings. This is a favorable period for acquiring assets, saving money, and making wise financial decisions. Speech and writing skills bring recognition. Property matters may be negotiated successfully. Education and learning related to finance or business are favored. However, avoid speculative investments and impulsive financial decisions. This period favors building wealth through intelligence, communication skills, and business acumen. Focus on financial planning and family harmony."
+  },
+  "gochar_mercury_3": {
+    "summary": "Mercury in 3rd house is excellent for communication, courage, and new initiatives.",
+    "detailed": "Mercury transiting the 3rd house from your Moon sign is highly favorable for communication, new initiatives, and self-expression. Your communication skills are at their peak - excellent for writers, speakers, journalists, and media professionals. Courage and confidence increase, favoring new ventures and initiatives. Relationships with siblings improve through better communication. Short journeys bring success and new opportunities. Learning and intellectual pursuits flourish. This is an excellent period for starting communication-related businesses, launching publications, or beginning new educational ventures. Your wit and intelligence impress others. Competitive activities bring success. Make the most of this favorable period by expressing your ideas, starting new projects, and leveraging your communication skills."
+  },
+  "gochar_mercury_4": {
+    "summary": "Mercury in 4th house favors domestic harmony, education, and property matters.",
+    "detailed": "Mercury transiting the 4th house from your Moon sign favors domestic harmony, education, property matters, and comfort. Home environment becomes more communicative and harmonious. This is a favorable period for property transactions, home renovations, or resolving domestic issues. Education and learning, especially at home or in familiar environments, prosper. Relationship with mother improves through better communication. Mental peace and contentment prevail. Vehicle-related matters proceed smoothly. This is a good period for home-based businesses, teaching, or online education. Writing and intellectual pursuits done from home bring success. Enjoy the harmonious domestic atmosphere and focus on learning and property-related goals."
+  },
+  "gochar_mercury_5": {
+    "summary": "Mercury in 5th house favors creativity, romance, education, and speculation.",
+    "detailed": "Mercury transiting the 5th house from your Moon sign favors creativity, romance, education, and intelligent speculation. Creative and artistic abilities are enhanced - excellent for artists, writers, and entertainers. Romantic relationships benefit from intellectual connection and communication. Students perform well academically - focus and learning abilities are strong. Intelligent investments in stock market or speculative ventures may bring profits if carefully analyzed. Children's education and progress bring joy. This is an excellent period for entertainment, media, and creative communication. However, avoid over-analyzing romantic relationships or being too critical in love. Enjoy the creative and intellectual stimulation this transit brings."
+  },
+  "gochar_mercury_6": {
+    "summary": "Mercury in 6th house brings victory over enemies and good health.",
+    "detailed": "Mercury transiting the 6th house from your Moon sign favors overcoming enemies, improving health, and service-related success. You can outsmart opponents and resolve conflicts through intelligence and communication. Health generally improves, especially nervous system and digestive health. Work environment becomes more harmonious and communicatively satisfying. Service-oriented work brings recognition and success. Financial debts can be managed and cleared with proper planning. This is a favorable period for doctors, lawyers, consultants, and service providers. Your analytical skills help solve problems effectively. Make the most of this period by addressing health issues, resolving conflicts diplomatically, and providing excellent service."
+  },
+  "gochar_mercury_7": {
+    "summary": "Mercury in 7th house favors partnerships, business, and communication in relationships.",
+    "detailed": "Mercury transiting the 7th house from your Moon sign is favorable for partnerships, business relationships, and marriage. Business partnerships prosper through effective communication and shared intellectual interests. Marriage benefits from better understanding and communication between partners. New business partnerships or collaborative ventures are favorably influenced. Public relations and marketing activities bring success. Legal matters may be resolved through negotiation and communication. This is a good period for marriage, partnerships, and collaborative endeavors. However, avoid being overly critical or analytical in relationships. Focus on diplomatic communication and mutual understanding in all partnerships."
+  },
+  "gochar_mercury_8": {
+    "summary": "Mercury in 8th house brings research, occult knowledge, and transformation.",
+    "detailed": "Mercury transiting the 8th house from your Moon sign favors research, occult studies, and transformative intellectual pursuits. Your analytical and investigative abilities are enhanced - excellent for research, detective work, or uncovering hidden information. Interest in occult, astrology, psychology, or mystical subjects increases. Financial matters related to insurance, taxes, or inheritance may be managed intelligently. This period favors deep learning, research projects, and uncovering secrets. However, avoid speculative investments and risky financial decisions. Health requires attention, especially nervous system health. Channel this energy into intellectual exploration and research rather than worry or overthinking."
+  },
+  "gochar_mercury_9": {
+    "summary": "Mercury in 9th house favors higher education, writing, and spiritual learning.",
+    "detailed": "Mercury transiting the 9th house from your Moon sign is excellent for higher education, writing, teaching, and spiritual learning. Academic pursuits prosper - favorable for research, publishing, and advanced studies. Teaching and mentoring bring success and recognition. Writing, publishing, and communication of philosophical or spiritual ideas are favored. Long journeys for educational purposes bring benefits. Relationship with teachers and spiritual guides improves. Religious or philosophical studies are intellectually stimulating. This is an excellent period for authors, professors, researchers, and spiritual teachers. Your intellect seeks higher knowledge and wisdom. Make the most of this period by pursuing education, teaching others, and exploring life's deeper meanings."
+  },
+  "gochar_mercury_10": {
+    "summary": "Mercury in 10th house favors career, business, and professional communication.",
+    "detailed": "Mercury transiting the 10th house from your Moon sign brings excellent career prospects, business success, and professional recognition. Communication skills become professionally valuable - favorable for writers, speakers, consultants, and media professionals. Career advancement through intellectual abilities is indicated. Business acumen brings professional success. This is an excellent period for starting new business ventures, especially in communication or intellectual fields. Authority figures appreciate your intelligence and communication skills. Professional networking brings opportunities. Make the most of this favorable period by pursuing career goals, enhancing professional skills, and leveraging your communication abilities for success."
+  },
+  "gochar_mercury_11": {
+    "summary": "Mercury in 11th house brings excellent gains, social success, and fulfillment of desires.",
+    "detailed": "Mercury transiting the 11th house from your Moon sign is highly favorable for gains, social success, and fulfillment of desires. Financial benefits through intelligence, communication, or business are strongly indicated. Your social network expands to include intellectual and supportive connections. Professional success brings both financial and social recognition. Elder siblings may be helpful in business or career matters. New opportunities arise through networking and social connections. This is an excellent period for collaborative ventures, group projects, and team endeavors. Your ideas receive support and appreciation. Make the most of this wonderful period by networking, pursuing your goals, and enjoying social and professional success."
+  },
+  "gochar_mercury_12": {
+    "summary": "Mercury in 12th house brings expenses, foreign connections, and spiritual learning.",
+    "detailed": "Mercury transiting the 12th house from your Moon sign indicates expenses, foreign connections, and spiritual learning. Financial outflows and unexpected expenses are possible - budget carefully. Foreign connections, travel, or interests may bring both expenses and learning. Interest in spirituality, meditation, or occult subjects increases. This period favors spiritual learning, charitable activities, and introspection. However, avoid major expenses, risky investments, or important decisions. Sleep patterns may be disturbed, affecting mental clarity. Writing or intellectual work in solitude can be productive. Focus on spiritual development, charity, and learning rather than material gains. This is a period for inner growth rather than outer achievement."
+  },
+  "gochar_jupiter_1": {
+    "summary": "Jupiter in 1st house brings excellent health, confidence, and personal growth.",
+    "detailed": "Jupiter transiting the 1st house from your Moon sign is highly favorable, bringing excellent health, confidence, wisdom, and personal growth. Your personality becomes more optimistic, generous, and spiritually inclined. Physical and mental health improve significantly. This is an excellent period for personal development, spiritual practices, and self-improvement. New opportunities arise in various areas of life. Your wisdom and positive attitude inspire others. Financial prosperity is indicated. This transit favors starting new ventures, pursuing education, and spiritual growth. Make the most of this wonderful period by focusing on personal development, maintaining positive attitude, and expressing gratitude for blessings."
+  },
+  "gochar_jupiter_2": {
+    "summary": "Jupiter in 2nd house favors wealth accumulation, family prosperity, and speech.",
+    "detailed": "Jupiter transiting the 2nd house from your Moon sign is excellent for wealth accumulation, family prosperity, and financial stability. Financial gains through various sources are strongly indicated. This is a favorable period for investments, savings, and building wealth. Family harmony and prosperity prevail. Your speech becomes wise and inspiring - favorable for teachers, speakers, and writers. Property matters bring gains. This period favors financial planning, starting family businesses, and acquiring assets. Enjoy the financial prosperity and share your blessings with family and those in need. Make wise financial decisions and avoid extravagance."
+  },
+  "gochar_jupiter_3": {
+    "summary": "Jupiter in 3rd house favors courage, communication, and new initiatives.",
+    "detailed": "Jupiter transiting the 3rd house from your Moon sign favors courage, initiative, communication, and self-effort. Your confidence and determination increase, favoring new ventures and personal initiatives. Communication brings success and recognition. Relationships with siblings improve and become supportive. Short journeys bring benefits and opportunities. Writing, teaching, and intellectual pursuits prosper. This is an excellent period for starting new projects, pursuing educational goals, and expressing your ideas. Your efforts bring success and prosperity. Make the most of this favorable period by taking initiative, pursuing your goals, and maintaining positive relationships with siblings."
+  },
+  "gochar_jupiter_4": {
+    "summary": "Jupiter in 4th house brings domestic harmony, property gains, and peace of mind.",
+    "detailed": "Jupiter transiting the 4th house from your Moon sign is highly favorable for domestic harmony, property, peace of mind, and emotional security. Home environment becomes blissful and harmonious. Property transactions, vehicles, and domestic matters bring gains. Relationship with mother strengthens and brings joy. Mental peace and emotional contentment prevail. This is an excellent period for buying or selling property, home renovations, or resolving domestic issues. Vehicle purchases are favored. Spiritual peace and domestic happiness are highlighted. Make the most of this wonderful period by focusing on home, family, and emotional well-being."
+  },
+  "gochar_jupiter_5": {
+    "summary": "Jupiter in 5th house favors children, romance, creativity, and education.",
+    "detailed": "Jupiter transiting the 5th house from your Moon sign is excellent for children, romance, creativity, and education. Children bring joy, success, and pride. Romantic relationships are favorable - marriage or birth of child possible. Creative and artistic abilities flourish - favorable for entertainment, arts, and cultural activities. Students excel academically. Speculation and investments may bring profits if analyzed carefully. This is a wonderful period for love, procreation, creative expression, and intellectual growth. Enjoy the blessings in these areas of life and share your happiness with others."
+  },
+  "gochar_jupiter_6": {
+    "summary": "Jupiter in 6th house brings service success, disease immunity, and victory over enemies.",
+    "detailed": "Jupiter transiting the 6th house from your Moon sign favors service, health improvements, and victory over enemies. Health improves significantly - recovery from diseases is possible. Service-oriented work brings recognition and success. Enemies are defeated or become friends. Financial debts can be cleared. This period favors medical, legal, or service professions. Your wisdom and diplomacy help resolve conflicts. However, avoid overeating as weight gain is possible. Make the most of this favorable period by focusing on health, providing excellent service, and resolving conflicts through wisdom."
+  },
+  "gochar_jupiter_7": {
+    "summary": "Jupiter in 7th house favors partnerships, marriage, and business success.",
+    "detailed": "Jupiter transiting the 7th house from your Moon sign is highly favorable for partnerships, marriage, and business relationships. Marriage brings happiness and prosperity - favorable for weddings and marital harmony. Business partnerships prosper and bring financial gains. New partnerships and collaborations are favorably influenced. Legal matters resolve in your favor. Public relations and social connections bring benefits. This is an excellent period for marriage, partnerships, and collaborative ventures. Enjoy the harmonious and prosperous relationship energy."
+  },
+  "gochar_jupiter_8": {
+    "summary": "Jupiter in 8th house brings longevity, inheritance, and spiritual transformation.",
+    "detailed": "Jupiter transiting the 8th house from your Moon sign favors longevity, inheritance, occult knowledge, and spiritual transformation. Health challenges may transform into healing and recovery. Inheritance, insurance, or unexpected financial gains are possible. Interest in occult, astrology, or spiritual subjects increases. This period favors deep spiritual practices, research, and uncovering hidden knowledge. Psychological healing and transformation are possible. However, avoid risky activities and speculative investments. Focus on spiritual growth, research, and inner transformation."
+  },
+  "gochar_jupiter_9": {
+    "summary": "Jupiter in 9th house is excellent for fortune, spirituality, and higher education.",
+    "detailed": "Jupiter transiting the 9th house from your Moon sign is highly favorable for fortune, spirituality, higher education, and divine blessings. Your fortune shines brightly - success in endeavors is indicated. Spiritual progress and divine grace are experienced. Higher education, teaching, and research bring recognition and success. Long journeys, especially pilgrimages, bring blessings. Relationship with father and spiritual teachers strengthens. Religious or philosophical pursuits bring fulfillment. This is one of the most favorable transits - make the most of it by pursuing spiritual growth, education, and righteous actions."
+  },
+  "gochar_jupiter_10": {
+    "summary": "Jupiter in 10th house brings excellent career success, recognition, and prosperity.",
+    "detailed": "Jupiter transiting the 10th house from your Moon sign is highly favorable for career, professional success, and public recognition. Career advancement, promotion, or professional achievements are strongly indicated. Authority and status increase. Business ventures prosper and bring financial gains. This is an excellent period for professional growth, government-related matters, and career advancement. Your wisdom and capabilities are recognized. Make the most of this wonderful period by pursuing career goals, taking on leadership roles, and enjoying professional success."
+  },
+  "gochar_jupiter_11": {
+    "summary": "Jupiter in 11th house brings exceptional gains, fulfillment of desires, and prosperity.",
+    "detailed": "Jupiter transiting the 11th house from your Moon sign is one of the most favorable positions, bringing exceptional gains, fulfillment of desires, and prosperity. Financial success and abundance are strongly indicated. All your desires may be fulfilled during this blessed period. Social network expands to include influential and supportive people. Professional success brings both wealth and recognition. Elder siblings are helpful. New ventures bring prosperity. This is truly a golden period - make the most of it by pursuing your dreams, expressing gratitude, and sharing your prosperity with others."
+  },
+  "gochar_jupiter_12": {
+    "summary": "Jupiter in 12th house favors spiritual growth, foreign travel, and expenditure for good causes.",
+    "detailed": "Jupiter transiting the 12th house from your Moon sign favors spiritual growth, foreign connections, and charitable expenditures. Spiritual progress, enlightenment, and divine blessings are indicated. Foreign travel or residence may bring benefits. Expenses on charitable or righteous causes bring punya (merit). Interest in spirituality, meditation, and liberation increases. This period favors spiritual practices, charity, and selfless service. However, financial outflows are likely - avoid unnecessary expenses. Focus on spiritual development rather than material gains. This is a period for inner growth and karmic purification."
+  },
+  "gochar_venus_1": {
+    "summary": "Venus in 1st house favors beauty, romance, happiness, and personal charm.",
+    "detailed": "Venus transiting the 1st house from your Moon sign enhances beauty, charm, romance, and personal happiness. Your appearance becomes more attractive and pleasing. Romantic opportunities arise - favorable for love and marriage. Personal happiness and contentment prevail. Artistic and creative abilities are enhanced. Luxuries and comforts may be acquired. This is a wonderful period for romance, social activities, and enjoying life's pleasures. Your charm attracts others. Make the most of this favorable period by focusing on relationships, personal appearance, and enjoying life's beauty."
+  },
+  "gochar_venus_2": {
+    "summary": "Venus in 2nd house favors wealth accumulation, family happiness, and luxuries.",
+    "detailed": "Venus transiting the 2nd house from your Moon sign favors wealth, family happiness, and acquisition of luxuries. Financial gains and prosperity are indicated. Family harmony and domestic bliss prevail. Acquisition of vehicles, clothes, jewelry, and other luxuries is favored. Your speech becomes sweet and persuasive. Artistic pursuits bring success. This is an excellent period for financial growth, family matters, and enjoying material comforts. Make wise financial decisions and share your prosperity with family."
+  },
+  "gochar_venus_3": {
+    "summary": "Venus in 3rd house favors communication, creativity, and harmonious relationships.",
+    "detailed": "Venus transiting the 3rd house from your Moon sign favors communication, creativity, and harmonious relationships. Your communication becomes diplomatic and charming. Creative and artistic pursuits flourish. Relationships with siblings improve and become harmonious. Short journeys for pleasure are favorable. Writing, arts, and entertainment bring success. This is a favorable period for romantic communication, creative expression, and social activities. Enjoy the harmonious energy and strengthen your relationships."
+  },
+  "gochar_venus_4": {
+    "summary": "Venus in 4th house brings domestic happiness, vehicles, and comfort.",
+    "detailed": "Venus transiting the 4th house from your Moon sign brings domestic happiness, vehicles, comfort, and luxury. Home environment becomes beautiful and harmonious. Acquisition of vehicles, property, or home luxuries is favored. Relationship with mother strengthens and brings joy. This is an excellent period for home renovations, buying property or vehicles, and enjoying domestic comforts. Artistic decoration of home brings satisfaction. Make the most of this favorable period by focusing on home, family, and material comforts."
+  },
+  "gochar_venus_5": {
+    "summary": "Venus in 5th house is excellent for romance, creativity, and entertainment.",
+    "detailed": "Venus transiting the 5th house from your Moon sign is highly favorable for romance, creativity, entertainment, and children. Romantic relationships flourish - love, marriage, or romantic fulfillment are indicated. Creative and artistic abilities peak - excellent for artists, performers, and entertainers. Children bring happiness and success. Entertainment, leisure, and cultural activities bring joy. This is one of the most favorable periods for love and creative expression. Enjoy the romantic and creative energy this transit brings."
+  },
+  "gochar_venus_6": {
+    "summary": "Venus in 6th house brings service success, but health and relationship challenges.",
+    "detailed": "Venus transiting the 6th house from your Moon sign creates challenges in health and relationships, though service may bring success. Health issues, especially related to reproductive system or kidneys, may require attention. Romantic relationships may face conflicts or disappointments. Excessive indulgence in sensual pleasures should be avoided. However, service-oriented work in beauty, fashion, or entertainment may bring success. Financial debts related to luxuries should be cleared. This period requires moderation in pleasures and attention to health. Focus on creative expression through service rather than personal indulgence."
+  },
+  "gochar_venus_7": {
+    "summary": "Venus in 7th house favors relationships, marriage, and partnerships.",
+    "detailed": "Venus transiting the 7th house from your Moon sign is highly favorable for relationships, marriage, and partnerships. Married life becomes harmonious and romantic. New romantic relationships may form for eligible individuals. Business partnerships prosper. This is an excellent period for marriage, partnerships, and enjoying loving relationships. Your charm and diplomacy improve all relationships. Make the most of this wonderful period by focusing on love, partnership, and harmonious connections."
+  },
+  "gochar_venus_8": {
+    "summary": "Venus in 8th house brings health issues, sexual matters, and inheritance.",
+    "detailed": "Venus transiting the 8th house from your Moon sign affects health, longevity, sexual matters, and inheritance. Health issues may require attention, especially reproductive health. Interest in sexual intimacy and occult matters increases. Inheritance or unexpected financial gains are possible. This period requires caution in relationships and health matters. Avoid excessive indulgence and risky behavior. However, this transit can also bring benefits through marriage, inheritance, or hidden sources. Focus on maintaining health and practicing moderation."
+  },
+  "gochar_venus_9": {
+    "summary": "Venus in 9th house favors fortune, romance, and creative pursuits.",
+    "detailed": "Venus transiting the 9th house from your Moon sign favors fortune, romance, creativity, and artistic pursuits. Your fortune improves, especially in matters of love and creativity. Romance and happiness are indicated. Artistic talents receive recognition and success. Long journeys for pleasure are favorable. Religious or creative pursuits bring satisfaction. This is a favorable period for artists, lovers of beauty, and those seeking happiness through creative or romantic channels. Enjoy the blessings this transit brings."
+  },
+  "gochar_venus_10": {
+    "summary": "Venus in 10th house favors career success, recognition, and professional harmony.",
+    "detailed": "Venus transiting the 10th house from your Moon sign favors career success, professional recognition, and harmonious work environment. Career in arts, entertainment, beauty, or fashion flourishes. Professional recognition and honors are possible. Work environment becomes harmonious and pleasant. This is an excellent period for career advancement, especially in creative or people-oriented fields. Your charm and diplomatic skills enhance professional relationships. Make the most of this favorable period by pursuing career goals and enjoying professional success."
+  },
+  "gochar_venus_11": {
+    "summary": "Venus in 11th house brings excellent gains, romance, and social success.",
+    "detailed": "Venus transiting the 11th house from your Moon sign is highly favorable for gains, romance, and social success. Financial gains and prosperity are strongly indicated. Romantic fulfillment and social popularity are experienced. Your social circle expands to include attractive and influential people. Professional success brings both wealth and happiness. This is an excellent period for enjoying life's pleasures, social activities, and material success. Make the most of this wonderful period by enjoying prosperity, romance, and social connections."
+  },
+  "gochar_venus_12": {
+    "summary": "Venus in 12th house brings expenses on luxuries, foreign pleasures, and romantic fulfillment.",
+    "detailed": "Venus transiting the 12th house from your Moon sign indicates expenses on luxuries, foreign pleasures, and romantic fulfillment. Financial outflows on entertainment, luxuries, or foreign travel are likely. Romantic relationships may be secretive or involve foreigners. Interest in spiritual or occult aspects of relationships increases. This period favors artistic and creative work done in solitude. However, avoid excessive spending on pleasures and maintain moderation. Enjoy romantic and creative fulfillment while practicing financial discipline."
+  },
+  "gochar_saturn_1": {
+    "summary": "Saturn in 1st house brings health issues, delays, and personal challenges.",
+    "detailed": "Saturn transiting the 1st house from your Moon sign is a challenging period affecting health, personality, and personal initiatives. Physical and mental health require attention - fatigue, depression, or chronic issues may surface. Personal efforts face delays and obstacles. You may feel burdened, pessimistic, or isolated. This period tests your resilience, patience, and character. Avoid major initiatives, risky activities, or impulsive decisions. Focus on health, discipline, and completing old projects rather than starting new ones. This is a karmic period requiring patience, hard work, and spiritual practices. The challenges ultimately strengthen your character. Take care of your health and maintain a positive mindset despite difficulties."
+  },
+  "gochar_saturn_2": {
+    "summary": "Saturn in 2nd house affects finances, family, and speech.",
+    "detailed": "Saturn transiting the 2nd house from your Moon sign creates challenges in finances, family matters, and communication. Financial stress, delays, or losses are possible - be extremely cautious with money. Family problems or separation from family members may occur. Speech requires discipline - harsh words can cause conflicts. Property matters face obstacles. This period requires financial discipline, patience in family matters, and careful communication. Avoid lending or borrowing money, new investments, or property transactions. Focus on preserving existing resources and maintaining family harmony through patience. This is a testing period that ultimately teaches financial responsibility."
+  },
+  "gochar_saturn_3": {
+    "summary": "Saturn in 3rd house favors courage, communication, and new initiatives.",
+    "detailed": "Saturn transiting the 3rd house from your Moon sign is favorable, bringing courage, determination, and success through self-effort. Your confidence and willpower increase, helping you overcome obstacles. Communication becomes serious and effective - favorable for negotiations, contracts, and serious discussions. Relationships with siblings may be challenging but ultimately transformative. Short journeys for business bring success. New initiatives undertaken with discipline and planning succeed. This is a good period for starting ventures with long-term goals, pursuing education, and building courage through facing challenges."
+  },
+  "gochar_saturn_4": {
+    "summary": "Saturn in 4th house creates Kantak Shani - domestic stress and emotional challenges.",
+    "detailed": "Saturn transiting the 4th house from your Moon sign creates Kantak Shani, bringing domestic stress, emotional challenges, and obstacles in home and property matters. Mental peace may be disturbed by domestic problems, property issues, or difficulties with mother. Home environment becomes stressful. Property transactions face significant obstacles or delays. Vehicle-related problems are possible. Emotional distress, anxiety, or depression may be experienced. This period requires patience, resilience, and consistent remedial measures. Avoid property transactions, major domestic decisions, or conflicts with family members. Focus on maintaining emotional balance through spiritual practices and patience. Relief will come when Saturn leaves this position."
+  },
+  "gochar_saturn_5": {
+    "summary": "Saturn in 5th house affects children, romance, education, and speculation.",
+    "detailed": "Saturn transiting the 5th house from your Moon sign creates challenges in matters related to children, romance, education, and speculation. Children may face problems, health issues, or delays in progress. Romantic relationships experience difficulties, delays, or disappointments. Students face obstacles, lack of focus, or academic challenges. Speculation and investments result in losses - avoid all risky financial decisions. Creative pursuits may feel blocked. This period requires patience in romantic relationships, extra attention to children's needs, and avoidance of gambling or speculation. Focus on disciplined effort in education and avoid impulsive romantic decisions. The challenges teach patience and maturity."
+  },
+  "gochar_saturn_6": {
+    "summary": "Saturn in 6th house brings victory over enemies, good health, and service success.",
+    "detailed": "Saturn transiting the 6th house from your Moon sign is favorable, bringing victory over enemies, improved health, and service-related success. You can defeat opponents and overcome obstacles through determination and strategy. Health improves, especially chronic issues. Service-oriented work brings recognition and gradual success. Financial debts can be cleared with disciplined effort. This is a favorable period for medical, legal, or service professions. Hard work brings rewards and stability. Make the most of this period by addressing health issues, working diligently, and overcoming obstacles through persistence."
+  },
+  "gochar_saturn_7": {
+    "summary": "Saturn in 7th house affects partnerships, marriage, and business relationships.",
+    "detailed": "Saturn transiting the 7th house from your Moon sign creates challenges in partnerships, marriage, and business relationships. Married life may experience stress, separation, or disharmony. Business partnerships face obstacles, delays, or conflicts. Legal matters cause worry and delays. This is not an ideal period for new partnerships or marriage. Existing relationships require patience, commitment, and effort to maintain. Loneliness or lack of support in relationships may be felt. Focus on maintaining existing partnerships through patience and compromise. Avoid major relationship decisions if possible. This testing period ultimately strengthens relationships through overcoming challenges together."
+  },
+  "gochar_saturn_8": {
+    "summary": "Saturn in 8th house brings health issues, longevity concerns, and obstacles.",
+    "detailed": "Saturn transiting the 8th house from your Moon sign is challenging, affecting health, longevity, and unexpected events. Serious health issues or chronic conditions may flare up - medical attention is essential. Longevity concerns may arise. Unexpected obstacles, losses, or transformations occur. This period requires extreme caution, health vigilance, and avoidance of risks. Financial matters related to loans, insurance, or inheritance cause stress. Avoid risky activities, speculative investments, and dangerous situations. Focus on health, spiritual practices, and addressing deep-seated issues. This is a karmic period requiring patience and faith."
+  },
+  "gochar_saturn_9": {
+    "summary": "Saturn in 9th house affects fortune, spirituality, and long journeys.",
+    "detailed": "Saturn transiting the 9th house from your Moon sign creates challenges in fortune, spirituality, and higher education. Your fortune feels obstructed - efforts don't bring expected results easily. Spiritual practices may feel dry or difficult. Long journeys may be stressful or face obstacles. Higher education or academic pursuits face delays and challenges. Relationship with father or spiritual teachers may be strained. This period tests your faith and requires persistent effort in spiritual and educational pursuits. Avoid relying on luck and focus on disciplined effort. The challenges ultimately strengthen your spiritual foundation."
+  },
+  "gochar_saturn_10": {
+    "summary": "Saturn in 10th house brings career challenges, work stress, and professional obstacles.",
+    "detailed": "Saturn transiting the 10th house from your Moon sign creates challenges in career, professional matters, and public image. Career may face stagnation, delays, or obstacles. Work stress and pressure are high. Authority figures may be critical or unsupportive. Professional reputation may suffer. This is not an ideal period for career changes or starting new business ventures. Hard work and persistence are required to maintain professional position. Focus on performing duties diligently, avoiding conflicts with superiors, and maintaining professional ethics. The challenges ultimately build professional resilience and expertise."
+  },
+  "gochar_saturn_11": {
+    "summary": "Saturn in 11th house brings gains, but with delays and hard work.",
+    "detailed": "Saturn transiting the 11th house from your Moon sign is favorable, bringing gains through hard work, patience, and perseverance. Financial gains are indicated but may be delayed or require significant effort. Your social circle may include mature or serious people. Professional success comes through persistent effort rather than quick results. Long-term goals and ambitions are favored over quick gains. This is a good period for building lasting foundations in career and finance. Make the most of this period by working diligently toward your goals and being patient with the timing of results."
+  },
+  "gochar_saturn_12": {
+    "summary": "Saturn in 12th house brings expenses, isolation, and spiritual transformation.",
+    "detailed": "Saturn transiting the 12th house from your Moon sign indicates expenses, isolation, foreign connections, and spiritual transformation. Financial outflows and unexpected expenses are likely. You may feel isolated, lonely, or disconnected from others. Foreign connections or residence may bring both challenges and growth. Sleep disturbances, psychological stress, or spiritual awakening may occur. This period requires financial caution, spiritual practices, and acceptance of solitude. Avoid major expenses, risky activities, or important decisions. Focus on spiritual growth, meditation, and karmic purification. This transformative period ultimately brings spiritual liberation."
+  },
+  "gochar_rahu_1": {
+    "summary": "Rahu in 1st house brings confusion, health issues, and unconventional behavior.",
+    "detailed": "Rahu transiting the 1st house from your Moon sign creates mental confusion, health issues, and unconventional desires. You may feel restless, anxious, or uncertain about your identity. Health problems, especially stress-related or mysterious ailments, may occur. Unusual behavior or sudden changes in personality are possible. This period requires grounding, patience, and avoiding impulsive decisions. Avoid risky activities and focus on maintaining stability. The positive aspect is that this period can bring unique opportunities and transformative experiences if navigated wisely."
+  },
+  "gochar_rahu_3": {
+    "summary": "Rahu in 3rd house favors courage, communication, and new initiatives.",
+    "detailed": "Rahu transiting the 3rd house from your Moon sign favors courage, initiative, and unconventional communication. Your confidence and daring increase, favoring new ventures and calculated risks. Communication becomes bold and persuasive. Relationships with siblings may be unusual or transformative. Short journeys, especially to unfamiliar places, bring opportunities. This is a favorable period for innovative projects, technology-related ventures, and breaking conventions. However, avoid being overly aggressive or taking unnecessary risks. Make the most of this energy by pursuing unconventional goals and embracing change."
+  },
+  "gochar_rahu_6": {
+    "summary": "Rahu in 6th house brings victory over enemies and service success.",
+    "detailed": "Rahu transiting the 6th house from your Moon sign favors overcoming enemies, improving health, and service-related success. You can outsmart opponents and overcome unusual obstacles. Health generally improves, especially mysterious or chronic issues. Service-oriented work, especially in unconventional fields, brings success. This is a favorable period for medical, legal, or technological professions. However, avoid unethical practices and maintain integrity. Make the most of this period by addressing challenges with innovative solutions and providing unique services."
+  },
+  "gochar_rahu_11": {
+    "summary": "Rahu in 11th house brings excellent gains and fulfillment of desires.",
+    "detailed": "Rahu transiting the 11th house from your Moon sign is favorable, bringing gains through unconventional sources and fulfillment of desires. Financial benefits, especially from unexpected or unusual sources, are indicated. Your social network may include diverse or influential people. Professional success comes through innovation and unique approaches. New opportunities arise from unexpected quarters. However, avoid unethical means of gain and risky ventures. Make the most of this period by embracing innovative opportunities and building diverse connections."
+  },
+  "gochar_ketu_1": {
+    "summary": "Ketu in 1st house brings spiritual detachment, health issues, and introspection.",
+    "detailed": "Ketu transiting the 1st house from your Moon sign creates spiritual detachment, health issues, and introspection. You may feel disconnected from worldly matters, focused on spiritual growth, or experiencing identity confusion. Health problems, especially mysterious or difficult-to-diagnose issues, may occur. This period requires spiritual practices, self-care, and avoiding worldly attachments. The positive aspect is deep spiritual growth and liberation from ego. Focus on spiritual development rather than material achievements."
+  },
+  "gochar_ketu_3": {
+    "summary": "Ketu in 3rd house favors spiritual communication and detachment from worldly desires.",
+    "detailed": "Ketu transiting the 3rd house from your Moon sign favors spiritual communication, writing, and detachment from material desires. Your communication becomes profound, spiritual, or philosophical. Relationships with siblings may be distant or karmic. Short journeys may be spiritual rather than material in nature. This is a favorable period for spiritual writing, teaching, and detachment from worldly ambitions. Focus on spiritual growth rather than material success."
+  },
+  "gochar_ketu_6": {
+    "summary": "Ketu in 6th house brings service success and spiritual healing.",
+    "detailed": "Ketu transiting the 6th house from your Moon sign favors service, healing, and overcoming obstacles through spiritual means. Health can improve through spiritual or alternative healing practices. Service-oriented work, especially in spiritual or healing fields, brings success. Enemies may be defeated or become irrelevant. This is a favorable period for spiritual healing, service to humanity, and overcoming karmic obstacles. Focus on selfless service and spiritual growth."
+  },
+  "gochar_ketu_11": {
+    "summary": "Ketu in 11th house brings spiritual gains and detachment from material desires.",
+    "detailed": "Ketu transiting the 11th house from your Moon sign favors spiritual gains, detachment from material desires, and spiritual fulfillment. Material gains may be limited but spiritual growth is enhanced. Your social circle may include spiritual or unusual people. Professional success comes through spiritual or humanitarian pursuits rather than material ambition. This is a favorable period for spiritual growth, detachment, and focusing on higher purpose rather than material gain."
+  }
+}

@@ -1,0 +1,23 @@
+# Python virtual environment
+venv/
+.venv/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+
+# Documentation and temporary files
+*.md
+*.html
+*.sh
+
+# IDE and git files
+.vscode/
+.idea/
+.git/
+.gitignore
+
+# Test files and examples
+test_*.py
+example_*.py
