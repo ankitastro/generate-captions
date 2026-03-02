@@ -251,7 +251,7 @@ with st.sidebar:
         st.caption("No saved sessions yet.")
 
 # ── Session state init ────────────────────────────────────────────────────────
-for key in ["text_p1", "text_p2", "dur1", "dur2", "words1", "words2", "loaded_date"]:
+for key in ["text_p1", "text_p2", "edit_p1", "edit_p2", "dur1", "dur2", "words1", "words2", "loaded_date"]:
     if key not in st.session_state:
         st.session_state[key] = None
 
@@ -261,18 +261,22 @@ if st.session_state.loaded_date != date_str:
     if session:
         st.session_state.text_p1 = session["text_p1"]
         st.session_state.text_p2 = session["text_p2"]
+        st.session_state.edit_p1 = session["text_p1"]
+        st.session_state.edit_p2 = session["text_p2"]
         st.session_state.dur1    = session["dur1"]
         st.session_state.dur2    = session["dur2"]
     else:
         st.session_state.text_p1 = None
         st.session_state.text_p2 = None
+        st.session_state.edit_p1 = None
+        st.session_state.edit_p2 = None
         st.session_state.dur1    = None
         st.session_state.dur2    = None
     st.session_state.words1 = db_load_timestamps(date_str, 1)
     st.session_state.words2 = db_load_timestamps(date_str, 2)
     st.session_state.loaded_date = date_str
 
-text_ready       = bool(st.session_state.text_p1 and st.session_state.text_p2)
+text_ready       = bool(st.session_state.edit_p1 and st.session_state.edit_p2)
 audio_ready      = bool(st.session_state.dur1 and st.session_state.dur2)
 timestamps_ready = bool(st.session_state.words1 and st.session_state.words2)
 
@@ -297,6 +301,8 @@ if gen_text_btn:
                 p1, p2 = f1.result(), f2.result()
         st.session_state.text_p1 = p1
         st.session_state.text_p2 = p2
+        st.session_state.edit_p1 = p1
+        st.session_state.edit_p2 = p2
         st.session_state.dur1    = None
         st.session_state.dur2    = None
         st.session_state.words1  = None
@@ -310,18 +316,12 @@ if text_ready:
     c1, c2 = st.columns(2)
     with c1:
         st.caption("Part 1 — मेष → कन्या")
-        edited_p1 = st.text_area("", value=st.session_state.text_p1,
-                                  height=280, key="edit_p1", label_visibility="collapsed")
-        if edited_p1 != st.session_state.text_p1:
-            st.session_state.text_p1 = edited_p1
-            db_save_session(date_str, text_p1=edited_p1)
+        st.text_area("", height=280, key="edit_p1", label_visibility="collapsed",
+                     on_change=lambda: db_save_session(date_str, text_p1=st.session_state.edit_p1))
     with c2:
         st.caption("Part 2 — तुला → मीन")
-        edited_p2 = st.text_area("", value=st.session_state.text_p2,
-                                  height=280, key="edit_p2", label_visibility="collapsed")
-        if edited_p2 != st.session_state.text_p2:
-            st.session_state.text_p2 = edited_p2
-            db_save_session(date_str, text_p2=edited_p2)
+        st.text_area("", height=280, key="edit_p2", label_visibility="collapsed",
+                     on_change=lambda: db_save_session(date_str, text_p2=st.session_state.edit_p2))
 
 st.divider()
 
@@ -339,9 +339,9 @@ if not text_ready:
 if gen_audio_btn and text_ready:
     try:
         with st.spinner("Generating TTS for Part 1 (~30s)..."):
-            dur1 = generate_tts(st.session_state.text_p1, WAV1)
+            dur1 = generate_tts(st.session_state.edit_p1, WAV1)
         with st.spinner("Generating TTS for Part 2 (~30s)..."):
-            dur2 = generate_tts(st.session_state.text_p2, WAV2)
+            dur2 = generate_tts(st.session_state.edit_p2, WAV2)
         st.session_state.dur1   = dur1
         st.session_state.dur2   = dur2
         st.session_state.words1 = None
