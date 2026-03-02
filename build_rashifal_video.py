@@ -223,24 +223,36 @@ def build_video(names, words, wav_path, total_dur, out_path, log_fn=None, intro_
     audio_clip = AudioFileClip(wav_path).subclipped(boundaries[first_name], boundaries["_end"])
     rashi_part = concatenate_videoclips(segments).with_audio(audio_clip)
 
-    if intro_path and os.path.exists(intro_path):
-        intro = VideoFileClip(intro_path)
-        open_clips.append(intro)
-        final = concatenate_videoclips([intro, rashi_part])
-        log_fn(f"  Prepending intro ({intro.duration:.1f}s): {os.path.basename(intro_path)}")
-    elif intro_path:
-        final = rashi_part
-        log_fn(f"  WARNING: intro not found at {intro_path}")
-    else:
-        final = rashi_part
-
-    log_fn(f"  Encoding → {os.path.basename(out_path)} (this may take 1-2 min)...")
-    final.write_videofile(out_path, fps=30, codec="libx264", audio_codec="aac", logger=None)
+    # Step 1: encode rashi segments to a temp file
+    tmp_path = out_path + ".rashi.mp4"
+    log_fn(f"  Encoding rashi segments → {os.path.basename(tmp_path)} ...")
+    rashi_part.write_videofile(tmp_path, fps=30, codec="libx264", audio_codec="aac", logger=None)
     for c in open_clips:
-        try:
-            c.close()
-        except Exception:
-            pass
+        try: c.close()
+        except Exception: pass
+
+    # Step 2: prepend intro via ffmpeg concat (stream copy — no re-encode)
+    if intro_path and os.path.exists(intro_path):
+        import subprocess
+        list_file = out_path + ".concat.txt"
+        with open(list_file, "w") as f:
+            f.write(f"file '{intro_path}'\n")
+            f.write(f"file '{tmp_path}'\n")
+        log_fn(f"  Prepending intro: {os.path.basename(intro_path)}")
+        result = subprocess.run(
+            ["ffmpeg", "-y", "-f", "concat", "-safe", "0",
+             "-i", list_file, "-c", "copy", out_path],
+            capture_output=True, text=True
+        )
+        os.remove(list_file)
+        os.remove(tmp_path)
+        if result.returncode != 0:
+            raise RuntimeError(f"ffmpeg concat failed:\n{result.stderr}")
+    else:
+        if intro_path:
+            log_fn(f"  WARNING: intro not found at {intro_path}")
+        os.rename(tmp_path, out_path)
+
     log_fn(f"  Saved → {out_path}")
 
 
