@@ -16,8 +16,9 @@ from caption_video import to_hinglish
 
 DATE   = "2026-03-01"
 ASSETS        = "/Users/ankitgupta/rashifal_creator/Rashifal_assets"
-INTRO_VIDEO_P1 = f"{ASSETS}/part_1/The_lady_in_202601151151_hdnib.mp4"
-INTRO_VIDEO_P2 = f"{ASSETS}/part2/The_lady_in_202601151147_u7x9c.mp4"
+_REPO         = os.path.dirname(__file__)
+INTRO_VIDEO_P1 = f"{_REPO}/assets/part1/The_lady_in_202601151151_hdnib.mp4"
+INTRO_VIDEO_P2 = f"{_REPO}/assets/part2/The_lady_in_202601151147_u7x9c.mp4"
 FONTS_DIR = "/Users/ankitgupta/generate_captions/fonts"
 
 PART1_NAMES = ["मेष", "वृषभ", "मिथुन", "कर्क", "Leo", "कन्या"]
