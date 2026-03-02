@@ -20,8 +20,6 @@ _REPO         = os.path.dirname(__file__)
 INTRO_VIDEO_P1 = f"{_REPO}/assets/part1/The_lady_in_202601151151_hdnib.mp4"
 INTRO_VIDEO_P2 = f"{_REPO}/assets/part2/The_lady_in_202601151147_u7x9c.mp4"
 OUTRO_VIDEO    = f"{_REPO}/assets/dressUp_cta_captioned.mp4"
-BG_MUSIC       = f"{_REPO}/assets/bg_music.mp3"
-BG_VOLUME      = 0.12   # background music volume relative to TTS voice
 FONTS_DIR = "/Users/ankitgupta/generate_captions/fonts"
 
 PART1_NAMES = ["मेष", "वृषभ", "मिथुन", "कर्क", "Leo", "कन्या"]

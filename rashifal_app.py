@@ -677,7 +677,8 @@ st.divider()
 # ── STEP 7: Add Background Music ──────────────────────────────────────────────
 st.subheader("Step 7 — Add Background Music")
 
-from build_rashifal_video import BG_MUSIC, BG_VOLUME
+BG_MUSIC  = os.path.join(os.path.dirname(__file__), "assets", "bg_music.mp3")
+BG_VOLUME = 0.12
 
 WITH_BG1 = f"/tmp/rashifal_{date_str}_part1_withbg.mp4"
 WITH_BG2 = f"/tmp/rashifal_{date_str}_part2_withbg.mp4"
