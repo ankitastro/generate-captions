@@ -36,31 +36,33 @@ RASHI_VIDEO = {
     "मीन":   f"{ASSETS}/part2/pieces.mp4",
 }
 
-# Exact / semantic matches (Devanagari + words that can't be fuzzy-matched to the canonical form)
+# Exact / semantic matches — Devanagari, Leo aliases, and short Hinglish names
+# (short names ≤4 chars are excluded from fuzzy to avoid false positives like karke→कर्क)
 BOUNDARY_MAP = {
     # Devanagari (Azure hi-IN output)
     "मेष": "मेष", "वृषभ": "वृषभ", "वृषक": "वृषभ",
     "मिथुन": "मिथुन", "कर्क": "कर्क", "कन्या": "कन्या",
     "तुला": "तुला", "वृश्चिक": "वृश्चिक", "धनु": "धनु",
     "मकर": "मकर", "कुंभ": "कुंभ", "मीन": "मीन",
-    # Leo — TTS often says "singh" or "lio" instead of "leo"
+    # Leo — TTS often says "singh" / "lio" instead of "leo"
     "लियो": "Leo", "लिओ": "Leo", "leo": "Leo", "lio": "Leo",
     "singh": "Leo", "Singh": "Leo",
+    # Short Hinglish names (≤4 chars) — explicit only, no fuzzy
+    "mesh": "मेष",
+    "kark": "कर्क", "khark": "कर्क",
+    "tula": "तुला",
+    "meen": "मीन",
 }
 
-# Canonical Hinglish form → rashi name  (used for fuzzy matching)
+# Canonical Hinglish form → rashi name (only names ≥5 chars to avoid false positives)
 FUZZY_RASHI = {
-    "mesh":      "मेष",
-    "vrishabh":  "वृषभ",
-    "mithun":    "मिथुन",
-    "kark":      "कर्क",
-    "kanya":     "कन्या",
-    "tula":      "तुला",
-    "vrishchik": "वृश्चिक",
-    "dhanu":     "धनु",
-    "makar":     "मकर",
-    "kumbh":     "कुंभ",
-    "meen":      "मीन",
+    "vrishabh":  "वृषभ",    # 8 chars
+    "mithun":    "मिथुन",   # 6 chars
+    "kanya":     "कन्या",   # 5 chars
+    "vrishchik": "वृश्चिक", # 9 chars
+    "dhanu":     "धनु",     # 5 chars
+    "makar":     "मकर",     # 5 chars
+    "kumbh":     "कुंभ",    # 5 chars
 }
 FUZZY_THRESHOLD = 0.82
 
@@ -160,7 +162,7 @@ def draw_caption(frame, text, W, H):
     d    = ImageDraw.Draw(img)
     bb   = d.textbbox((0, 0), display, font=font)
     tw, th = bb[2] - bb[0], bb[3] - bb[1]
-    pad, bar_y = 20, int(H * 0.80)
+    pad, bar_y = 20, int(H * 0.50)
     ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ImageDraw.Draw(ov).rectangle([0, bar_y, W, bar_y + th + pad * 2], fill=(0, 0, 0, 180))
     img = Image.alpha_composite(img, ov)

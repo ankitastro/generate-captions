@@ -109,7 +109,6 @@ def db_list_dates():
     return rows
 
 # ── Lazy imports ──────────────────────────────────────────────────────────────
-@st.cache_resource
 def _load_libs():
     import google.genai as genai
     import google.genai.types as types
