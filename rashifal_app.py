@@ -472,10 +472,9 @@ if (build_btn or rebuild_btn) and timestamps_ready:
         def _run():
             try:
                 _log("=== Part 1 (मेष → कन्या) ===")
-                from build_rashifal_video import INTRO_VIDEO_P1, INTRO_VIDEO_P2
-                build_video_fn(PART1_NAMES, words1, WAV1, dur1, OUT1, log_fn=_log, intro_path=INTRO_VIDEO_P1)
+                build_video_fn(PART1_NAMES, words1, WAV1, dur1, OUT1, log_fn=_log)
                 _log("=== Part 2 (तुला → मीन) ===")
-                build_video_fn(PART2_NAMES, words2, WAV2, dur2, OUT2, log_fn=_log, intro_path=INTRO_VIDEO_P2)
+                build_video_fn(PART2_NAMES, words2, WAV2, dur2, OUT2, log_fn=_log)
                 _log("Done!")
             except Exception as e:
                 _log(f"ERROR: {e}")
@@ -521,4 +520,74 @@ if os.path.exists(OUT1) and os.path.exists(OUT2):
         with open(OUT2, "rb") as f:
             st.download_button("Download Part 2", f.read(),
                                file_name=f"rashifal_{date_str}_part2.mp4",
+                               mime="video/mp4", use_container_width=True)
+
+st.divider()
+
+# ── STEP 5: Prepend Intro ──────────────────────────────────────────────────────
+st.subheader("Step 5 — Prepend Intro")
+
+from build_rashifal_video import INTRO_VIDEO_P1, INTRO_VIDEO_P2
+
+FINAL1 = f"/tmp/rashifal_{date_str}_part1_final.mp4"
+FINAL2 = f"/tmp/rashifal_{date_str}_part2_final.mp4"
+
+finals_exist  = os.path.exists(FINAL1) and os.path.exists(FINAL2)
+rashi_built   = os.path.exists(OUT1) and os.path.exists(OUT2)
+
+col_intro, _ = st.columns([1, 4])
+with col_intro:
+    prepend_btn = st.button("Prepend Intro", type="primary",
+                            disabled=not rashi_built,
+                            use_container_width=True)
+
+if not rashi_built:
+    st.caption("Complete Step 4 first.")
+
+if prepend_btn and rashi_built:
+    import subprocess, traceback as _tb2
+    try:
+        for part, rashi_path, intro_path, final_path in [
+            (1, OUT1, INTRO_VIDEO_P1, FINAL1),
+            (2, OUT2, INTRO_VIDEO_P2, FINAL2),
+        ]:
+            if not os.path.exists(intro_path):
+                st.error(f"Intro not found: {intro_path}")
+                break
+            list_file = f"/tmp/concat_p{part}.txt"
+            with open(list_file, "w") as f:
+                f.write(f"file '{intro_path}'\n")
+                f.write(f"file '{rashi_path}'\n")
+            with st.spinner(f"Prepending intro to Part {part}..."):
+                result = subprocess.run(
+                    ["ffmpeg", "-y", "-f", "concat", "-safe", "0",
+                     "-i", list_file, "-c", "copy", final_path],
+                    capture_output=True, text=True
+                )
+            os.remove(list_file)
+            if result.returncode != 0:
+                st.error(f"Part {part} ffmpeg failed:\n{result.stderr}")
+                break
+            st.success(f"Part {part} done → {final_path}")
+        else:
+            st.rerun()
+    except Exception as e:
+        st.error(f"Prepend failed: {e}")
+        st.code("".join(_tb2.format_exception(type(e), e, e.__traceback__)), language=None)
+
+if finals_exist:
+    c1, c2 = st.columns(2)
+    with c1:
+        st.caption("Final Part 1 (with intro)")
+        st.video(FINAL1)
+        with open(FINAL1, "rb") as f:
+            st.download_button("Download Final Part 1", f.read(),
+                               file_name=f"rashifal_{date_str}_part1_final.mp4",
+                               mime="video/mp4", use_container_width=True)
+    with c2:
+        st.caption("Final Part 2 (with intro)")
+        st.video(FINAL2)
+        with open(FINAL2, "rb") as f:
+            st.download_button("Download Final Part 2", f.read(),
+                               file_name=f"rashifal_{date_str}_part2_final.mp4",
                                mime="video/mp4", use_container_width=True)
