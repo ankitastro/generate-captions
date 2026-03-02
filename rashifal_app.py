@@ -424,11 +424,12 @@ OUT1 = f"/tmp/rashifal_{date_str}_part1.mp4"
 OUT2 = f"/tmp/rashifal_{date_str}_part2.mp4"
 
 videos_exist = os.path.exists(OUT1) and os.path.exists(OUT2)
+wavs_exist   = os.path.exists(WAV1) and os.path.exists(WAV2)
 
 col_build, col_rebuild, _ = st.columns([1, 1, 3])
 with col_build:
     build_btn = st.button("Build Videos", type="primary",
-                          disabled=not timestamps_ready or videos_exist,
+                          disabled=not timestamps_ready,
                           use_container_width=True)
 with col_rebuild:
     rebuild_btn = st.button("Rebuild", type="secondary",
@@ -437,25 +438,28 @@ with col_rebuild:
 
 if not timestamps_ready:
     st.caption("Complete Step 3 first.")
+elif not wavs_exist:
+    st.warning("Audio files missing from /tmp — please re-run Step 2 to regenerate.")
 
-do_build = (build_btn and timestamps_ready) or (rebuild_btn and timestamps_ready)
-
-if do_build:
-    _, _, _, _, _, _, build_video_fn, *_rest = _load_libs()
-    try:
-        for f in [OUT1, OUT2]:
-            if os.path.exists(f):
-                os.remove(f)
-        with st.spinner("Building Part 1 video (may take 1-2 min)..."):
-            build_video_fn(PART1_NAMES, st.session_state.words1, WAV1,
-                           st.session_state.dur1, OUT1)
-        with st.spinner("Building Part 2 video (may take 1-2 min)..."):
-            build_video_fn(PART2_NAMES, st.session_state.words2, WAV2,
-                           st.session_state.dur2, OUT2)
-        st.success("Videos built!")
-        st.rerun()
-    except Exception as e:
-        st.error(f"Video build failed: {e}")
+if (build_btn or rebuild_btn) and timestamps_ready:
+    if not wavs_exist:
+        st.error("Cannot build: WAV files missing. Re-run Step 2 first.")
+    else:
+        _, _, _, _, _, _, build_video_fn, *_rest = _load_libs()
+        try:
+            for f in [OUT1, OUT2]:
+                if os.path.exists(f):
+                    os.remove(f)
+            with st.spinner("Building Part 1 video (may take 1-2 min)..."):
+                build_video_fn(PART1_NAMES, st.session_state.words1, WAV1,
+                               st.session_state.dur1, OUT1)
+            with st.spinner("Building Part 2 video (may take 1-2 min)..."):
+                build_video_fn(PART2_NAMES, st.session_state.words2, WAV2,
+                               st.session_state.dur2, OUT2)
+            st.success("Videos built!")
+            st.rerun()
+        except Exception as e:
+            st.error(f"Video build failed: {e}")
 
 if os.path.exists(OUT1) and os.path.exists(OUT2):
     c1, c2 = st.columns(2)
