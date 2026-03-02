@@ -1,14 +1,17 @@
-import json, os, wave as wav_mod, time
+import json, os, sys, wave as wav_mod, time
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 import azure.cognitiveservices.speech as speechsdk
 from dotenv import load_dotenv
 from moviepy import VideoFileClip, VideoClip, AudioFileClip, concatenate_videoclips
 
+sys.path.insert(0, os.path.dirname(__file__))
 load_dotenv("/Users/ankitgupta/generate_captions/.env")
 GEMINI_KEY       = os.getenv("GEMINI_API_KEY")
 AZURE_SPEECH_KEY = os.getenv("AZURE_SPEECH_KEY")
 AZURE_REGION     = os.getenv("AZURE_REGION")
+
+from caption_video import to_hinglish
 
 DATE   = "2026-03-01"
 ASSETS = "/Users/ankitgupta/rashifal_creator/Rashifal_assets"
@@ -126,19 +129,20 @@ def get_font(text, size):
 
 
 def draw_caption(frame, text, W, H):
-    font = get_font(text, max(32, W // 12))
+    display = text.strip(".,।").upper()
+    font = get_font(display, max(40, W // 10))
     img  = Image.fromarray(frame).convert("RGBA")
     d    = ImageDraw.Draw(img)
-    bb   = d.textbbox((0, 0), text, font=font)
+    bb   = d.textbbox((0, 0), display, font=font)
     tw, th = bb[2] - bb[0], bb[3] - bb[1]
-    pad, bar_y = 16, int(H * 0.80)
+    pad, bar_y = 20, int(H * 0.80)
     ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ImageDraw.Draw(ov).rectangle([0, bar_y, W, bar_y + th + pad * 2], fill=(0, 0, 0, 180))
     img = Image.alpha_composite(img, ov)
     d2  = ImageDraw.Draw(img)
     x, y = (W - tw) // 2, bar_y + pad
-    d2.text((x + 2, y + 2), text, font=font, fill=(0, 0, 0, 200))
-    d2.text((x, y),         text, font=font, fill=(255, 230, 0, 255))
+    d2.text((x + 2, y + 2), display, font=font, fill=(0, 0, 0, 200))
+    d2.text((x, y),         display, font=font, fill=(255, 230, 0, 255))
     return np.array(img.convert("RGB"))
 
 

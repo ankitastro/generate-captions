@@ -118,7 +118,8 @@ def _load_libs():
         get_timestamps, detect_boundaries, build_video,
         RASHI_VIDEO, BOUNDARY_MAP,
     )
-    return genai, types, speechsdk, requests, get_timestamps, detect_boundaries, build_video, RASHI_VIDEO, BOUNDARY_MAP
+    from caption_video import to_hinglish
+    return genai, types, speechsdk, requests, get_timestamps, detect_boundaries, build_video, RASHI_VIDEO, BOUNDARY_MAP, to_hinglish
 
 # ── API helpers ───────────────────────────────────────────────────────────────
 def _gemini_client():
@@ -364,11 +365,15 @@ if not audio_ready:
 
 if gen_ts_btn and audio_ready:
     try:
-        _, _, _, _, get_timestamps_fn, *_ = _load_libs()
+        *_, get_timestamps_fn, _, _, _, _, to_hinglish_fn = _load_libs()
         with st.spinner("Getting word timestamps for Part 1 (Azure hi-IN)..."):
-            words1 = get_timestamps_fn(WAV1)
+            raw1 = get_timestamps_fn(WAV1)
+        with st.spinner("Converting Part 1 to Hinglish..."):
+            words1 = to_hinglish_fn(raw1)
         with st.spinner("Getting word timestamps for Part 2 (Azure hi-IN)..."):
-            words2 = get_timestamps_fn(WAV2)
+            raw2 = get_timestamps_fn(WAV2)
+        with st.spinner("Converting Part 2 to Hinglish..."):
+            words2 = to_hinglish_fn(raw2)
         st.session_state.words1 = words1
         st.session_state.words2 = words2
         db_save_timestamps(date_str, 1, words1)
@@ -420,7 +425,7 @@ if not timestamps_ready:
     st.caption("Complete Step 3 first.")
 
 if build_btn and timestamps_ready:
-    _, _, _, _, _, _, build_video_fn, *_ = _load_libs()
+    _, _, _, _, _, _, build_video_fn, *_rest = _load_libs()
     try:
         with st.spinner("Building Part 1 video (may take 1-2 min)..."):
             build_video_fn(PART1_NAMES, st.session_state.words1, WAV1,
