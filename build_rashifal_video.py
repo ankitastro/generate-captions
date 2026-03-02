@@ -135,7 +135,7 @@ def draw_caption(frame, text, W, H):
     d    = ImageDraw.Draw(img)
     bb   = d.textbbox((0, 0), display, font=font)
     tw, th = bb[2] - bb[0], bb[3] - bb[1]
-    pad, bar_y = 20, int(H * 0.80)
+    pad, bar_y = 20, int(H * 0.50)
     ov = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     ImageDraw.Draw(ov).rectangle([0, bar_y, W, bar_y + th + pad * 2], fill=(0, 0, 0, 180))
     img = Image.alpha_composite(img, ov)
