@@ -527,7 +527,7 @@ st.divider()
 # ── STEP 5: Prepend Intro ──────────────────────────────────────────────────────
 st.subheader("Step 5 — Prepend Intro")
 
-from build_rashifal_video import INTRO_VIDEO_P1, INTRO_VIDEO_P2
+from build_rashifal_video import INTRO_VIDEO_P1, INTRO_VIDEO_P2, OUTRO_VIDEO
 
 FINAL1 = f"/tmp/rashifal_{date_str}_part1_final.mp4"
 FINAL2 = f"/tmp/rashifal_{date_str}_part2_final.mp4"
@@ -554,16 +554,18 @@ if prepend_btn and rashi_built:
             if not os.path.exists(intro_path):
                 st.error(f"Intro not found: {intro_path}")
                 break
-            with st.spinner(f"Prepending intro to Part {part} (re-encoding for clean join)..."):
+            with st.spinner(f"Building final Part {part} (intro + rashi + outro)..."):
                 result = subprocess.run(
                     ["ffmpeg", "-y",
-                     "-i", intro_path, "-i", rashi_path,
+                     "-i", intro_path, "-i", rashi_path, "-i", OUTRO_VIDEO,
                      "-filter_complex",
                      "[0:v]scale=720:1280,setsar=1,fps=30[v0];"
                      "[0:a]aresample=44100[a0];"
                      "[1:v]scale=720:1280,setsar=1,fps=30[v1];"
                      "[1:a]aresample=44100[a1];"
-                     "[v0][a0][v1][a1]concat=n=2:v=1:a=1[v][a]",
+                     "[2:v]scale=720:1280,setsar=1,fps=30[v2];"
+                     "[2:a]aresample=44100[a2];"
+                     "[v0][a0][v1][a1][v2][a2]concat=n=3:v=1:a=1[v][a]",
                      "-map", "[v]", "-map", "[a]",
                      "-c:v", "libx264", "-c:a", "aac", final_path],
                     capture_output=True, text=True
