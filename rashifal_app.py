@@ -679,6 +679,7 @@ st.subheader("Step 7 — Add Background Music")
 
 BG_MUSIC  = os.path.join(os.path.dirname(__file__), "assets", "bg_music.mp3")
 BG_VOLUME = 0.12
+LOGO_PATH = "/Users/ankitgupta/rashifal_creator/Rashifal_assets/logo/astrokiran_logo.png"
 
 WITH_BG1 = f"/tmp/rashifal_{date_str}_part1_withbg.mp4"
 WITH_BG2 = f"/tmp/rashifal_{date_str}_part2_withbg.mp4"
@@ -699,6 +700,8 @@ if bg_btn and complete_exist:
     import subprocess, traceback as _tb4
     if not os.path.exists(BG_MUSIC):
         col_bg_left.error(f"Background music not found: {BG_MUSIC}")
+    elif not os.path.exists(LOGO_PATH):
+        col_bg_left.error(f"Logo not found: {LOGO_PATH}")
     else:
         log_lines_bg = []
         try:
@@ -711,12 +714,14 @@ if bg_btn and complete_exist:
                 log_box_bg.code("\n".join(log_lines_bg), language=None)
                 proc = subprocess.Popen(
                     ["ffmpeg", "-y",
-                     "-i", complete_path, "-i", BG_MUSIC,
+                     "-i", complete_path, "-i", BG_MUSIC, "-i", LOGO_PATH,
                      "-filter_complex",
                      f"[1:a]volume={BG_VOLUME},aloop=loop=-1:size=2000000000[bg];"
-                     "[0:a][bg]amix=inputs=2:duration=first:dropout_transition=2[a]",
-                     "-map", "0:v", "-map", "[a]",
-                     "-c:v", "copy", "-c:a", "aac", withbg_path],
+                     "[0:a][bg]amix=inputs=2:duration=first:dropout_transition=2[a];"
+                     "[2:v]scale=120:-1[logo];"
+                     "[0:v][logo]overlay=W-w-20:20[v]",
+                     "-map", "[v]", "-map", "[a]",
+                     "-c:v", "libx264", "-c:a", "aac", withbg_path],
                     stderr=subprocess.PIPE, stdout=subprocess.DEVNULL, text=True
                 )
                 for line in proc.stderr:
