@@ -698,11 +698,17 @@ log_box_bg = col_bg_right.empty()
 
 if bg_btn and complete_exist:
     import subprocess, traceback as _tb4
+    from datetime import datetime as _dt
     if not os.path.exists(BG_MUSIC):
         col_bg_left.error(f"Background music not found: {BG_MUSIC}")
     elif not os.path.exists(LOGO_PATH):
         col_bg_left.error(f"Logo not found: {LOGO_PATH}")
     else:
+        _d = _dt.strptime(date_str, "%Y-%m-%d")
+        date_display = _d.strftime("%-d %B %Y")          # e.g. "2 March 2026"
+        date_esc = date_display.replace(" ", "\\ ")       # ffmpeg filter escaping
+        FONT_FILE = os.path.join(os.path.dirname(__file__), "fonts", "Arial-Bold.ttf")
+        font_opt  = f":fontfile={FONT_FILE}" if os.path.exists(FONT_FILE) else ""
         log_lines_bg = []
         try:
             failed = False
@@ -719,7 +725,11 @@ if bg_btn and complete_exist:
                      f"[1:a]volume={BG_VOLUME},aloop=loop=-1:size=2000000000[bg];"
                      "[0:a][bg]amix=inputs=2:duration=first:dropout_transition=2[a];"
                      "[2:v]scale=120:-1[logo];"
-                     "[0:v][logo]overlay=W-w-20:H-h-20[v]",
+                     "[0:v][logo]overlay=W-w-20:H-h-20[ov];"
+                     f"[ov]drawtext=text={date_esc}{font_opt}"
+                     ":fontsize=44:fontcolor=white"
+                     ":x=20:y=20"
+                     ":box=1:boxcolor=black@0.55:boxborderw=10[v]",
                      "-map", "[v]", "-map", "[a]",
                      "-c:v", "libx264", "-c:a", "aac", withbg_path],
                     stderr=subprocess.PIPE, stdout=subprocess.DEVNULL, text=True
