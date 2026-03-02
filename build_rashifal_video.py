@@ -4,8 +4,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 import azure.cognitiveservices.speech as speechsdk
 from dotenv import load_dotenv
-from moviepy import (VideoFileClip, VideoClip, AudioFileClip, concatenate_videoclips,
-                     concatenate_audioclips, CompositeAudioClip)
+from moviepy import VideoFileClip, VideoClip, AudioFileClip, concatenate_videoclips
 
 sys.path.insert(0, os.path.dirname(__file__))
 load_dotenv("/Users/ankitgupta/generate_captions/.env")
@@ -226,16 +225,6 @@ def build_video(names, words, wav_path, total_dur, out_path, log_fn=None):
 
     first_name = next(n for n in names if n in boundaries)
     audio_clip = AudioFileClip(wav_path).subclipped(boundaries[first_name], boundaries["_end"])
-
-    if os.path.exists(BG_MUSIC):
-        bg_raw = AudioFileClip(BG_MUSIC)
-        # loop bg to cover full duration
-        loops  = int(audio_clip.duration / bg_raw.duration) + 2
-        bg     = concatenate_audioclips([bg_raw] * loops).subclipped(0, audio_clip.duration)
-        bg     = bg.with_volume_scaled(BG_VOLUME)
-        audio_clip = CompositeAudioClip([audio_clip, bg])
-        log_fn(f"  Mixed background music at {int(BG_VOLUME*100)}% volume")
-
     rashi_part = concatenate_videoclips(segments).with_audio(audio_clip)
 
     log_fn(f"  Encoding → {os.path.basename(out_path)} (this may take 1-2 min)...")

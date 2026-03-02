@@ -671,3 +671,73 @@ if complete_exist:
             st.download_button("Download Complete Part 2", f.read(),
                                file_name=f"rashifal_{date_str}_part2_complete.mp4",
                                mime="video/mp4", use_container_width=True)
+
+st.divider()
+
+# ── STEP 7: Add Background Music ──────────────────────────────────────────────
+st.subheader("Step 7 — Add Background Music")
+
+from build_rashifal_video import BG_MUSIC, BG_VOLUME
+
+WITH_BG1 = f"/tmp/rashifal_{date_str}_part1_withbg.mp4"
+WITH_BG2 = f"/tmp/rashifal_{date_str}_part2_withbg.mp4"
+
+withbg_exist = os.path.exists(WITH_BG1) and os.path.exists(WITH_BG2)
+
+col_bg, _ = st.columns([1, 4])
+with col_bg:
+    bg_btn = st.button("Add Background Music", type="primary",
+                       disabled=not complete_exist,
+                       use_container_width=True)
+
+if not complete_exist:
+    st.caption("Complete Step 6 first.")
+
+if bg_btn and complete_exist:
+    import subprocess, traceback as _tb4
+    if not os.path.exists(BG_MUSIC):
+        st.error(f"Background music not found: {BG_MUSIC}")
+    else:
+        try:
+            for part, complete_path, withbg_path in [
+                (1, COMPLETE1, WITH_BG1),
+                (2, COMPLETE2, WITH_BG2),
+            ]:
+                with st.spinner(f"Mixing background music into Part {part}..."):
+                    result = subprocess.run(
+                        ["ffmpeg", "-y",
+                         "-i", complete_path, "-i", BG_MUSIC,
+                         "-filter_complex",
+                         f"[1:a]volume={BG_VOLUME},aloop=loop=-1:size=2000000000[bg];"
+                         "[0:a][bg]amix=inputs=2:duration=first:dropout_transition=2[a]",
+                         "-map", "0:v", "-map", "[a]",
+                         "-c:v", "copy", "-c:a", "aac", withbg_path],
+                        capture_output=True, text=True
+                    )
+                if result.returncode != 0:
+                    st.error(f"Part {part} ffmpeg failed:")
+                    st.code(result.stderr, language=None)
+                    break
+                st.success(f"Part {part} done → {withbg_path}")
+            else:
+                st.rerun()
+        except Exception as e:
+            st.error(f"Background music failed: {e}")
+            st.code("".join(_tb4.format_exception(type(e), e, e.__traceback__)), language=None)
+
+if withbg_exist:
+    c1, c2 = st.columns(2)
+    with c1:
+        st.caption("Part 1 — Final with background music")
+        st.video(WITH_BG1)
+        with open(WITH_BG1, "rb") as f:
+            st.download_button("Download Part 1 (Final)", f.read(),
+                               file_name=f"rashifal_{date_str}_part1_withbg.mp4",
+                               mime="video/mp4", use_container_width=True)
+    with c2:
+        st.caption("Part 2 — Final with background music")
+        st.video(WITH_BG2)
+        with open(WITH_BG2, "rb") as f:
+            st.download_button("Download Part 2 (Final)", f.read(),
+                               file_name=f"rashifal_{date_str}_part2_withbg.mp4",
+                               mime="video/mp4", use_container_width=True)
