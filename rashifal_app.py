@@ -554,18 +554,16 @@ if prepend_btn and rashi_built:
             if not os.path.exists(intro_path):
                 st.error(f"Intro not found: {intro_path}")
                 break
-            with st.spinner(f"Building final Part {part} (intro + rashi + outro)..."):
+            with st.spinner(f"Prepending intro to Part {part}..."):
                 result = subprocess.run(
                     ["ffmpeg", "-y",
-                     "-i", intro_path, "-i", rashi_path, "-i", OUTRO_VIDEO,
+                     "-i", intro_path, "-i", rashi_path,
                      "-filter_complex",
                      "[0:v]scale=720:1280,setsar=1,fps=30[v0];"
                      "[0:a]aresample=44100[a0];"
                      "[1:v]scale=720:1280,setsar=1,fps=30[v1];"
                      "[1:a]aresample=44100[a1];"
-                     "[2:v]scale=720:1280,setsar=1,fps=30[v2];"
-                     "[2:a]aresample=44100[a2];"
-                     "[v0][a0][v1][a1][v2][a2]concat=n=3:v=1:a=1[v][a]",
+                     "[v0][a0][v1][a1]concat=n=2:v=1:a=1[v][a]",
                      "-map", "[v]", "-map", "[a]",
                      "-c:v", "libx264", "-c:a", "aac", final_path],
                     capture_output=True, text=True
@@ -584,16 +582,87 @@ if prepend_btn and rashi_built:
 if finals_exist:
     c1, c2 = st.columns(2)
     with c1:
-        st.caption("Final Part 1 (with intro)")
+        st.caption("Part 1 (with intro)")
         st.video(FINAL1)
         with open(FINAL1, "rb") as f:
-            st.download_button("Download Final Part 1", f.read(),
+            st.download_button("Download Part 1 (with intro)", f.read(),
                                file_name=f"rashifal_{date_str}_part1_final.mp4",
                                mime="video/mp4", use_container_width=True)
     with c2:
-        st.caption("Final Part 2 (with intro)")
+        st.caption("Part 2 (with intro)")
         st.video(FINAL2)
         with open(FINAL2, "rb") as f:
-            st.download_button("Download Final Part 2", f.read(),
+            st.download_button("Download Part 2 (with intro)", f.read(),
                                file_name=f"rashifal_{date_str}_part2_final.mp4",
+                               mime="video/mp4", use_container_width=True)
+
+st.divider()
+
+# ── STEP 6: Append Outro ──────────────────────────────────────────────────────
+st.subheader("Step 6 — Append Outro")
+
+COMPLETE1 = f"/tmp/rashifal_{date_str}_part1_complete.mp4"
+COMPLETE2 = f"/tmp/rashifal_{date_str}_part2_complete.mp4"
+
+complete_exist = os.path.exists(COMPLETE1) and os.path.exists(COMPLETE2)
+
+col_outro, _ = st.columns([1, 4])
+with col_outro:
+    outro_btn = st.button("Append Outro", type="primary",
+                          disabled=not finals_exist,
+                          use_container_width=True)
+
+if not finals_exist:
+    st.caption("Complete Step 5 first.")
+
+if outro_btn and finals_exist:
+    import subprocess, traceback as _tb3
+    try:
+        for part, final_path, complete_path in [
+            (1, FINAL1, COMPLETE1),
+            (2, FINAL2, COMPLETE2),
+        ]:
+            if not os.path.exists(OUTRO_VIDEO):
+                st.error(f"Outro not found: {OUTRO_VIDEO}")
+                break
+            with st.spinner(f"Appending outro to Part {part}..."):
+                result = subprocess.run(
+                    ["ffmpeg", "-y",
+                     "-i", final_path, "-i", OUTRO_VIDEO,
+                     "-filter_complex",
+                     "[0:v]scale=720:1280,setsar=1,fps=30[v0];"
+                     "[0:a]aresample=44100[a0];"
+                     "[1:v]scale=720:1280,setsar=1,fps=30[v1];"
+                     "[1:a]aresample=44100[a1];"
+                     "[v0][a0][v1][a1]concat=n=2:v=1:a=1[v][a]",
+                     "-map", "[v]", "-map", "[a]",
+                     "-c:v", "libx264", "-c:a", "aac", complete_path],
+                    capture_output=True, text=True
+                )
+            if result.returncode != 0:
+                st.error(f"Part {part} ffmpeg failed:")
+                st.code(result.stderr, language=None)
+                break
+            st.success(f"Part {part} done → {complete_path}")
+        else:
+            st.rerun()
+    except Exception as e:
+        st.error(f"Append outro failed: {e}")
+        st.code("".join(_tb3.format_exception(type(e), e, e.__traceback__)), language=None)
+
+if complete_exist:
+    c1, c2 = st.columns(2)
+    with c1:
+        st.caption("Complete Part 1 (intro + rashi + outro)")
+        st.video(COMPLETE1)
+        with open(COMPLETE1, "rb") as f:
+            st.download_button("Download Complete Part 1", f.read(),
+                               file_name=f"rashifal_{date_str}_part1_complete.mp4",
+                               mime="video/mp4", use_container_width=True)
+    with c2:
+        st.caption("Complete Part 2 (intro + rashi + outro)")
+        st.video(COMPLETE2)
+        with open(COMPLETE2, "rb") as f:
+            st.download_button("Download Complete Part 2", f.read(),
+                               file_name=f"rashifal_{date_str}_part2_complete.mp4",
                                mime="video/mp4", use_container_width=True)
