@@ -513,15 +513,11 @@ if (build_btn or rebuild_btn) and timestamps_ready:
 if os.path.exists(OUT1) and os.path.exists(OUT2):
     c1, c2 = st.columns(2)
     with c1:
-        st.caption("Part 1 — मेष → कन्या")
-        st.video(OUT1)
         with open(OUT1, "rb") as f:
             st.download_button("Download Part 1", f.read(),
                                file_name=f"rashifal_{date_str}_part1.mp4",
                                mime="video/mp4", use_container_width=True)
     with c2:
-        st.caption("Part 2 — तुला → मीन")
-        st.video(OUT2)
         with open(OUT2, "rb") as f:
             st.download_button("Download Part 2", f.read(),
                                file_name=f"rashifal_{date_str}_part2.mp4",
@@ -587,15 +583,11 @@ if prepend_btn and rashi_built:
 if finals_exist:
     c1, c2 = st.columns(2)
     with c1:
-        st.caption("Part 1 (with intro)")
-        st.video(FINAL1)
         with open(FINAL1, "rb") as f:
             st.download_button("Download Part 1 (with intro)", f.read(),
                                file_name=f"rashifal_{date_str}_part1_final.mp4",
                                mime="video/mp4", use_container_width=True)
     with c2:
-        st.caption("Part 2 (with intro)")
-        st.video(FINAL2)
         with open(FINAL2, "rb") as f:
             st.download_button("Download Part 2 (with intro)", f.read(),
                                file_name=f"rashifal_{date_str}_part2_final.mp4",
@@ -658,15 +650,11 @@ if outro_btn and finals_exist:
 if complete_exist:
     c1, c2 = st.columns(2)
     with c1:
-        st.caption("Complete Part 1 (intro + rashi + outro)")
-        st.video(COMPLETE1)
         with open(COMPLETE1, "rb") as f:
             st.download_button("Download Complete Part 1", f.read(),
                                file_name=f"rashifal_{date_str}_part1_complete.mp4",
                                mime="video/mp4", use_container_width=True)
     with c2:
-        st.caption("Complete Part 2 (intro + rashi + outro)")
-        st.video(COMPLETE2)
         with open(COMPLETE2, "rb") as f:
             st.download_button("Download Complete Part 2", f.read(),
                                file_name=f"rashifal_{date_str}_part2_complete.mp4",
@@ -753,15 +741,11 @@ if bg_btn and complete_exist:
 if withbg_exist:
     c1, c2 = st.columns(2)
     with c1:
-        st.caption("Part 1 — Final with background music")
-        st.video(WITH_BG1)
         with open(WITH_BG1, "rb") as f:
             st.download_button("Download Part 1 (Final)", f.read(),
                                file_name=f"rashifal_{date_str}_part1_withbg.mp4",
                                mime="video/mp4", use_container_width=True)
     with c2:
-        st.caption("Part 2 — Final with background music")
-        st.video(WITH_BG2)
         with open(WITH_BG2, "rb") as f:
             st.download_button("Download Part 2 (Final)", f.read(),
                                file_name=f"rashifal_{date_str}_part2_withbg.mp4",
