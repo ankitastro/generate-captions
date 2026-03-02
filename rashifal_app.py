@@ -477,9 +477,15 @@ if (build_btn or rebuild_btn) and timestamps_ready:
         def _run():
             try:
                 _log("=== Part 1 (मेष → कन्या) ===")
-                build_video_fn(PART1_NAMES, words1, WAV1, dur1, OUT1, log_fn=_log)
+                ok1 = build_video_fn(PART1_NAMES, words1, WAV1, dur1, OUT1, log_fn=_log)
+                if ok1 is False:
+                    build_err[0] = ValueError("Part 1: not all zodiac signs detected — see log")
+                    return
                 _log("=== Part 2 (तुला → मीन) ===")
-                build_video_fn(PART2_NAMES, words2, WAV2, dur2, OUT2, log_fn=_log)
+                ok2 = build_video_fn(PART2_NAMES, words2, WAV2, dur2, OUT2, log_fn=_log)
+                if ok2 is False:
+                    build_err[0] = ValueError("Part 2: not all zodiac signs detected — see log")
+                    return
                 _log("Done!")
             except Exception as e:
                 _log(f"ERROR: {e}")

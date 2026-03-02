@@ -190,9 +190,12 @@ def build_video(names, words, wav_path, total_dur, out_path, log_fn=None):
     log_fn(f"  Detected: {detected}")
     missing = [n for n in names if n not in boundaries]
     if missing:
-        log_fn(f"  WARNING — missing: {missing}")
-        for w in words[:30]:
+        log_fn(f"  ERROR — missing signs: {missing}")
+        log_fn(f"  All recognised words:")
+        for w in words:
             log_fn(f"    {w['word']!r} @ {w['start']:.2f}s")
+        log_fn(f"  Aborting — fix the text/timestamps and retry.")
+        return False
 
     open_clips, segments = [], []
     for idx, name in enumerate(names):
