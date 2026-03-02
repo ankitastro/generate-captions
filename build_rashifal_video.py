@@ -15,7 +15,8 @@ AZURE_REGION     = os.getenv("AZURE_REGION")
 from caption_video import to_hinglish
 
 DATE   = "2026-03-01"
-ASSETS = "/Users/ankitgupta/rashifal_creator/Rashifal_assets"
+ASSETS      = "/Users/ankitgupta/rashifal_creator/Rashifal_assets"
+INTRO_VIDEO = f"{ASSETS}/part_1/The_lady_in_202601151151_hdnib.mp4"
 FONTS_DIR = "/Users/ankitgupta/generate_captions/fonts"
 
 PART1_NAMES = ["मेष", "वृषभ", "मिथुन", "कर्क", "Leo", "कन्या"]
@@ -214,13 +215,23 @@ def build_video(names, words, wav_path, total_dur, out_path, log_fn=None):
         segments.append(VideoClip(make_frame, duration=seg_dur))
 
     if not segments:
-        print("  ERROR: no segments detected, aborting.")
+        log_fn("  ERROR: no segments detected, aborting.")
         return
 
     first_name = next(n for n in names if n in boundaries)
     audio_clip = AudioFileClip(wav_path).subclipped(boundaries[first_name], boundaries["_end"])
-    final      = concatenate_videoclips(segments).with_audio(audio_clip)
-    log_fn(f"  Encoding {len(segments)} segments → {os.path.basename(out_path)} (this may take 1-2 min)...")
+    rashi_part = concatenate_videoclips(segments).with_audio(audio_clip)
+
+    if os.path.exists(INTRO_VIDEO):
+        intro = VideoFileClip(INTRO_VIDEO)
+        open_clips.append(intro)
+        final = concatenate_videoclips([intro, rashi_part])
+        log_fn(f"  Prepending intro ({intro.duration:.1f}s)")
+    else:
+        final = rashi_part
+        log_fn(f"  WARNING: intro not found at {INTRO_VIDEO}")
+
+    log_fn(f"  Encoding → {os.path.basename(out_path)} (this may take 1-2 min)...")
     final.write_videofile(out_path, fps=30, codec="libx264", audio_codec="aac", logger=None)
     for c in open_clips:
         try:
