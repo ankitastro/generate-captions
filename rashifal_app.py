@@ -228,6 +228,17 @@ st.set_page_config(page_title="Rashifal Creator", page_icon="🔯", layout="wide
 st.title("🔯 Rashifal Creator")
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────
+_ASSETS_DIR = os.path.join(os.path.dirname(__file__), "assets")
+
+def _save_upload(uploaded, dest_path):
+    """Save an st.uploaded_file to dest_path, return True on success."""
+    if uploaded is None:
+        return False
+    os.makedirs(os.path.dirname(dest_path), exist_ok=True)
+    with open(dest_path, "wb") as f:
+        f.write(uploaded.read())
+    return True
+
 with st.sidebar:
     st.header("Settings")
     selected_date = st.date_input(
@@ -241,6 +252,51 @@ with st.sidebar:
     st.caption("Kundali Engine: `localhost:9090`")
     st.caption("TTS: Gemini 2.5 Pro · Laomedeia")
     st.caption("ASR: Azure hi-IN")
+    st.divider()
+
+    with st.expander("Assets", expanded=False):
+        st.caption("Upload to replace an asset permanently.")
+
+        up_intro1 = st.file_uploader("Intro Video Part 1", type=["mp4"], key="up_intro1")
+        if _save_upload(up_intro1, os.path.join(_ASSETS_DIR, "part1", "The_lady_in_202601151151_hdnib.mp4")):
+            st.success("Intro Part 1 updated")
+
+        up_intro2 = st.file_uploader("Intro Video Part 2", type=["mp4"], key="up_intro2")
+        if _save_upload(up_intro2, os.path.join(_ASSETS_DIR, "part2", "The_lady_in_202601151147_u7x9c.mp4")):
+            st.success("Intro Part 2 updated")
+
+        up_outro = st.file_uploader("Outro Video", type=["mp4"], key="up_outro")
+        if _save_upload(up_outro, os.path.join(_ASSETS_DIR, "dressUp_cta_captioned.mp4")):
+            st.success("Outro updated")
+
+        up_bgm = st.file_uploader("Background Music", type=["mp3", "m4a", "wav"], key="up_bgm")
+        if _save_upload(up_bgm, os.path.join(_ASSETS_DIR, "bg_music.mp3")):
+            st.success("Background music updated")
+
+        up_logo = st.file_uploader("Logo (PNG)", type=["png"], key="up_logo")
+        if _save_upload(up_logo, os.path.join(_ASSETS_DIR, "astrokiran_logo.png")):
+            st.success("Logo updated")
+
+        st.caption("Rashi sign videos:")
+        _RASHI_FILES = {
+            "Aries (मेष)":      ("rashi/part1", "aries.mp4"),
+            "Taurus (वृषभ)":    ("rashi/part1", "taurus.mp4"),
+            "Gemini (मिथुन)":   ("rashi/part1", "mithun.mp4"),
+            "Cancer (कर्क)":    ("rashi/part1", "cancer.mp4"),
+            "Leo":              ("rashi/part1", "leo.mp4"),
+            "Virgo (कन्या)":    ("rashi/part1", "virgo.mp4"),
+            "Libra (तुला)":     ("rashi/part2", "libra.mp4"),
+            "Scorpio (वृश्चिक)":("rashi/part2", "scorpion.mp4"),
+            "Sagittarius (धनु)":("rashi/part2", "sagitarius.mp4"),
+            "Capricorn (मकर)":  ("rashi/part2", "capriocpon.mp4"),
+            "Aquarius (कुंभ)":  ("rashi/part2", "aquarius.mp4"),
+            "Pisces (मीन)":     ("rashi/part2", "pieces.mp4"),
+        }
+        for label, (subdir, fname) in _RASHI_FILES.items():
+            up = st.file_uploader(label, type=["mp4"], key=f"up_rashi_{fname}")
+            if _save_upload(up, os.path.join(_ASSETS_DIR, subdir, fname)):
+                st.success(f"{label} updated")
+
     st.divider()
     st.subheader("Previous Sessions")
     past = db_list_dates()
