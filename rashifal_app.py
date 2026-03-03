@@ -254,45 +254,6 @@ with st.sidebar:
     st.caption("ASR: Azure hi-IN")
     st.divider()
 
-    with st.expander("Assets", expanded=False):
-        st.caption("Upload to replace an asset permanently.")
-
-        up_intro = st.file_uploader("Intro Video", type=["mp4"], key="up_intro")
-        if _save_upload(up_intro, os.path.join(_ASSETS_DIR, "intro.mp4")):
-            st.success("Intro updated")
-
-        up_outro = st.file_uploader("Outro Video", type=["mp4"], key="up_outro")
-        if _save_upload(up_outro, os.path.join(_ASSETS_DIR, "dressUp_cta_captioned.mp4")):
-            st.success("Outro updated")
-
-        up_bgm = st.file_uploader("Background Music", type=["mp3", "m4a", "wav"], key="up_bgm")
-        if _save_upload(up_bgm, os.path.join(_ASSETS_DIR, "bg_music.mp3")):
-            st.success("Background music updated")
-
-        up_logo = st.file_uploader("Logo (PNG)", type=["png"], key="up_logo")
-        if _save_upload(up_logo, os.path.join(_ASSETS_DIR, "astrokiran_logo.png")):
-            st.success("Logo updated")
-
-        st.caption("Rashi sign videos:")
-        _RASHI_FILES = {
-            "Aries (मेष)":      ("rashi/part1", "aries.mp4"),
-            "Taurus (वृषभ)":    ("rashi/part1", "taurus.mp4"),
-            "Gemini (मिथुन)":   ("rashi/part1", "mithun.mp4"),
-            "Cancer (कर्क)":    ("rashi/part1", "cancer.mp4"),
-            "Leo":              ("rashi/part1", "leo.mp4"),
-            "Virgo (कन्या)":    ("rashi/part1", "virgo.mp4"),
-            "Libra (तुला)":     ("rashi/part2", "libra.mp4"),
-            "Scorpio (वृश्चिक)":("rashi/part2", "scorpion.mp4"),
-            "Sagittarius (धनु)":("rashi/part2", "sagitarius.mp4"),
-            "Capricorn (मकर)":  ("rashi/part2", "capriocpon.mp4"),
-            "Aquarius (कुंभ)":  ("rashi/part2", "aquarius.mp4"),
-            "Pisces (मीन)":     ("rashi/part2", "pieces.mp4"),
-        }
-        for label, (subdir, fname) in _RASHI_FILES.items():
-            up = st.file_uploader(label, type=["mp4"], key=f"up_rashi_{fname}")
-            if _save_upload(up, os.path.join(_ASSETS_DIR, subdir, fname)):
-                st.success(f"{label} updated")
-
     st.divider()
     st.subheader("Previous Sessions")
     past = db_list_dates()
@@ -302,6 +263,65 @@ with st.sidebar:
             st.caption(f"📅 {row[0]}{audio_info}")
     else:
         st.caption("No saved sessions yet.")
+
+# ── Assets Management ─────────────────────────────────────────────────────────
+_RASHI_FILES = {
+    "Aries (मेष)":       ("rashi/part1", "aries.mp4"),
+    "Taurus (वृषभ)":     ("rashi/part1", "taurus.mp4"),
+    "Gemini (मिथुन)":    ("rashi/part1", "mithun.mp4"),
+    "Cancer (कर्क)":     ("rashi/part1", "cancer.mp4"),
+    "Leo":               ("rashi/part1", "leo.mp4"),
+    "Virgo (कन्या)":     ("rashi/part1", "virgo.mp4"),
+    "Libra (तुला)":      ("rashi/part2", "libra.mp4"),
+    "Scorpio (वृश्चिक)": ("rashi/part2", "scorpion.mp4"),
+    "Sagittarius (धनु)": ("rashi/part2", "sagitarius.mp4"),
+    "Capricorn (मकर)":   ("rashi/part2", "capriocpon.mp4"),
+    "Aquarius (कुंभ)":   ("rashi/part2", "aquarius.mp4"),
+    "Pisces (मीन)":      ("rashi/part2", "pieces.mp4"),
+}
+
+with st.expander("Assets", expanded=False):
+    st.caption("Preview current assets or upload to replace them permanently.")
+
+    # ── Main assets ──────────────────────────────────────────────────────────
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.caption("**Intro Video**")
+        p = os.path.join(_ASSETS_DIR, "intro.mp4")
+        if os.path.exists(p): st.video(p)
+        up = st.file_uploader("Replace Intro", type=["mp4"], key="up_intro")
+        if _save_upload(up, p): st.success("Updated")
+    with c2:
+        st.caption("**Outro Video**")
+        p = os.path.join(_ASSETS_DIR, "dressUp_cta_captioned.mp4")
+        if os.path.exists(p): st.video(p)
+        up = st.file_uploader("Replace Outro", type=["mp4"], key="up_outro")
+        if _save_upload(up, p): st.success("Updated")
+    with c3:
+        st.caption("**Logo**")
+        p = os.path.join(_ASSETS_DIR, "astrokiran_logo.png")
+        if os.path.exists(p): st.image(p)
+        up = st.file_uploader("Replace Logo", type=["png"], key="up_logo")
+        if _save_upload(up, p): st.success("Updated")
+
+    st.caption("**Background Music**")
+    p = os.path.join(_ASSETS_DIR, "bg_music.mp3")
+    if os.path.exists(p): st.audio(p)
+    up = st.file_uploader("Replace Background Music", type=["mp3", "m4a", "wav"], key="up_bgm")
+    if _save_upload(up, p): st.success("Updated")
+
+    # ── Rashi sign videos ────────────────────────────────────────────────────
+    st.caption("**Rashi Sign Videos**")
+    cols = st.columns(4)
+    for i, (label, (subdir, fname)) in enumerate(_RASHI_FILES.items()):
+        p = os.path.join(_ASSETS_DIR, subdir, fname)
+        with cols[i % 4]:
+            st.caption(f"**{label}**")
+            if os.path.exists(p): st.video(p)
+            up = st.file_uploader("Replace", type=["mp4"], key=f"up_rashi_{fname}")
+            if _save_upload(up, p): st.success("Updated")
+
+st.divider()
 
 # ── Session state init ────────────────────────────────────────────────────────
 for key in ["text_p1", "text_p2", "edit_p1", "edit_p2", "dur1", "dur2", "words1", "words2", "loaded_date"]:
