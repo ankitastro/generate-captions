@@ -15,29 +15,29 @@ AZURE_REGION     = os.getenv("AZURE_REGION")
 from caption_video import to_hinglish
 
 DATE   = "2026-03-01"
-ASSETS        = "/Users/ankitgupta/rashifal_creator/Rashifal_assets"
 _REPO         = os.path.dirname(__file__)
-INTRO_VIDEO_P1 = f"{_REPO}/assets/part1/The_lady_in_202601151151_hdnib.mp4"
-INTRO_VIDEO_P2 = f"{_REPO}/assets/part2/The_lady_in_202601151147_u7x9c.mp4"
-OUTRO_VIDEO    = f"{_REPO}/assets/dressUp_cta_captioned.mp4"
-FONTS_DIR = "/Users/ankitgupta/generate_captions/fonts"
+ASSETS        = os.path.join(_REPO, "assets", "rashi")
+INTRO_VIDEO_P1 = os.path.join(_REPO, "assets", "part1", "The_lady_in_202601151151_hdnib.mp4")
+INTRO_VIDEO_P2 = os.path.join(_REPO, "assets", "part2", "The_lady_in_202601151147_u7x9c.mp4")
+OUTRO_VIDEO    = os.path.join(_REPO, "assets", "dressUp_cta_captioned.mp4")
+FONTS_DIR      = os.path.join(_REPO, "fonts")
 
 PART1_NAMES = ["मेष", "वृषभ", "मिथुन", "कर्क", "Leo", "कन्या"]
 PART2_NAMES = ["तुला", "वृश्चिक", "धनु", "मकर", "कुंभ", "मीन"]
 
 RASHI_VIDEO = {
-    "मेष":   f"{ASSETS}/part_1/aries.mp4",
-    "वृषभ":  f"{ASSETS}/part_1/taurus.mp4",
-    "मिथुन": f"{ASSETS}/part_1/mithun.mp4",
-    "कर्क":  f"{ASSETS}/part_1/cancer.mp4",
-    "Leo":   f"{ASSETS}/part_1/leo.mp4",
-    "कन्या": f"{ASSETS}/part_1/virgo.mp4",
-    "तुला":  f"{ASSETS}/part2/libra.mp4",
-    "वृश्चिक":f"{ASSETS}/part2/scorpion.mp4",
-    "धनु":   f"{ASSETS}/part2/sagitarius.mp4",
-    "मकर":   f"{ASSETS}/part2/capriocpon.mp4",
-    "कुंभ":  f"{ASSETS}/part2/aquarius.mp4",
-    "मीन":   f"{ASSETS}/part2/pieces.mp4",
+    "मेष":    os.path.join(ASSETS, "part1", "aries.mp4"),
+    "वृषभ":   os.path.join(ASSETS, "part1", "taurus.mp4"),
+    "मिथुन":  os.path.join(ASSETS, "part1", "mithun.mp4"),
+    "कर्क":   os.path.join(ASSETS, "part1", "cancer.mp4"),
+    "Leo":    os.path.join(ASSETS, "part1", "leo.mp4"),
+    "कन्या":  os.path.join(ASSETS, "part1", "virgo.mp4"),
+    "तुला":   os.path.join(ASSETS, "part2", "libra.mp4"),
+    "वृश्चिक": os.path.join(ASSETS, "part2", "scorpion.mp4"),
+    "धनु":    os.path.join(ASSETS, "part2", "sagitarius.mp4"),
+    "मकर":    os.path.join(ASSETS, "part2", "capriocpon.mp4"),
+    "कुंभ":   os.path.join(ASSETS, "part2", "aquarius.mp4"),
+    "मीन":    os.path.join(ASSETS, "part2", "pieces.mp4"),
 }
 
 # Exact / semantic matches — Devanagari, Leo aliases, and short Hinglish names
