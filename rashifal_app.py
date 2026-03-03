@@ -257,13 +257,9 @@ with st.sidebar:
     with st.expander("Assets", expanded=False):
         st.caption("Upload to replace an asset permanently.")
 
-        up_intro1 = st.file_uploader("Intro Video Part 1", type=["mp4"], key="up_intro1")
-        if _save_upload(up_intro1, os.path.join(_ASSETS_DIR, "part1", "The_lady_in_202601151151_hdnib.mp4")):
-            st.success("Intro Part 1 updated")
-
-        up_intro2 = st.file_uploader("Intro Video Part 2", type=["mp4"], key="up_intro2")
-        if _save_upload(up_intro2, os.path.join(_ASSETS_DIR, "part2", "The_lady_in_202601151147_u7x9c.mp4")):
-            st.success("Intro Part 2 updated")
+        up_intro = st.file_uploader("Intro Video", type=["mp4"], key="up_intro")
+        if _save_upload(up_intro, os.path.join(_ASSETS_DIR, "intro.mp4")):
+            st.success("Intro updated")
 
         up_outro = st.file_uploader("Outro Video", type=["mp4"], key="up_outro")
         if _save_upload(up_outro, os.path.join(_ASSETS_DIR, "dressUp_cta_captioned.mp4")):
@@ -591,7 +587,7 @@ st.divider()
 # ── STEP 5: Prepend Intro ──────────────────────────────────────────────────────
 st.subheader("Step 5 — Prepend Intro")
 
-from build_rashifal_video import INTRO_VIDEO_P1, INTRO_VIDEO_P2, OUTRO_VIDEO
+from build_rashifal_video import INTRO_VIDEO, OUTRO_VIDEO
 
 FINAL1 = os.path.join(_TMP, f"rashifal_{date_str}_part1_final.mp4")
 FINAL2 = os.path.join(_TMP, f"rashifal_{date_str}_part2_final.mp4")
@@ -612,8 +608,8 @@ if prepend_btn and rashi_built:
     import subprocess, traceback as _tb2
     try:
         for part, rashi_path, intro_path, final_path in [
-            (1, OUT1, INTRO_VIDEO_P1, FINAL1),
-            (2, OUT2, INTRO_VIDEO_P2, FINAL2),
+            (1, OUT1, INTRO_VIDEO, FINAL1),
+            (2, OUT2, INTRO_VIDEO, FINAL2),
         ]:
             if not os.path.exists(intro_path):
                 st.error(f"Intro not found: {intro_path}")

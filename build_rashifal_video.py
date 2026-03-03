@@ -17,8 +17,7 @@ from caption_video import to_hinglish
 DATE   = "2026-03-01"
 _REPO         = os.path.dirname(__file__)
 ASSETS        = os.path.join(_REPO, "assets", "rashi")
-INTRO_VIDEO_P1 = os.path.join(_REPO, "assets", "part1", "The_lady_in_202601151151_hdnib.mp4")
-INTRO_VIDEO_P2 = os.path.join(_REPO, "assets", "part2", "The_lady_in_202601151147_u7x9c.mp4")
+INTRO_VIDEO    = os.path.join(_REPO, "assets", "intro.mp4")
 OUTRO_VIDEO    = os.path.join(_REPO, "assets", "dressUp_cta_captioned.mp4")
 FONTS_DIR      = os.path.join(_REPO, "fonts")
 
