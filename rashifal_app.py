@@ -873,9 +873,8 @@ if split_btn and withbg_exist:
                      "-i", withbg_path,
                      "-stream_loop", "-1", "-i", gameplay_path,
                      "-filter_complex",
-                     "[0:v]scale=720:640,setsar=1[top];"
-                     "[1:v]scale=720:640:force_original_aspect_ratio=increase,"
-                     "crop=720:640,setsar=1[bot];"
+                     "[0:v]crop=720:640:0:320,fps=30,setsar=1[top];"
+                     "[1:v]scale=720:-2,crop=720:640:0:(ih-640)/2,fps=30,setsar=1[bot];"
                      "[top][bot]vstack=inputs=2[v]",
                      "-map", "[v]", "-map", "0:a",
                      "-c:v", "libx264", "-c:a", "aac",
