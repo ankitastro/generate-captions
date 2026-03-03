@@ -702,7 +702,7 @@ if bg_btn and complete_exist:
         col_bg_left.error(f"Logo not found: {LOGO_PATH}")
     else:
         _d = _dt.strptime(date_str, "%Y-%m-%d")
-        date_display = _d.strftime("%-d %B %Y")          # e.g. "2 March 2026"
+        date_display = f"{_d.day} {_d.strftime('%B %Y')}"  # e.g. "2 March 2026"
         date_esc = date_display.replace(" ", "\\ ")       # ffmpeg filter escaping
         FONT_FILE = os.path.join(os.path.dirname(__file__), "fonts", "Arial-Bold.ttf")
         font_opt  = f":fontfile={FONT_FILE}" if os.path.exists(FONT_FILE) else ""
